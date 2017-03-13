@@ -1,1 +1,15 @@
 services:
+    mjrone.codegenerator.generateBundle:
+        class: MjrOne\CodeGeneratorBundle\Services\BundleGenerator
+
+    mjrone.codegenerator.code.bundle:
+        class: MjrOne\CodeGeneratorBundle\Services\BundleCodeGenerator
+
+    mjrone.codegenerator.code.file:
+        class: MjrOne\CodeGeneratorBundle\Services\CodeGenerator
+
+    mjrone.codegenerator.router:
+        class: MjrOne\CodeGeneratorBundle\Services\RouterGenerator
+
+    mjrone.codegenerator.form:
+        class: MjrOne\CodeGeneratorBundle\Services\FormGenerator

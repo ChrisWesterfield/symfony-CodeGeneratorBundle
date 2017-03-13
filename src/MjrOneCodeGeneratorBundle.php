@@ -1,14 +1,5 @@
 <?php
 declare(strict_types=1);
-/**
- * @author    Christopher Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield
- * @author    Christopher Westerfield <chris@mjr.one>
- * @license   MJR.ONE Source License
- * Date: 03/12/2016
- * Time: 15:40
- */
 namespace MJR\CodeGeneratorBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

@@ -7,10 +7,6 @@ namespace MjrOne\CodeGeneratorBundle\Services;
  * @license LGPL V3
  * @link http://www.mjr.one
  */
-class BundleCodeGenerator
+class RouterGenerator
 {
-    public function execute($file)
-    {
-
-    }
 }
