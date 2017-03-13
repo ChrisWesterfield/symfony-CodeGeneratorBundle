@@ -1,0 +1,40 @@
+{
+  "name": "mjr/code-generator-bundle",
+  "version": "1.0.0",
+  "type": "symfony-bundle",
+  "description": "Code Generation based on twig",
+  "keywords": [
+    "symfony",
+    "twig",
+    "bundle",
+    "code",
+    "generation"
+  ],
+  "homepage": "https://www.mjr.one",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "MjrOne\\CodeGeneratorBundle\\": "/src"
+    }
+  },
+  "authors": [
+    {
+      "name": "Christopher Westerfield",
+      "email": "chris@mjr.one"
+    }
+  ],
+  "require": {
+    "symfony/symfony": "3.2.*",
+    "symfony/property-info": "3.2.*",
+    "phpdocumentor/reflection-docblock": "^3.0",
+    "symfony/property-access": "3.2.*",
+    "mjr/cg-interfaces": "1.*"
+  },
+  "require-dev": {
+  },
+  "extra": {
+    "branch-alias": {
+      "release": "master"
+    }
+  }
+}
