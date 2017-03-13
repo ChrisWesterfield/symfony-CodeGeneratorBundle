@@ -28,7 +28,7 @@
     "symfony/property-info": "3.2.*",
     "phpdocumentor/reflection-docblock": "^3.0",
     "symfony/property-access": "3.2.*",
-    "mjr/cg-interfaces": "1.*"
+    "mjr/cg-interfaces": "dev-master"
   },
   "require-dev": {
   },
