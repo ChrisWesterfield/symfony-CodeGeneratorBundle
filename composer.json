@@ -11,7 +11,7 @@
     "generation"
   ],
   "homepage": "https://www.mjr.one",
-  "license": "proprietary",
+  "license": "LGPL-3.0",
   "autoload": {
     "psr-4": {
       "MjrOne\\CodeGeneratorBundle\\": "/src"
@@ -34,7 +34,7 @@
   },
   "extra": {
     "branch-alias": {
-      "release": "master"
+      "release": "master-dev"
     }
   }
 }
