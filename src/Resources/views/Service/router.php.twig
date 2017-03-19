@@ -1,0 +1,61 @@
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
+     * @CG\Mutator\Property(ignore=true)
+     */
+    protected $router;
+
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string $route         The name of the route
+     * @param mixed  $parameters    An array of parameters
+     * @param int    $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     */
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH){% if strict %}:UrlGeneratorInterface{% endif %}
+    {
+        return $this->router->generate($route, $parameters, $referenceType);
+    }
+
+    /**
+     * Returns a RedirectResponse to the given URL.
+     *
+     * @param string $url    The URL to redirect to
+     * @param int    $status The status code to use for the Response
+     *
+     * @return RedirectResponse
+     * @throws \InvalidArgumentException
+     */
+    protected function redirect($url, $status = 302){% if strict %}:RedirectResponse{% endif %}
+    {
+        return new RedirectResponse($url, $status);
+    }
+
+    /**
+     * Returns a RedirectResponse to the given route with the given parameters.
+     *
+     * @param string $route      The name of the route
+     * @param array  $parameters An array of parameters
+     * @param int    $status     The status code to use for the Response
+     *
+     * @return RedirectResponse
+     * @throws \InvalidArgumentException
+     */
+    protected function redirectToRoute($route, array $parameters = array(), $status = 302){% if strict %}:RedirectResponse{% endif %}
+    {
+        return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+
+    /**
+     * post redirect
+     * @param $route
+     * @param array $variables
+     * @return RedirectResponse
+     */
+    protected function redirectPost($route,array $variables=[]){% if strict %}:RedirectResponse{% endif %}
+    {
+        return $this->redirectToRoute($route,$variables,307);
+    }

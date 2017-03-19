@@ -1,7 +1,11 @@
 <?php
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation\Repository;
-use MJR\CodeGeneratorBundle\Annotation\AbstractDefinition;
+use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\RepositoryGenerator;
+
 /**
  * Class Repository
  * @copyright Christopher Westerfield <chris@mjr.one>
@@ -11,8 +15,9 @@ use MJR\CodeGeneratorBundle\Annotation\AbstractDefinition;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Repository extends AbstractDefinition
+final class Repository extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
+    const DRIVER = RepositoryGenerator::class;
 
     /**
      * @var bool

@@ -1,0 +1,30 @@
+<?php
+{% if configuration.fileProperties.useStrictTypes == true %}declare(strict_types = 1); {% endif %}
+{% block generated %}
+/**
+ * Automatically created file
+ * Changes will be overwritten on AutoGenerator Run!
+ */
+ {% endblock %}
+{% if configuration.fileProperties.useNamespace == true %}namespace {{ namespace }};{% endif %}
+
+{% block useSection %}
+{% endblock %}
+
+/**
+ * {{ class }}
+ {% if configuration.fileProperties.authors|length > 0 %}{% for author in configuration.fileProperties.authors %}* @author    {{ author.name }} <{{ author.email }}>
+ {% endfor %}{% endif %}
+* @package   {{ namespace }}
+ * @link      {{ configuration.fileProperties.link }}
+ * @copyright {{ configuration.fileProperties.copyRight }}
+ * @license   {{ configuration.fileProperties.license }}
+{% block comment %}
+{% endblock %}
+ * {% if configuration.fileProperties.hideGeneratedBy == false %}{{ configuration.fileProperties.generatorString }} - Version {{ configuration.fileProperties.generatorVersion }}{% endif %}
+
+ * Last Update: {{ "now"|date("d.m.Y") }} - {{ "now"|date('H:i:s') }}
+ */
+
+{% block body %}
+{% endblock %}

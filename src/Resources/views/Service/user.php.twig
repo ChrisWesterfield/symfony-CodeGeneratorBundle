@@ -1,0 +1,31 @@
+
+    /**
+     * user injected over token
+     * @var \{{ userEntity }}|bool
+     * @CG\Mutator\Property(ignore=true)
+     */
+    protected $user;
+
+    /**
+     * @param \{{ configuration.user.entity }} $user
+     * @return User|bool
+     */
+    protected function initializeUser({{ configuration.user.entity }} $user)
+    {
+        if(in_array($user->getUser(),[null,false,'anon.'],true))
+        {
+            $this->user = false;
+        }
+        else
+        {
+            $this->user = $user->getUser();
+        }
+    }
+
+    /**
+     * @return bool|\{{ configuration.user.entity }}
+     */
+    protected function getCurrentUser(){% if strict %}:{{ configuration.user.entity }}{% endif %}
+    {
+        return $this->user;
+    }

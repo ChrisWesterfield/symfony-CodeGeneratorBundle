@@ -1,0 +1,24 @@
+
+    /**
+     * method to return string response
+     *
+     * @param mixed $return
+     *
+     * @return Response
+     * @throws \MJR\CodeGeneratorBundle\Exception\MethodNotExistsException
+     * @throws \InvalidArgumentException
+     */
+    protected function returnString($return){% if strict %}:Response{% endif %}
+    {
+        if(is_array($return))
+        {
+            if(!method_exists($this,'returnJson'))
+            {
+                throw new \RuntimeException('Method returnJson does not exist. Please also include JsonTrait in your controller');
+            }
+            return $this->returnJson($return);
+        }
+        $response = new Response($return);
+        $response->headers->set('Content-Type','text/plain');
+        return $response;
+    }

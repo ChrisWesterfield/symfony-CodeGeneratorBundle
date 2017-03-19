@@ -1,0 +1,11 @@
+    /**
+     * @var KernelInterface
+    protected $kernel;
+
+    /**
+     * @return KernelInterface
+     */
+    protected function getKernel(){% if strict %}:KernelInterface{% endif %}
+    {
+        return $kernel;
+    }

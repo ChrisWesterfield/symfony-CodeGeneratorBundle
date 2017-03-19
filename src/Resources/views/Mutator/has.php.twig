@@ -1,0 +1,18 @@
+    /**
+     * has{{ functionName }}
+     * {% if configuration.iterator == true %} @param {% if strict and configuration.arrayType is not null %}{{ configuration.arrayType }}{% endif %}  $check
+     * {% endif %}
+
+     *
+     * @return bool
+     */
+    {{ configuration.visibility }} function has{{ functionName }}({% if configuration.iterator == true  %}{% if strict and configuration.arrayType is not null %}{{ configuration.arrayType }}{% endif %}  $value{% endif %}){% if strict==true %}: bool{% endif %}
+    {
+{% if configuration.iterator == false %}
+        return !empty($this->{{ fieldName }});
+{% elseif configuration.type == 'array' %}
+        return in_array($value,$this->{{ fieldName }}{% if strict==true %},true{% endif %});
+{% else %}
+        return $this->{{ fieldName }}->contains($value);
+{% endif %}
+    }

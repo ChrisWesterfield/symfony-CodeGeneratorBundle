@@ -8,6 +8,9 @@ declare(strict_types = 1);
  */
 namespace MjrOne\CodeGeneratorBundle\Annotation\Mutator;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\MutatorGenerator;
 
 /**
  * Class Mutator
@@ -18,8 +21,9 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Mutator extends AbstractAnnotation
+final class Mutator extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
+    const DRIVER = MutatorGenerator::class;
     /**
      * enables getter methods (get<PROPERTY>)
      * @var bool
@@ -80,6 +84,16 @@ final class Mutator extends AbstractAnnotation
      * @var bool
      */
     public $ignore=false;
+
+    /**
+     * @var bool
+     */
+    public $nullable;
+
+    /**
+     * @var bool
+     */
+    public $fluent = true;
 
     /**
      * @return bool
@@ -303,6 +317,46 @@ final class Mutator extends AbstractAnnotation
     public function setIgnore(bool $ignore): Mutator
     {
         $this->ignore = $ignore;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNullable(): bool
+    {
+        return $this->nullable;
+    }
+
+    /**
+     * @param bool $nullable
+     *
+     * @return Mutator
+     */
+    public function setNullable(bool $nullable): Mutator
+    {
+        $this->nullable = $nullable;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFluent(): bool
+    {
+        return $this->fluent;
+    }
+
+    /**
+     * @param bool $fluent
+     *
+     * @return Mutator
+     */
+    public function setFluent(bool $fluent): Mutator
+    {
+        $this->fluent = $fluent;
+
         return $this;
     }
 }

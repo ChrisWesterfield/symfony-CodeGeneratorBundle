@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorInterface;
 
 /**
  * AbstractAnnotation
@@ -11,6 +12,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
  */
 abstract class AbstractAnnotation
 {
+    const DRIVER = DriverInterface::class;
     /**
      * @return array
      */

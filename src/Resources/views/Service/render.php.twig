@@ -1,0 +1,27 @@
+
+
+    /**
+     * Renders a view.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     */
+    protected function render($view, array $parameters = array(), Response $response = null){% if strict %}:Response{% endif %}
+    {
+        if(property_exists($this,'templating') && $this->templating instanceof PhpEngine)
+        {
+            return $this->renderTemplate($view,$parameters,$response);
+        }
+        else
+            if(property_exists($this,'twig') && $this->twig instanceof Twig_Environment)
+        {
+            return $this->renderTwig($view,$parameters,$response);
+        }
+        else
+        {
+            throw new LogicException('You can not use the "render" method if the Templating Component or the Twig Bundle are not available.');
+        }
+    }

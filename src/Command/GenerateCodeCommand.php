@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace MJR\CodeGeneratorBundle\Command;
+namespace MjrOne\CodeGeneratorBundle\Command;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,20 +23,35 @@ class GenerateCodeCommand extends ContainerAwareCommand
     protected function configure(): void
     {
         $this
-            ->setName('mjr:createBundle')
-            ->setDescription('Generates a bundle MJR.ONE')
+            ->setName('mjr:generateCode')
+            ->setDescription('Generate MJRONE Bundle Codes')
             ->addOption(
-                'all', 'a', InputOption::VALUE_OPTIONAL,
+                'all', 'a', InputOption::VALUE_NONE,
                 'Update all Files in Bundle,'
-            );
+            )->addArgument('file', InputArgument::REQUIRED,'File to Generator Code For');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-
+        $file = $input->getArgument('file');
+        $options = $input->getOptions();
+        if($input->getOption('all'))
+        {
+            $service = $this->getContainer()->get('mjrone.codegenerator.code.bundle');
+        }
+        else
+        {
+            $service = $this->getContainer()->get('mjrone.codegenerator.code.file');
+        }
+        $service->setInput($input);
+        $service->setOutput($output);
+        $service->setFile($file);
+        $service->process();
     }
 }

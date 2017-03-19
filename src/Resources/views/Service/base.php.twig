@@ -1,0 +1,35 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% set strict=configuration.fileProperties.useStrictTypes %}
+
+{% block useSection %}
+{% if useList is defined and useList|length > 0 %}
+{% for name,element in useList %}
+{% if name!='loc' %}
+use {{ element.name }}{% if element.alias is defined and element.alias is not null %} as {{ element.alias }}{% endif %};
+{% endif %}{% endfor %}{% endif %}
+{% endblock %}
+
+{% block comment %}
+{% if constructorMethods is defined and constructorMethods|length > 0 %}
+{% for method in constructorMethods %}
+ * @method {{ method.method }}({% if method.variables is defined and method.variables|length > 0 %}{% for variable in method.variables %}{% if variable.type is defined and variable.type is not null %}{{ variable.type }}{% endif %} ${{ variable.name }}{% if loop.last !=true %}, {% endif %}{% endfor %}{% endif %})
+{% endfor %}{% endif %}
+{% if properties is defined and properties|length > 0 %}{% for property in properties %}{% if property.constructorMethod is defined and property.constructorMethod|length > 0 %}{% for method in property.constructorMethod %}
+ * @method {{ method.method }}({% if method.variables is defined and method.variables|length > 0 %}{% for variable in method.variables %}{% if variable.type is defined and variable.type is not null %}{{ variable.type }}{% endif %} ${{ variable.name }}{% if loop.last !=true %}, {% endif %}{% endfor %}{% endif %})
+{% endfor %}{% endif %}{% if property.optional is defined and property.optional|length > 0 and (property.generateSetter is not defined or (property.generateSetter is defined and property.generateSetter == false)) %}
+ * @method set{{ property.generatedName }}({% if property.optional is defined and property.optional|length > 0 %}{% for variable in property.optional %}{% if variable.type is defined and variable.type is not empty %}{{ variable.type }}{% endif %} ${{ variable.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% endif %});
+{% endif %}{% endfor %}{% endif %}
+{% endblock %}
+
+{% block body %}
+trait {{ class }}
+{
+{% include "MjrOneCodeGeneratorBundle:Service:constructor.php.twig" %}
+
+{% include "MjrOneCodeGeneratorBundle:Service:optionalSetters.php.twig" %}
+
+{% if injectedServices|length > 0 %}{% for fileName,active in injectedServices %}{% if active %}{% set includeFile="MjrOneCodeGeneratorBundle:Service:" ~ fileName ~ ".php.twig" %}
+    {% include includeFile %}
+{% endif %}{% endfor %}{% endif %}
+}
+{% endblock %}

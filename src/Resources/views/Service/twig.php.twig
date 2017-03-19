@@ -1,0 +1,23 @@
+    /**
+     * @var \Twig_Environment
+     * @CG\Mutator\Property(ignore=true)
+     */
+    protected $twig;
+
+    /**
+     * Render Using Twig Template Engine
+     * @param $view
+     * @param array $parameters
+     * @param Response|null $response
+     * @return Response
+     * @throws \UnexpectedValueException
+     */
+    protected function renderTwig($view, array $parameters = array(), Response $response = null){% if strict %}:Response{% endif %}
+    {
+        if($response === null)
+        {
+            $response = new Response();
+        }
+        $response->setContent($this->twig->render($view,$parameters));
+        return $response;
+    }

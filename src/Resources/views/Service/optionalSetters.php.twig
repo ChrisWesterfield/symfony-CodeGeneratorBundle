@@ -1,0 +1,16 @@
+{% for entry in properties %}{% if entry.optional is defined and entry.optional|length > 0 and (entry.generateSetter is not defined or (entry.generateSetter is defined and entry.generateSetter == true)) %}
+    /**
+     * Optional Setter
+    {% for item in entry.optional %}     * @param {% if item.type is not empty %}{{ item.type }}{% endif %} $variable{{ item.name }}
+    {% endfor %}
+     *
+     * @return $this
+     */
+    public function set{{ entry.generatedName }}({% for item in entry.optional %}{% if item.type is not empty %}{{ item.type }}{% endif %} $variable{{ item.name }}{% if loop.last != true %},{% endif %}{% endfor %})
+    {
+    {% for item in entry.optional %}
+        $this->{{ item.name }} = $variable{{ item.name }};
+    {% endfor %}
+        return $this;
+    }
+{% endif %}{% endfor %}

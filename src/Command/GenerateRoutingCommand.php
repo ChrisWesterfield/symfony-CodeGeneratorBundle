@@ -1,7 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace MJR\CodeGeneratorBundle\Command;
+namespace MjrOne\CodeGeneratorBundle\Command;
 
+use MjrOne\CodeGeneratorBundle\Services\RouterService;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,8 +24,13 @@ class GenerateRoutingCommand extends ContainerAwareCommand
     protected function configure(): void
     {
         $this
-            ->setName('mjrCodeGenerator:createBundle')
-            ->setDescription('Generates a bundle MJR.ONE');
+            ->setName('mjr:generateRouting')
+            ->setDescription('Generates a bundle Routing')
+            ->addOption(
+                'bundle', 'b', InputOption::VALUE_OPTIONAL,
+                'Update only certain Bundle (Full Path to Bundle, coma seperated. Use \\\\ for Full Namespace)'
+            )
+            ->addArgument('cleanup', InputArgument::OPTIONAL, 'remove Not Found Options');
     }
 
     /**
@@ -33,6 +39,8 @@ class GenerateRoutingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-
+        $this->getContainer()->get('mjrone.codegenerator.router')->setOutput($output);
+        /** @var RouterService $service */
+        $service->setInput($input)->process();
     }
 }

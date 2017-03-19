@@ -2,6 +2,9 @@
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceTagGenerator as TagDriver;
 
 /**
  * Class Tag
@@ -13,8 +16,9 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Tag extends AbstractAnnotation
+final class Tag extends AbstractAnnotation implements ClassInterface, ServiceInterface, SubDriverInterface
 {
+    const DRIVER = TagDriver::class;
     /**
      * @var string
      */

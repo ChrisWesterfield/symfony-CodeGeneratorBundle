@@ -8,6 +8,7 @@ declare(strict_types = 1);
  */
 namespace MjrOne\CodeGeneratorBundle\Annotation\Mutator;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\PropertyInterface;
 
 /**
  * Class Mutator
@@ -18,12 +19,17 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-final class Property extends AbstractAnnotation
+final class Property extends AbstractAnnotation implements PropertyInterface
 {
     /**
      * @var string
      */
     public $type;
+
+    /**
+     * @var string
+     */
+    public $arrayType;
 
     /**
      * @var bool
@@ -34,25 +40,25 @@ final class Property extends AbstractAnnotation
      * enables getter methods (get<PROPERTY>)
      * @var bool
      */
-    public $getter=true;
+    public $getter;
 
     /**
      * enables setter methods (set<PROPERTY>)
      * @var bool
      */
-    public $setter=true;
+    public $setter;
 
     /**
      * enables is methods (is<PROPERTY>)
      * @var bool
      */
-    public $is=true;
+    public $is;
 
     /**
      * enables has methods (has<PROPERTY>)
      * @var bool
      */
-    public $has=true;
+    public $has;
 
     /**
      * enables iteratable extended methods (add,remove,count,...) for
@@ -60,25 +66,25 @@ final class Property extends AbstractAnnotation
      * Iterable properties (currently only ArrayCollection and phpCollection)
      * @var bool
      */
-    public $iterator=true;
+    public $iterator;
 
     /**
      * enables count methods (count<PROPERTY>)
      * @var bool
      */
-    public $count=true;
+    public $count;
 
     /**
      * enables add methods (add<PROPERTY>)
      * @var bool
      */
-    public $add=true;
+    public $add;
 
     /**
      * enables remove methods (remove<PROPERTY>)
      * @var bool
      */
-    public $remove=true;
+    public $remove;
 
     /**
      * @var bool
@@ -88,7 +94,7 @@ final class Property extends AbstractAnnotation
     /**
      * @var bool
      */
-    public $fluent = true;
+    public $fluent;
 
     /**
      * @var string allowed settings: ** (empty, null), public , private, protected
@@ -381,6 +387,34 @@ final class Property extends AbstractAnnotation
     public function setVisibility(string $visibility): Property
     {
         $this->visibility = $visibility;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasType():bool
+    {
+        return $this->type !== null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArrayType(): string
+    {
+        return $this->arrayType;
+    }
+
+    /**
+     * @param string $arrayType
+     *
+     * @return Property
+     */
+    public function setArrayType(string $arrayType): Property
+    {
+        $this->arrayType = $arrayType;
+
         return $this;
     }
 }

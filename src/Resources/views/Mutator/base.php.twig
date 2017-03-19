@@ -1,0 +1,47 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% block useSection %}
+use {{ usedBy }};
+{% endblock %}
+
+{% block comment %}
+{% if properties|length > 0 %}{% for property in properties %}
+ * @property {% if property.configuration.arrayType is not null %}{{ property.configuration.arrayType }}[]{% else %}{{ property.configuration.type }}{% endif %} ${{ property.fieldName }}
+{% endfor %}{% endif %}
+{% endblock %}
+
+{% block body %}
+trait {{ class }}
+{
+{% if properties|length > 0 %}
+{% for property in properties %}
+{% if property.configuration.ignore != true %}
+{% if property.configuration.getter == true or property.configuration.is == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:getter.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+
+{% if property.configuration.setter == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:setter.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+
+{% if property.configuration.has == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:has.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+
+{% if property.configuration.iterator == true %}
+{% if property.configuration.add == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:add.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+
+{% if property.configuration.remove == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:remove.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+
+{% if property.configuration.count == true %}
+{% include "MjrOneCodeGeneratorBundle:Mutator:count.php.twig" with {'strict': configuration.fileProperties.useStrictTypes, 'short': short, 'configuration': property.configuration, 'fieldName': property.fieldName, 'functionName': property.functionName } %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+}
+{% endblock %}

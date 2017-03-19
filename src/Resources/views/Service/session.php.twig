@@ -1,0 +1,13 @@
+    /**
+     * @var Session
+     * @CG\Mutator\Property(ignore=true)
+     */
+    protected $session;
+
+    /**
+     * @return Session
+     */
+    public function getSession(){% if strict %}:Session{% endif %}
+    {
+        return $this->session;
+    }

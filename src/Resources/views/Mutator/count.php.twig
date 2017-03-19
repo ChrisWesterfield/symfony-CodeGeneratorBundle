@@ -1,0 +1,10 @@
+    /**
+     * count{{ functionName }}
+     * @return int
+     */
+    {{ configuration.visibility }} function count{{ functionName }}(){% if strict %}: int{% endif %}
+    {
+        return {% if configuration.type == 'array' %}count($this->{{ fieldName }});{% else %}$this->{{ fieldName }}->count();{% endif %}
+
+    }
+

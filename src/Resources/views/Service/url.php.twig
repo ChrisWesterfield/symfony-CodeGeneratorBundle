@@ -1,0 +1,11 @@
+
+    /**
+     * get Current Url
+     * @param Request $request
+     * @return string
+     */
+    protected function getCurrentUrl(Request $request){% if strict %}:string{% endif %}
+    {
+        return 'http'.($request->server->has('HTTPS')&&$request->server->get('HTTPS')==='on'?'s':'')
+              .'://'.$request->server->get('SERVER_NAME');
+    }

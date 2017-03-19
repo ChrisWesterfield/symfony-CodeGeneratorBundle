@@ -1,0 +1,14 @@
+    /**
+     * @var EntityManager
+     * @CG\Mutator\Property(ignore=true)
+     */
+
+    protected $entityManager;
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager(){% if strict %}:EntityManager{% endif %}
+    {
+        return $this->entityManager;
+    }

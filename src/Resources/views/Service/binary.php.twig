@@ -1,0 +1,17 @@
+
+    /**
+     * Returns a BinaryFileResponse object with original or customized file name and disposition header.
+     *
+     * @param \SplFileInfo|string $file        File object or path to file to be sent as response
+     * @param string|null         $fileName    File name to be sent to response or null (will use original file name)
+     * @param string              $disposition Disposition of response ("attachment" is default, other type is "inline")
+     *
+     * @return BinaryFileResponse
+     */
+    protected function file($file, $fileName = null, $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT){% if strict %}: BinaryFileResponse{% endif %}
+    {
+        $response = new BinaryFileResponse($file);
+        $response->setContentDisposition($disposition, $fileName === null ? $response->getFile()->getFilename() : $fileName);
+
+        return $response;
+    }

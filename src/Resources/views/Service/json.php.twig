@@ -1,0 +1,44 @@
+    /**
+     * returns standarized Json Response Envelope
+     * Structure:
+     * array(
+     *      'timestamp'=>Unix Time Stamp*
+     *      'date'=>MONTH/DAY/YEAR*
+     *      'time'=>Hour:Minute:Seconds*
+     *      'success'=>boolean true*
+     *      'payload'=>Your Payload
+     * )
+     * * can be overriten by parameters
+     * @param array $payload            payload
+     * @param bool $success             success of the operation true=yes, false=no success
+     * @param integer|null $timestamp   timestamp of action. If null the current time stamp is used
+     * @return array                    Json Envelope
+     */
+    protected function getJsonResponseEnvelope(array $payload,$success=true,$timestamp=null):{% if strict %}:array{% endif %}
+    {
+        if($timestamp===null)
+        {
+            $timestamp = time();
+        }
+        return [
+            'timestamp'     =>  $timestamp,
+            'date'          =>  date('m/d/Y',$timestamp),
+            'time'          =>  date('H:i:s',$timestamp),
+            'success'       =>  $success,
+            'payload'       =>  $payload
+        ];
+    }
+
+    /**
+     * return Json Response
+     * @param $return
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \InvalidArgumentException
+     */
+    protected function returnJson($return){% if strict %}Response{% endif %}
+    {
+        $response = new Response(json_encode($return));
+        $response->headers->set('Content-Type','application/json');
+        return $response;
+    }

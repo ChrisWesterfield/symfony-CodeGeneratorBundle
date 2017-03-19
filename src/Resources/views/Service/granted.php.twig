@@ -1,0 +1,41 @@
+
+
+    /**
+     * Checks if the attributes are granted against the current authentication token and optionally supplied object.
+     *
+     * @param mixed $attributes The attributes
+     * @param mixed $object     The object
+     *
+     * @return bool
+     *
+     * @throws \LogicException
+     */
+    protected function isGranted($attributes, $object = null){% if strict %}:bool{% endif %}
+    {
+        if (!$this->container->has('security.authorization_checker')) {
+            throw new \LogicException('The SecurityBundle is not registered in your application.');
+        }
+
+        return $this->container->get('security.authorization_checker')->isGranted($attributes, $object);
+    }
+
+    /**
+     * Throws an exception unless the attributes are granted against the current authentication token and optionally
+     * supplied object.
+     *
+     * @param mixed  $attributes The attributes
+     * @param mixed  $object     The object
+     * @param string $message    The message passed to the exception
+     *
+     * @throws AccessDeniedException
+     */
+    protected function denyAccessUnlessGranted($attributes, $object = null, $message = 'Access Denied.'){% if strict %}:void{% endif %}
+    {
+        if (!$this->isGranted($attributes, $object)) {
+            $exception = $this->createAccessDeniedException($message);
+            $exception->setAttributes($attributes);
+            $exception->setSubject($object);
+
+            throw $exception;
+        }
+    }

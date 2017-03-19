@@ -1,0 +1,45 @@
+    /**
+     * streams a view
+     * @param $view
+     * @param array $parameters
+     * @param StreamedResponse|null $response
+     * @return StreamedResponse
+     */
+    protected function stream($view, array $parameters = array(), StreamedResponse $response = null){% if strict %}:StreamedResponse{% endif %}
+    {
+        /** @var RenderTrait $this */
+        if(!method_exists($this,'renderTemplate'))
+        {
+            throw new LogicException('You need to insert the RenderTrait!');
+        }
+        if($this->templating instanceof PhpEngine)
+        {
+            $templateEngine = $this->templating;
+            $callback = function () use ($templateEngine, $view, $parameters)
+            {
+                $templateEngine->stream($view, $parameters);
+            };
+        }
+        else
+            if($this->twig instanceof Twig_Environment)
+        {
+            $twig = $this->twig;
+            $callback = function () use ($twig, $view, $parameters)
+            {
+                $twig->display($view, $parameters);
+            };
+        }
+        else
+        {
+            throw new LogicException('You can not use the "render" method if the Templating Component or the Twig Bundle are not available.');
+        }
+
+        if (null === $response)
+        {
+            return new StreamedResponse($callback);
+        }
+
+        $response->setCallback($callback);
+
+        return $response;
+    }

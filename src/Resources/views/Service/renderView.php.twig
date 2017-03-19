@@ -1,0 +1,24 @@
+
+
+    /**
+     * Returns a rendered view.
+     *
+     * @param string $view       The view name
+     * @param array  $parameters An array of parameters to pass to the view
+     *
+     * @return string The rendered view
+     */
+    protected function renderView($view, array $parameters = array()){% if strict %}:string{% endif %}
+    {
+        if(property_exists($this,'templating') && $this->templating instanceof PhpEngine)
+        {
+            return $this->getTemplating()->render($view, $parameters);
+        }
+
+        if(!property_exists($this,'twig') || !($this->twig instanceof Twig_Environment))
+        {
+            throw new \LogicException('You can not use the "renderView" method if the Templating Component or the Twig Bundle are not available.');
+        }
+
+        return $this->getTwig()->render($view, $parameters);
+    }

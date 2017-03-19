@@ -8,16 +8,21 @@ declare(strict_types = 1);
  */
 namespace MjrOne\CodeGeneratorBundle\Annotation\Routing;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\RoutingGenerator;
 
 /**
  * Class Router
  *
- * @package MJR\CodeGeneratorBundle\Annotation\ClassDefinition
+ * @package MjrOne\CodeGeneratorBundle\Annotation\ClassDefinition
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Routing extends AbstractAnnotation
+final class Routing extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
+    const DRIVER = RoutingGenerator::class;
+
     const TYPE_ANNOTATION = 'annotation';
     const TYPE_YML = 'yml';
     const TYPE_XML = 'xml';

@@ -1,7 +1,10 @@
 <?php
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation\Entity;
-use MJR\CodeGeneratorBundle\Annotation\AbstractDefinition;
+use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\EntityRepositoryGenerator;
 
 
 /**
@@ -13,8 +16,9 @@ use MJR\CodeGeneratorBundle\Annotation\AbstractDefinition;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Entity extends AbstractDefinition
+final class Entity extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
+    const DRIVER = EntityRepositoryGenerator::class;
     /**
      * @var string
      */
@@ -23,7 +27,7 @@ final class Entity extends AbstractDefinition
     /**
      * @var bool
      */
-    public $addEntityAnnotation=false;
+    public $addEntityAnnotation=true;
 
     /**
      * @var string
@@ -34,11 +38,6 @@ final class Entity extends AbstractDefinition
      * @var string
      */
     public $targetDirectory;
-
-    /**
-     * @var string
-     */
-    public $targetRepositoryClassName;
 
     /**
      * @var string
@@ -124,24 +123,6 @@ final class Entity extends AbstractDefinition
     public function setTargetDirectory(string $targetDirectory): Entity
     {
         $this->targetDirectory = $targetDirectory;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTargetRepositoryClassName()
-    {
-        return $this->targetRepositoryClassName;
-    }
-
-    /**
-     * @param string $targetRepositoryClassName
-     * @return Entity
-     */
-    public function setTargetRepositoryClassName(string $targetRepositoryClassName): Entity
-    {
-        $this->targetRepositoryClassName = $targetRepositoryClassName;
         return $this;
     }
 

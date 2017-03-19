@@ -2,6 +2,9 @@
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\ServiceGenerator;
 
 /**
  * Service
@@ -13,50 +16,55 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Service extends AbstractAnnotation
+final class Service extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
+    const DRIVER = ServiceGenerator::class;
     /**
+     * Name of the Service
      * @var string
      */
     public $name;
 
     /**
+     * Is this a public Service
      * @var bool
      */
     public $publicService = true;
 
     /**
-     * @var string
-     */
-    public $alias;
-
-    /**
+     * Is this Service depricated
      * @var bool
      */
     public $depricated = false;
 
     /**
+     * Scope of Service
      * @var mixed
      */
     public $scope;
 
     /**
+     * depricated Message
      * @var string
      */
     public $depricatedMessage = '';
 
     /**
+     * Is this Service an Controller
      * @var bool
      */
     public $controller = false;
 
     /**
+     * Use Lazy Loading
      * @var bool
      */
     public $lazy = false;
 
     /**
-     * @var string
+     * Methods called in constructors (example: init($variables), ...
+     * insert $variables to add a parameter that is added either as part of an injected service etc
+     * @var array<\MjrOne\CodeGeneratorBundle\Annotation\Service\Construction>
      */
     public $constructorMethods = '';
 
@@ -209,7 +217,7 @@ final class Service extends AbstractAnnotation
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getConstructorMethods()
     {
@@ -217,9 +225,9 @@ final class Service extends AbstractAnnotation
     }
 
     /**
-     * @param string $constructorMethods
+     * @param array $constructorMethods
      */
-    public function setConstructorMethods($constructorMethods)
+    public function setConstructorMethods(array $constructorMethods)
     {
         $this->constructorMethods = $constructorMethods;
     }

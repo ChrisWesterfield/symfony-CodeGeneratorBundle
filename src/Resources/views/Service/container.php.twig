@@ -1,0 +1,14 @@
+    /**
+     * @var Container
+     * @CG\Mutator\Property(ignore=true)
+     */
+
+    protected $container;
+
+    /**
+     * @return Container
+     */
+    public function getCache(){% if strict %}:Container{% endif %}
+    {
+        return $this->container;
+    }

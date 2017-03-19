@@ -1,0 +1,21 @@
+    /**
+     * @var TranslatorInterface
+     * @CG\Mutator\Property(ignore=true)
+     */
+    protected $translator;
+
+    /**
+    * @return string
+    */
+    public function translate($trans){% if strict %}:string{% endif %}
+    {
+        return $this->translator->trans($trans);
+    }
+
+    /**
+    * @return TranslatorInterface
+    */
+    public function getTranslator(){% if strict %}:TralsatorInterface{% endif %}
+    {
+        return $this->translator;
+    }

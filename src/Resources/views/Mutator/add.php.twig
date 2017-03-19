@@ -1,0 +1,21 @@
+    /**
+     * add{{ functionName }}
+     * @param {% if strict and configuration.arrayType is not null %}{{ configuration.arrayType }}{% endif %} $value
+     *
+     * {% if configuration.fluent ==true %}@return {{ short }}{% else %}@return void{% endif %}
+
+     */
+    {{ configuration.visibility }} function add{{ functionName }}({% if strict and configuration.arrayType is not null %}{{ configuration.arrayType }}{% endif %} $value){% if strict==true %}:{% if configuration.fluent == true %}{{ short }}{% else %}void {% endif %}{% endif %}
+    {
+{% if configuration.has == true %}
+        if(!$this->has{{ functionName }}($value))
+        {
+            {% else %}        {% endif %}$this->{{ fieldName }}{% if configuration.type == 'array' %}[] = {% else %}->add({% endif %}$value{% if configuration.type != 'array' %}){% endif %};
+{% if configuration.has == true %}
+        }
+{% endif %}
+{% if configuration.fluent == true %}
+
+        return $this;
+{% endif %}
+    }

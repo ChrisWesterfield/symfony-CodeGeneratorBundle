@@ -1,0 +1,16 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% block useSection %}
+use {{ usedBy }};
+use {{ baseClassFQDN }};
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+{% endblock %}
+
+{% block generated %}{% endblock %}
+
+{% block body %}
+class {{ class }} extends {{ baseClass }}
+{
+
+}
+{% endblock %}

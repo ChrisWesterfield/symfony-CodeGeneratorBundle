@@ -1,0 +1,37 @@
+    /**
+     * @var {{ configuration.cache.classShort }}
+     * @CG\Mutator\Property(ignore=true)
+     */
+
+    protected $cache;
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getCacheEntry($key)
+    {
+        return $this->getCache()->get($key);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @param int $ttl
+     *
+     * @return $this
+     */
+    public function setCache($key, $value,int $ttl=86400)
+    {
+        $this->getCache()->set($key, $value, $ttl);
+        return $this;
+    }
+
+    /**
+     * @return {{ configuration.cache.classShort }}
+     */
+    public function getCache(){% if strict %}:{{ configuration.cache.classShort }}{% endif %}
+    {
+        return $this->cache;
+    }

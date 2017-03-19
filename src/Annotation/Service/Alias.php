@@ -2,6 +2,9 @@
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
+use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
+use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceAliasGenerator as AliasDriver;
 
 /**
  * Class Alias
@@ -13,8 +16,9 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class Alias extends AbstractAnnotation
+final class Alias extends AbstractAnnotation implements ClassInterface, ServiceInterface, SubDriverInterface
 {
+    const DRIVER = AliasDriver::class;
     /**
      * @var string
      */
@@ -24,6 +28,81 @@ final class Alias extends AbstractAnnotation
      * @var string
      */
     public $alias;
+
+    /**
+     * @var bool|null
+     */
+    public $publicService;
+
+    /**
+     * @var bool
+     */
+    public $depricated = false;
+
+    /**
+     * @var string
+     */
+    public $depricatedMessage;
+
+    /**
+     * @return bool|null
+     */
+    public function getPublicService()
+    {
+        return $this->publicService;
+    }
+
+    /**
+     * @param bool|null $publicService
+     *
+     * @return Alias
+     */
+    public function setPublicService($publicService)
+    {
+        $this->publicService = $publicService;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDepricated(): bool
+    {
+        return $this->depricated;
+    }
+
+    /**
+     * @param bool $depricated
+     *
+     * @return Alias
+     */
+    public function setDepricated(bool $depricated): Alias
+    {
+        $this->depricated = $depricated;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDepricatedMessage(): string
+    {
+        return $this->depricatedMessage;
+    }
+
+    /**
+     * @param string $depricatedMessage
+     *
+     * @return Alias
+     */
+    public function setDepricatedMessage(string $depricatedMessage): Alias
+    {
+        $this->depricatedMessage = $depricatedMessage;
+
+        return $this;
+    }
 
     /**
      * @return string

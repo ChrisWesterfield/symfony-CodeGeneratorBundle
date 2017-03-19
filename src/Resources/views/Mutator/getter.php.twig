@@ -1,0 +1,9 @@
+    /**
+     * {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}
+     * @return {% if configuration.type|length > 0 %}{% if configuration.arrayType is not null %}{{ configuration.arrayType }}[]{% else %}{{ configuration.type }}{% endif %}{% else %}mixed{% endif %}
+
+     */
+    {{ configuration.visibility }} function {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}(){% if strict==true and configuration.type != 'mixed' and configuration.type|length > 0 %}: {{ configuration.type }}{% endif %}
+    {
+        return $this->{{ fieldName }};
+    }
