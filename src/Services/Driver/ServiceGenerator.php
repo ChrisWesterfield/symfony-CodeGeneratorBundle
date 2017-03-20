@@ -3,7 +3,7 @@ declare(strict_types = 1);
 /**
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
+ * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  * Created by PhpStorm.
  * User: cwesterfield
@@ -17,7 +17,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Service\Variable;
 use MjrOne\CodeGeneratorBundle\Event\ServiceGeneratorEvent;
+use MjrOne\CodeGeneratorBundle\Event\ServiceGeneratorUpdateDocumentAnnotationEvent;
 use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -89,6 +91,7 @@ class ServiceGenerator extends GeneratorAbstract
         {
             $this->checkFileForTrait($templateVariables);
             $this->processServiceConfig($config);
+            $this->updateRouteDocumentAnnotation($serviceName);
         }
     }
 
@@ -249,5 +252,99 @@ class ServiceGenerator extends GeneratorAbstract
         $this->addToList($this->getService()->getConfig()->getCore()->getRedirect(),$list);
         $this->addToList(\LogicException::class,$list);
         return $list;
+    }
+
+    /**
+     *
+     */
+    protected function updateRouteDocumentAnnotation(string $serviceName)
+    {
+        $annotationReader = $this->getService()->getAnnotationService()->getAnnotationReader();
+        $reflectionClass = $this->getDocumentAnnotation()->getReflectionClass();
+        $annotationClassString = Route::class;
+        /** @var CG\Service\Service $classAnnotation */
+        $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass,CG\Service\Service::class);
+        $event = (new ServiceGeneratorUpdateDocumentAnnotationEvent())->setAnnotation($classAnnotation);
+        $event->setSubject($this);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'preUpdateRouteDocumentAnnotation'),$event);
+        $classAnnotation = $event->getAnnotation();
+        if($classAnnotation->isController())
+        {
+            /** @var Route $annotation */
+            $annotation = $annotationReader->getClassAnnotation($reflectionClass,$annotationClassString);
+            $annotationUse = $annotationString = null;
+            $path = (method_exists($this->kernel,'getRealRootDirectory')?$this->kernel->getRealRootDirectory():$this->kernel->getRootDir().'/../').'/';
+            $source = $path.$this->getFile();
+            $source = str_replace('//','/',$source);
+            $file = file_get_contents($source);
+            $fileArray = explode("\n",$file);
+            $newFileArray = [];
+            $event->setFile($file);
+            $event->setFileArray($fileArray);
+            $event->setNewFileArray($newFileArray);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class,'preProcessUpdateRouteDocumentAnnotation'),$event);
+            $file = $event->getFile();
+            $fileArray = $event->getFileArray();
+            $newFileArray = $event->getNewFileArray();
+            if($annotation===null)
+            {
+                $useAnnotationUse = strpos($file,$annotationUse)===false;
+                $annotationUse = 'use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;';
+                $annotationString = ' * @Route(service="'.$serviceName.'")';
+                foreach($fileArray as $row)
+                {
+                    if(strpos($row,'CG\Service\Service')!==false || strpos($row,CG\Service\Service::class)!==false)
+                    {
+                        $newFileArray[] = $annotationString;
+                    }
+                    $newFileArray[] = $row;
+                    if(strpos($row,'namespace '.$reflectionClass->getNamespaceName().';')!==false && $useAnnotationUse && $annotationUse!==null)
+                    {
+                        $newFileArray[] = $annotationUse;
+                    }
+                }
+                $event->setFile($file);
+                $event->setFileArray($fileArray);
+                $event->setNewFileArray($newFileArray);
+                $this->getED()->dispatch($this->getED()->getEventName(self::class,'processUpdateRouteDocumentAnnotationNew'),$event);
+                $file = $event->getFile();
+                $fileArray = $event->getFileArray();
+                $newFileArray = $event->getNewFileArray();
+            }
+            else if(empty($annotation->getService()))
+            {
+                foreach($fileArray as $row)
+                {
+                    if(strpos($row, ' * @Route(')!==false)
+                    {
+                        $row = str_replace(' * @Route(',' * @Route( service="'.$serviceName.'"'.(strpos($row,'=')>0?', ':''),$row);
+                    }
+                    $newFileArray[] = $row;
+                }
+                $event->setFile($file);
+                $event->setFileArray($fileArray);
+                $event->setNewFileArray($newFileArray);
+                $this->getED()->dispatch($this->getED()->getEventName(self::class,'processUpdateRouteDocumentAnnotationSave'),$event);
+                $file = $event->getFile();
+                $fileArray = $event->getFileArray();
+                $newFileArray = $event->getNewFileArray();
+            }
+            $event->setFile($file);
+            $event->setFileArray($fileArray);
+            $event->setNewFileArray($newFileArray);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class,'preStoreUpdateRouteDocumentAnnotation'),$event);
+            $file = $event->getFile();
+            $fileArray = $event->getFileArray();
+            $newFileArray = $event->getNewFileArray();
+            if(!empty($newFileArray))
+            {
+                $newFile = implode("\n",$newFileArray);
+                $event->setNewFile($newFile);
+                $this->getED()->dispatch($this->getED()->getEventName(self::class,'preDumpFileUpdateRouteDocumentAnnotation'),$event);
+                $newFile = $event->getNewFile();
+                $this->getFileSystem()->dumpFile($source,$newFile);
+                $this->getED()->dispatch($this->getED()->getEventName(self::class,'postDumpFileUpdateRouteDocumentAnnotation'),$event);
+            }
+        }
     }
 }

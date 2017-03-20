@@ -3,7 +3,7 @@ declare(strict_types = 1);
 /**
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
+ * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  * Created by PhpStorm.
  * User: cwesterfield

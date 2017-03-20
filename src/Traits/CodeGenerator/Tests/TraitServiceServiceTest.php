@@ -19,16 +19,16 @@ use \MjrOne\CodeGeneratorBundle\Services\RenderService;
 
 /**
  * TraitServiceServiceTest
- * @author    Christopher Westerfield <chris.westerfield@spectware.com>
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package   MjrOne\CodeGeneratorBundle\Traits\CodeGenerator\Tests
- * @link      https://www.spectware.com
- * @copyright copyright (c) by Spectware, Inc.
- * @license   SpectwarePro Source License
+ * @link      https://www.mjr.one
+ * @copyright copyright (c) by Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * @method test(string $test, string $test2)
  * @method setTest2(string $test);
  * @method test33(string $test3)
  * Generatored by MJR.ONE CodeGenerator Bundle (Generator Copyright (c) by Chris Westerfield 2017, Licensed under LGPL V3) - Version 1.0.0
- * Last Update: 19.03.2017 - 23:24:48
+ * Last Update: 20.03.2017 - 23:40:42
  */
 
 trait TraitServiceServiceTest

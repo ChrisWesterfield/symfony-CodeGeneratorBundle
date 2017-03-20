@@ -3,7 +3,7 @@ declare(strict_types = 1);
 /**
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
+ * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  * Created by PhpStorm.
  * User: cwesterfield
@@ -12,6 +12,7 @@ declare(strict_types = 1);
  */
 
 namespace MjrOne\CodeGeneratorBundle\Tests;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use MjrOne\CodeGeneratorBundle\Traits\CodeGenerator\Tests\TraitMutatorServiceTest;
 use MjrOne\CodeGeneratorBundle\Traits\CodeGenerator\Tests\TraitServiceServiceTest;
 
@@ -25,6 +26,7 @@ use MjrOne\CodeGeneratorBundle\Services\RenderService;
  * Class ServiceTest
  *
  * @package MjrOne\CodeGeneratorBundle\Tests
+ * @Route( service="mjr_one.code_generator_bundle.tests.service_test",path="/test")
  * @CG\Service\Service(
  *     name="test",
  *     controller=true,

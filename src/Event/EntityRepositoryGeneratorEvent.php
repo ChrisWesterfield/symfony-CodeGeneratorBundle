@@ -1,10 +1,10 @@
 <?php
 declare(strict_types = 1);
 /**
- * @author    Christopher Westerfield <chris.westerfield@spectware.com>
- * @link      https://www.spectware.com
- * @copyright Spectware, Inc.
- * @license   SpectwarePro Source License
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * Created by PhpStorm.
  * User: cwesterfield
  * Date: 20/03/2017

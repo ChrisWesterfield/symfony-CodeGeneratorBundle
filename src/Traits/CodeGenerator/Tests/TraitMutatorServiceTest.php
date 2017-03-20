@@ -8,11 +8,11 @@ use MjrOne\CodeGeneratorBundle\Tests\ServiceTest;
 
 /**
  * TraitMutatorServiceTest
- * @author    Christopher Westerfield <chris.westerfield@spectware.com>
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package   MjrOne\CodeGeneratorBundle\Traits\CodeGenerator\Tests
- * @link      https://www.spectware.com
- * @copyright copyright (c) by Spectware, Inc.
- * @license   SpectwarePro Source License
+ * @link      https://www.mjr.one
+ * @copyright copyright (c) by Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * @property bool $test
  * @property \MjrOne\CodeGeneratorBundle\Services\RenderService $test2
  * @property string $test3
@@ -28,7 +28,7 @@ use MjrOne\CodeGeneratorBundle\Tests\ServiceTest;
  * @property \Symfony\Component\EventDispatcher\EventDispatcherInterface $event
  * @property \MjrOne\CodeGeneratorBundle\Tests\EntityManager $entityManager
  * Generatored by MJR.ONE CodeGenerator Bundle (Generator Copyright (c) by Chris Westerfield 2017, Licensed under LGPL V3) - Version 1.0.0
- * Last Update: 19.03.2017 - 23:24:48
+ * Last Update: 20.03.2017 - 23:40:17
  */
 
 trait TraitMutatorServiceTest
