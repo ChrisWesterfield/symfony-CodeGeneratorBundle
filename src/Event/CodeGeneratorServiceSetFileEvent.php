@@ -14,8 +14,6 @@ declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\CodeGeneratorService;
-use Symfony\Component\EventDispatcher\Event;
 
 class CodeGeneratorServiceSetFileEvent extends CodeGeneratorServiceConstructorEvent
 {

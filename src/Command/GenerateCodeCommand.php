@@ -44,14 +44,17 @@ class GenerateCodeCommand extends ContainerAwareCommand
         if($input->getOption('all'))
         {
             $service = $this->getContainer()->get('mjrone.codegenerator.code.bundle');
+            $service->setBundle($file);
+            $service->setVerbose($input->getOption('verbose'));
+            $service->setCommand($this);
         }
         else
         {
             $service = $this->getContainer()->get('mjrone.codegenerator.code.file');
+            $service->setFile($file);
         }
         $service->setInput($input);
         $service->setOutput($output);
-        $service->setFile($file);
         $service->process();
     }
 }

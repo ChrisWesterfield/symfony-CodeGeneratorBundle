@@ -25,11 +25,16 @@ class Router extends AbstractConfig
     /**
      * @var string
      */
-    public $bundles;
+    public $production;
     /**
      * @var string
      */
     public $development;
+
+    /**
+     * @var BaseRoute
+     */
+    public $baseRoutes;
 
     /**
      * Router constructor.
@@ -38,26 +43,27 @@ class Router extends AbstractConfig
      */
     public function __construct(array $router)
     {
-        $this->bundles = $router['bundles'];
+        $this->production = $router['bundles'];
         $this->development = $router['development'];
+        $this->baseRoutes = new BaseRoute($router['BaseRoutes']);
     }
 
     /**
      * @return string
      */
-    public function getBundles(): string
+    public function getProduction(): string
     {
-        return $this->bundles;
+        return $this->production;
     }
 
     /**
-     * @param string $bundles
+     * @param string $production
      *
      * @return Router
      */
-    public function setBundles(string $bundles): Router
+    public function setProduction(string $production): Router
     {
-        $this->bundles = $bundles;
+        $this->production = $production;
 
         return $this;
     }
@@ -81,6 +87,13 @@ class Router extends AbstractConfig
 
         return $this;
     }
-    
+
+    /**
+     * @return BaseRoute
+     */
+    public function getBaseRoutes(): BaseRoute
+    {
+        return $this->baseRoutes;
+    }
     
 }

@@ -1,47 +1,47 @@
 services:
     mjrone.codegenerator.createbundle:
         class: MjrOne\CodeGeneratorBundle\Services\CreateBundleService
+
     mjrone.codegenerator.code.bundle:
-        class: MjrOne\CodeGeneratorBundle\Services\BundleGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Services\GeneratorService\BundleGeneratorService
+        arguments:
+            - '@mjrone.codegenerator.code.file'
+
     mjrone.codegenerator.code.file:
-        class: MjrOne\CodeGeneratorBundle\Services\CodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Services\GeneratorService\CodeGeneratorService
         arguments:
             - '@mjrone.codegenerator.annotation'
             - '@mjrone.codegenerator.configuration'
             - '@mjrone.codegenerator.renderer'
             - '@kernel'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.router:
         class: MjrOne\CodeGeneratorBundle\Services\RouterService
+        arguments:
+            - '@kernel'
+            - '@mjrone.codegenerator.annotation'
+            - '@mjrone.codegenerator.configuration'
+            - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.configuration:
         class: MjrOne\CodeGeneratorBundle\Services\ConfigurationService
         arguments:
             - '%mjrone.codegenerator.configuration%'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.annotation:
         class: MjrOne\CodeGeneratorBundle\Services\ReadAnnotationService
         arguments:
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.renderer:
         class: MjrOne\CodeGeneratorBundle\Services\RenderService
         arguments:
             - '@twig'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.event:
         class: MjrOne\CodeGeneratorBundle\Services\EventDispatcherService
         arguments:
             - '@event_dispatcher'
-    mjr_one.code_generator_bundle.tests.service_test:
-        class: MjrOne\CodeGeneratorBundle\Tests\ServiceTest
-        arguments:
-            - '@twig'
-            - '@router'
-            - '@spectware.framework_bundle.services.cache_service'
-            - '@event_dispatcher'
-            - '@doctrine.orm.entity_manager'
-            - '@mjrone.codegenerator.renderer'
-            - '@mjrone.codegenerator.renderer'
-        lazy: false
-        public: true
-    test2:
-        alias: mjr_one.code_generator_bundle.tests.service_test

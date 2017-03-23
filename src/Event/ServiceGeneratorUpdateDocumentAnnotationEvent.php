@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\ServiceGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 class ServiceGeneratorUpdateDocumentAnnotationEvent extends Event

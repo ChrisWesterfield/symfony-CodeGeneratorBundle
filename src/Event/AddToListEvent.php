@@ -15,7 +15,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\GeneratorInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class AddToListEvent extends Event
@@ -38,19 +38,19 @@ class AddToListEvent extends Event
     protected $alias;
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface
+     * @return GeneratorInterface
      */
-    public function getSubject(): \MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface
+    public function getSubject(): GeneratorInterface
     {
         return $this->subject;
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface $subject
+     * @param GeneratorInterface $subject
      *
      * @return AddToListEvent
      */
-    public function setSubject(\MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface $subject): AddToListEvent
+    public function setSubject(GeneratorInterface $subject): AddToListEvent
     {
         $this->subject = $subject;
 

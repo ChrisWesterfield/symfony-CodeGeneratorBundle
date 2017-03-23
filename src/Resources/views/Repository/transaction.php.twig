@@ -1,0 +1,42 @@
+
+    /**
+     * begin Transaction
+     * @return {{ short }}
+     *
+     */
+    public function beginTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->beginTransaction();
+
+        return $this;
+    }
+
+    /**
+     * commit to transaction
+     *
+     * @return {{ short }}
+     */
+    public function commitTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->commit();
+
+        return $this;
+    }
+
+    /**
+     * roll back transaction
+     *
+     * @return {{ short }}
+     */
+    public function rollbackTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->rollback();
+
+        return $this;
+    }

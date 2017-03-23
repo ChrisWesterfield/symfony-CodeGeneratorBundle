@@ -15,7 +15,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceInjectionGenerator;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServiceInjectionGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 class ServiceInjectionGeneratorEvent extends Event

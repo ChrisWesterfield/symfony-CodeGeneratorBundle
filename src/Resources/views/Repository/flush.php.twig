@@ -1,0 +1,15 @@
+
+    /**
+     * flush changes
+     *
+     * @param \{{ entityIface }}|null $entity
+     *
+     * @return {{ short }}
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function flush({{entityIface}} $entity=null){% if strict %}: {{ short }}{% endif %}
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->flush($entity);
+        return $this;
+    }

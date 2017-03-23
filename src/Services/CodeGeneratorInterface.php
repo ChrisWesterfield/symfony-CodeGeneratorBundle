@@ -14,8 +14,19 @@ declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Services;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
+use Symfony\Component\Console\Input\InputInterface;
 
 interface CodeGeneratorInterface
 {
+    /**
+     * @return void
+     */
     public function process();
+
+    /**
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     *
+     * @return mixed
+     */
+    public function setInput(InputInterface $input);
 }

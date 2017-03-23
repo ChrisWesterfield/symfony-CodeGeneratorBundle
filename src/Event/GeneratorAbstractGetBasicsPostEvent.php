@@ -15,7 +15,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Document\Annotation;
-use MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\GeneratorInterface;
 
 class GeneratorAbstractGetBasicsPostEvent extends EventAbstract
 {

@@ -51,6 +51,9 @@ class ConfigurationService extends AbstractConfig
      */
     public $fileProperties;
 
+    /**
+     * @var \MjrOne\CodeGeneratorBundle\Services\Configuration\Core
+     */
     public $core;
 
     /**

@@ -1,0 +1,30 @@
+
+    /**
+     * disable soft deletable filter
+     *
+     * @return {{ short }}
+     * @throws \InvalidArgumentException
+     */
+    public function disableSoftDeletableFilter(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->getFilters()->disable('softdeleteable');
+
+        return $this;
+    }
+
+    /**
+     * enable soft deletable filter
+     *
+     * @return {{ short }}
+     * @throws \InvalidArgumentException
+     */
+    public function enableSoftDeletableFilter(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->getFilters()->enable('softdeleteable');
+
+        return $this;
+    }

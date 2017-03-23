@@ -1,0 +1,31 @@
+
+    /**
+     * getArray Result or Array of arrays
+     * @param string $dql
+     * @param array $parameters
+     * @param bool $arrayResult
+     *
+     * @param bool $limit
+     * @param bool $offset
+     *
+     * @return array|\{{ entityIface }}[]|null
+     */
+    public function getResults(string $dql,array $parameters=[], $arrayResult=false,$limit=false,$offset=false)
+        {
+        /** @var EntityRepository $this */
+        $query = $this->getEntityManager()->createQuery($dql)->setParameters($parameters);
+        if($limit !== false)
+        {
+            $query->setMaxResults((int)$limit);
+        }
+        if($offset !== false)
+        {
+            $query->setFirstResult((int)$offset);
+        }
+
+        if($arrayResult)
+        {
+            return $query->getArrayResult();
+        }
+        return $query->getResult();
+        }

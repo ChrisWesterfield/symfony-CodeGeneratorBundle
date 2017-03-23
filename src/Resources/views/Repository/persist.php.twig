@@ -1,0 +1,33 @@
+
+    /**
+     * persist (if required) and flush entity
+     * @param \{{entityIface}} $entity
+     *
+     * @return {{ short }}
+     */
+    public function save({{entityIface}} $entity){% if strict %}: {{ short }}{% endif %}
+
+    {
+        $this->persist($entity);
+        $this->flush($entity);
+
+        return $this;
+    }
+
+    /**
+     * persist entity
+     * @param \{{ entityIface }} $entity
+     *
+     * @return {{ short }}
+     */
+    public function persist({{entityIface}} $entity){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        if($this->getEntityManager()->getUnitOfWork()->getEntityState($entity)!==UnitOfWork::STATE_MANAGED)
+        {
+            $this->getEntityManager()->persist($entity);
+        }
+
+        return $this;
+    }

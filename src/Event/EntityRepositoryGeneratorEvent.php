@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\EntityRepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\EntityRepositoryGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 class EntityRepositoryGeneratorEvent extends Event

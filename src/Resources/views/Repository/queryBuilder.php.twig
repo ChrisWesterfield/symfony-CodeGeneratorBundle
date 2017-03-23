@@ -1,0 +1,13 @@
+
+    /**
+     * @param      $alias
+     * @param null $indexBy
+     *
+     * @return QueryBuilder
+     */
+    public function createQB($alias, $indexBy = null){% if strict %}:QueryBuilder{% endif %}
+
+    {
+        /** @var QueryBuilder $qb */
+        return $this->getEm()->createQueryBuilder($alias, $indexBy);
+    }

@@ -1,5 +1,6 @@
 <?php
 namespace MjrOne\CodeGeneratorBundle\DependencyInjection;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,48 +20,12 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->root('mjr_one_code_generator');
         $rootNode
             ->children()
                 ->scalarNode('entity_interface_class')
                     ->defaultValue('\MjrOne\CodeGeneratorInterfaces\EntityInterface')
-                ->end()
-                ->arrayNode('router')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('bundles')
-                            ->defaultValue('config/routing.yml')
-                        ->end()
-                        ->scalarNode('development')
-                            ->defaultValue('config/routing_dev.yml')
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('user')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('enabled')
-                            ->defaultFalse()
-                        ->end()
-                        ->scalarNode('factory_class')
-                            ->defaultValue('\MJR\UserBundle\Services\CurrentUserFactory')
-                        ->end()
-                        ->scalarNode('factory_class_short')
-                            ->defaultNull()
-                        ->end()
-                        ->scalarNode('factory_service')
-                            ->defaultValue('@mjr.user_bundle.services.current_user_factory')
-                        ->end()
-                        ->scalarNode('repository_service')
-                            ->defaultValue('@mjr.user_bundle.repository.user_repository')
-                        ->end()
-                        ->scalarNode('entity')
-                            ->defaultValue('MJR\UserBundle\Entity\User')
-                        ->end()
-                        ->scalarNode('entity_short')
-                            ->defaultNull()
-                        ->end()
-                    ->end()
                 ->end()
                 ->arrayNode('cache')
                     ->addDefaultsIfNotSet()
@@ -106,7 +71,57 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue('Symfony\Component\HttpKernel\KernelInterface')
                         ->end()
                     ->end()
+                ->end();
+        $this->addRouterNodeConfiguration($rootNode);
+        $this->addFileDefinitions($rootNode);
+        $this->addUserDefinitions($rootNode);
+        return $treeBuilder;
+    }
+
+    /**
+     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode
+     */
+    public function addUserDefinitions(ArrayNodeDefinition $rootNode):void
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('user')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')
+                            ->defaultFalse()
+                        ->end()
+                        ->scalarNode('factory_class')
+                            ->defaultValue('\MJR\UserBundle\Services\CurrentUserFactory')
+                        ->end()
+                        ->scalarNode('factory_class_short')
+                            ->defaultNull()
+                        ->end()
+                        ->scalarNode('factory_service')
+                            ->defaultValue('@mjr.user_bundle.services.current_user_factory')
+                        ->end()
+                        ->scalarNode('repository_service')
+                            ->defaultValue('@mjr.user_bundle.repository.user_repository')
+                        ->end()
+                        ->scalarNode('entity')
+                            ->defaultValue('MJR\UserBundle\Entity\User')
+                        ->end()
+                        ->scalarNode('entity_short')
+                            ->defaultNull()
+                        ->end()
+                    ->end()
                 ->end()
+            ->end();
+    }
+
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    public function addFileDefinitions(ArrayNodeDefinition $rootNode):void
+    {
+        $rootNode
+            ->children()
                 ->arrayNode('file_properties')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -142,8 +157,94 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                ->end();
+                ->end()
+            ->end();
+    }
 
-        return $treeBuilder;
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    public function addRouterNodeConfiguration(ArrayNodeDefinition $rootNode):void
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('router')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('bundles')
+                        ->defaultValue('config/routing.yml')
+                    ->end()
+                    ->scalarNode('development')
+                        ->defaultValue('config/routing_dev.yml')
+                    ->end()
+                    ->arrayNode('BaseRoutes')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('production')
+                                ->defaultValue([])
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('name')
+                                            ->cannotBeEmpty()
+                                        ->end()
+                                        ->scalarNode('resource')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->scalarNode('prefix')
+                                            ->defaultNull()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('development')
+                                ->defaultValue(
+                                   [
+                                       [
+                                            'name'=>'_development_wdt',
+                                            'resource'=>'@WebProfilerBundle/Resources/config/routing/wdt.xml',
+                                            'prefix'=>'/_wdt'
+                                       ],
+                                       [
+                                           'name'=>'_development_profiler',
+                                           'resource'=>'@WebProfilerBundle/Resources/config/routing/profiler.xml',
+                                           'prefix'=>'/_profiler',
+                                       ],
+                                       [
+                                           'name'=>'_development_errors',
+                                           'resource'=>'@TwigBundle/Resources/config/routing/errors.xml',
+                                           'prefix'=>'/_error',
+                                       ],
+                                       [
+                                           'name'=>'_master',
+                                           'resource'=>'routing.yml',
+                                       ],
+                                    ]
+                                )
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('name')
+                                            ->cannotBeEmpty()
+                                        ->end()
+                                        ->scalarNode('resource')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->scalarNode('prefix')
+                                            ->defaultNull()
+                                        ->end()
+                                        ->scalarNode('type')
+                                            ->defaultValue('annotation')
+                                        ->end()
+                                        ->scalarNode('host')
+                                            ->defaultNull()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
     }
 }

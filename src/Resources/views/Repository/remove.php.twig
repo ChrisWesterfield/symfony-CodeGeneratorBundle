@@ -1,0 +1,36 @@
+
+    /**
+     * remove entity
+     * flush is still required
+     *
+     * @param \{{ entityIface }} $entity
+     *
+     * @return {{ short }}
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     */
+    public function remove({{entityIface}} $entity){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->remove($entity);
+
+        return $this;
+    }
+
+    /**
+     * delete and flush entity
+     *
+     * @param \{{ entityIface }} $entity
+     *
+     * @return {{ short }}
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     */
+    public function delete({{entityIface}} $entity){% if strict %}: {{ short }}{% endif %}
+
+    {
+        $this->remove($entity);
+        $this->flush($entity);
+
+        return $this;
+    }

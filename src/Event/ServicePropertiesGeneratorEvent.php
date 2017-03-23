@@ -15,7 +15,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator;
+use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServicePropertiesGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 class ServicePropertiesGeneratorEvent extends Event
@@ -41,19 +41,19 @@ class ServicePropertiesGeneratorEvent extends Event
     protected $annotation;
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator
+     * @return \MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServicePropertiesGenerator
      */
-    public function getSubject(): \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator
+    public function getSubject(): \MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServicePropertiesGenerator
     {
         return $this->subject;
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator $subject
+     * @param \MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServicePropertiesGenerator $subject
      *
      * @return ServicePropertiesGeneratorEvent
      */
-    public function setSubject(\MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator $subject
+    public function setSubject(\MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServicePropertiesGenerator $subject
     ): ServicePropertiesGeneratorEvent
     {
         $this->subject = $subject;
