@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Services;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
+use MjrOne\CodeGeneratorBundle\Configuration\PhpUnit;
 use MjrOne\CodeGeneratorBundle\Event\ConfigurationEvent;
 use MjrOne\CodeGeneratorBundle\Configuration\AbstractConfig;
 use MjrOne\CodeGeneratorBundle\Configuration\Core;
@@ -61,6 +62,11 @@ class ConfiguratorService extends AbstractConfig
     protected $ed;
 
     /**
+     * @var PhpUnit
+     */
+    protected $phpUnit;
+
+    /**
      * ConfigurationService constructor.
      *
      * @param array $config
@@ -71,20 +77,28 @@ class ConfiguratorService extends AbstractConfig
         $event = (new ConfigurationEvent())->setSubject($this)->setConfig($config);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'prepare'), $event);
         $config = $event->getConfig();
+
         $this->router = new Router($config['router']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setRouter'), $event);
+
         $this->entityInterfaceClass = $config['entity_interface_class'];
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setEntityInterface'), $event);
+
         $this->user = new User($config['user']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setUser'), $event);
+
         $this->cache = new Service($config['cache']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setCache'), $event);
+
         $this->event = new Service($config['event']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setEvent'), $event);
+
         $this->fileProperties = new FileProperties($config['file_properties']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setFileProperties'), $event);
+
         $this->core = new Core($config['core']);
         $this->ed->dispatch($this->ed->getEventName(self::class, 'setCore'), $event);
+
         $this->ed->dispatch($this->ed->getEventName(self::class, 'finished'), $event);
     }
 
@@ -223,5 +237,13 @@ class ConfiguratorService extends AbstractConfig
     public function getEd(): EventDispatcherService
     {
         return $this->ed;
+    }
+
+    /**
+     * @return PhpUnit
+     */
+    public function getPhpUnit(): PhpUnit
+    {
+        return $this->phpUnit;
     }
 }
