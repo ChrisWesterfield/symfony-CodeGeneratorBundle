@@ -1,0 +1,29 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% set class="DefaultControllerTest" %}
+{% block generated %}{% endblock %}
+{% block namespace %}
+namespace {{ namespace }}\Tests\Controller;
+{% endblock %}
+
+{% block useSection %}
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+{% endblock %}
+
+{% block body %}
+{% block class_definition %}
+class {{ class }} extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+    public function testIndex()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/');
+
+        $this->assertContains('Hello World', $client->getResponse()->getContent());
+    }
+{% endblock class_body %}
+}
+{% endblock %}

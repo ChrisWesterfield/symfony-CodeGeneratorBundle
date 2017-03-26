@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
 namespace MjrOne\CodeGeneratorBundle\Command;
 
 use MjrOne\CodeGeneratorBundle\Services\CodeGeneratorInterface;
@@ -10,10 +11,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
- * Class CreateBundleCommand
- * @copyright Christopher Westerfield <chris@mjr.one>
- * @license LGPL V3
- * @link http://www.mjr.one
+ * Class GenerateRoutingCommand
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Command
+ * @package   MjrOne\CodeGeneratorBundle\Command\Helper
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  */
 class GenerateRoutingCommand extends ContainerAwareCommand
 {
@@ -38,7 +43,7 @@ class GenerateRoutingCommand extends ContainerAwareCommand
     {
         /** @var RouterService $service */
         $service = $this->getContainer()->get('mjrone.codegenerator.router')->setOutput($output);
-        $service->setCleanup($input->getArgument('cleanup')!==null);
+        $service->setCleanup($input->getArgument('cleanup') !== null);
         /** @var CodeGeneratorInterface $service */
         $service->setInput($input)->process();
     }

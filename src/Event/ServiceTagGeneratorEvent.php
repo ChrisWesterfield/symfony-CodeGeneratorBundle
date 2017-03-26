@@ -1,22 +1,21 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 19/03/2017
- * Time: 17:41
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServiceTagGenerator;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceTagGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ServiceTagGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class ServiceTagGeneratorEvent extends Event
 {
     /**

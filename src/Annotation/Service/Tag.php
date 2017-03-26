@@ -4,11 +4,12 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceTagGenerator as TagDriver;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceTagGenerator;
 
 /**
  * Class Tag
  * @package CodeGeneratorBundle\Annotation\Service
+ *
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
@@ -18,7 +19,7 @@ use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceTagGenerator as Ta
  */
 final class Tag extends AbstractAnnotation implements ClassInterface, ServiceInterface, SubDriverInterface
 {
-    const DRIVER = TagDriver::class;
+    const DRIVER = ServiceTagGenerator::class;
     /**
      * @var string
      */

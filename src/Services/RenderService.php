@@ -1,15 +1,5 @@
 <?php
 declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 15/03/2017
- * Time: 23:28
- */
 
 namespace MjrOne\CodeGeneratorBundle\Services;
 
@@ -21,6 +11,10 @@ use Twig_Environment;
  * Class RenderService
  *
  * @package MjrOne\CodeGeneratorBundle\Services
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  */
 class RenderService
 {

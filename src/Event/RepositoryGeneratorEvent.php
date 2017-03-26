@@ -1,23 +1,22 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 20/03/2017
- * Time: 00:26
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\RepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\RepositoryGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class RepositoryGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class RepositoryGeneratorEvent extends Event
 {
     /**

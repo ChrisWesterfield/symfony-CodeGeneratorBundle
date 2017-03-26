@@ -1,14 +1,12 @@
 services:
-    mjrone.codegenerator.createbundle:
-        class: MjrOne\CodeGeneratorBundle\Services\CreateBundleService
 
     mjrone.codegenerator.code.bundle:
-        class: MjrOne\CodeGeneratorBundle\Services\GeneratorService\BundleGeneratorService
+        class: MjrOne\CodeGeneratorBundle\CodeGenerators\BundleGeneratorService
         arguments:
             - '@mjrone.codegenerator.code.file'
 
     mjrone.codegenerator.code.file:
-        class: MjrOne\CodeGeneratorBundle\Services\GeneratorService\CodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\CodeGenerators\CodeGeneratorService
         arguments:
             - '@mjrone.codegenerator.annotation'
             - '@mjrone.codegenerator.configuration'
@@ -25,7 +23,7 @@ services:
             - '@mjrone.codegenerator.event'
 
     mjrone.codegenerator.configuration:
-        class: MjrOne\CodeGeneratorBundle\Services\ConfigurationService
+        class: MjrOne\CodeGeneratorBundle\Services\ConfiguratorService
         arguments:
             - '%mjrone.codegenerator.configuration%'
             - '@mjrone.codegenerator.event'
@@ -45,3 +43,78 @@ services:
         class: MjrOne\CodeGeneratorBundle\Services\EventDispatcherService
         arguments:
             - '@event_dispatcher'
+
+    mjrone.codegenerator.validatior.bundle:
+        class: MjrOne\CodeGeneratorBundle\Validator\BundleValidation
+
+    mjrone.codegenerator.generator.bundle:
+        class: MjrOne\CodeGeneratorBundle\Generator\BundleGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.generator:
+        class: MjrOne\CodeGeneratorBundle\Generator\Generator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.manipulator.kernel:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Kernel
+        arguments:
+            - '@kernel'
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.manipulator.router:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Router
+        arguments:
+            - '@mjrone.codegenerator.configuration'
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.manipulator.configuration:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Configuration
+        arguments:
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.command:
+        class: MjrOne\CodeGeneratorBundle\Generator\CommandGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+    mjrone.codegenerator.generator.controller:
+        class: MjrOne\CodeGeneratorBundle\Generator\ControllerGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.entity:
+        class: MjrOne\CodeGeneratorBundle\Generator\DoctrineEntityGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+            - '@doctrine'
+            - '@mjrone.codegenerator.event'
+
+    mjrone.codegenerator.generator.form:
+        class: MjrOne\CodeGeneratorBundle\Generator\DoctrineFormGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.event_listener.doctrineEntityGenerator:
+        class: MjrOne\CodeGeneratorBundle\EventListener\DoctrineEntityGeneratorEventListener
+        tags:
+            -
+                name: kernel.event_listener
+                event: mjrone.codegeneratorbundle.generator.doctrineentitygenerator.entity
+                method: onContentGenerationEvent
+            -
+                name: kernel.event_listener
+                event: mjrone.codegeneratorbundle.generator.doctrineentitygenerator.repository
+                method: onContentRepositoryGenerationEvent

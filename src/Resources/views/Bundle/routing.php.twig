@@ -1,0 +1,23 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% block generated %}{% endblock %}
+{% block namespace %}{% endblock %}
+{% block useSection %}
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Route;
+{% endblock %}
+
+{% block body %}
+{% block definition %}
+$collection = new RouteCollection();
+{% endblock definition %}
+
+{% block bodyRoute %}
+$collection->add('{{ extension_alias }}_homepage', new Route('/', array(
+    '_controller' => '{{ bundle }}:Default:index',
+)));
+{% endblock bodyRoute %}
+
+{% block return %}
+return $collection;
+{% endblock return %}
+{% endblock %}

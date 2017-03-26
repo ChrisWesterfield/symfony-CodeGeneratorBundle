@@ -1,27 +1,23 @@
 <?php
 declare(strict_types = 1);
-/**
- * Created by Christopher Westerfield
- * copyright by Christopher Westerfield
- * Date: 07/01/2017
- * Time: 15:36
- */
 namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\RoutingGenerator;
 
 /**
  * Class Router
  *
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * @package MjrOne\CodeGeneratorBundle\Annotation\ClassDefinition
  * @Annotation
  * @Target({"CLASS"})
  */
 final class Routing extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = RoutingGenerator::class;
 
     const TYPE_ANNOTATION = 'annotation';
     const TYPE_YML = 'yml';

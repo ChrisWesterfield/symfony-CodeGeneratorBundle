@@ -1,16 +1,10 @@
 <?php
 declare(strict_types = 1);
-/**
- * Created by Christopher Westerfield
- * copyright by Christopher Westerfield
- * Date: 24/12/2016
- * Time: 10:58
- */
 namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\MutatorGenerator;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\MutatorGenerator;
 
 /**
  * Class Mutator

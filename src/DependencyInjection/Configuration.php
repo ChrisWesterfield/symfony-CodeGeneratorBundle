@@ -6,11 +6,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Configuration
- * @copyright Christopher Westerfield <chris@mjr.one>
- * @license LGPL V3
- * @link http://www.mjr.one
- * @package CodeGeneratorBundle\DependencyInjection
+ * Class Configuration
+ *
+ * @package MjrOne\CodeGeneratorBundle\DependencyInjection
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  */
 class Configuration implements ConfigurationInterface
 {

@@ -1,0 +1,64 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set class="ConfigurationTest" %}
+
+{% block generated %}{% endblock %}
+
+{% block namespace %}
+namespace {{ namespace }}\Tests\DependencyInjection;
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+{% endblock %}
+
+{% block useSection %}
+use {{ namespace }}\DependencyInjection\Configuration;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+{% endblock %}
+
+
+{% block body %}
+{% block class_definition %}
+class {{ class }} extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+
+    /**
+     * @var Configuration
+     */
+    private $object;
+
+    /**
+     *
+     */
+    public function setUp()
+    {
+        $this->object = new Configuration();
+    }
+
+    /**
+     *
+     */
+    public function tearDown()
+    {
+        unset($this->object);
+    }
+
+    /**
+     *
+     */
+    public function testObjectCreated()
+    {
+        $this->assertInstanceOf(Configuration::class, $this->object);
+    }
+
+    /**
+     *
+     */
+    public function testGetConfigTreeBuilder()
+    {
+        $this->assertInstanceOf(TreeBuilder::class,$this->object->getConfigTreeBuilder());
+    }
+{% endblock %}
+}
+{% endblock %}

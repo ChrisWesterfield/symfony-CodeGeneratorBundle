@@ -1,0 +1,34 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set class=bundle ~ "Test" %}
+
+{% block generated %}{% endblock %}
+
+{% block namespace %}
+namespace {{ namespace }}\Tests;
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+{% endblock %}
+
+{% block useSection %}
+use {{ namespace }}\{{ bundle }};
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+{% endblock %}
+
+
+{% block body %}
+{% block class_definition %}
+class {{ class }} extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+    /**
+     *
+     */
+    public function testShowPost()
+    {
+        $this->assertInstanceOf({{ bundle }}::class,new {{ bundle }}());
+    }
+{% endblock %}
+}
+{% endblock %}

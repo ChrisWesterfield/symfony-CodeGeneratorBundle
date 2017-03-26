@@ -1,15 +1,6 @@
 <?php
 declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 13/03/2017
- * Time: 23:13
- */
+
 
 namespace MjrOne\CodeGeneratorBundle\Document;
 
@@ -24,6 +15,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Class Annotation
  *
  * @package MjrOne\CodeGeneratorBundle\Document
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  */
 class Annotation
 {

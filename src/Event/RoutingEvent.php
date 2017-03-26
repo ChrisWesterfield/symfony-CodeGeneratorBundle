@@ -1,15 +1,5 @@
 <?php
 declare(strict_types=1);
-/**
- * @author    Christopher Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 24/03/2017
- * Time: 00:12
- */
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
@@ -17,6 +7,15 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Services\RouterService;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class RoutingEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class RoutingEvent extends Event
 {
     /**

@@ -1,0 +1,68 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set class=bundle_basename ~ "ExtensionTest" %}
+
+{% block generated %}{% endblock %}
+
+{% block namespace %}
+namespace {{ namespace }}\Tests\DependencyInjection;
+{% endblock %}
+
+{% block useSection %}
+use {{ namespace }}\DependencyInjection\{{ bundle_basename }}Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+use \RuntimeException;
+{% endblock %}
+
+
+{% block body %}
+{% block class_definition %}
+class {{ class }} extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+    /**
+    * @var {{ bundle_basename }}Extension
+    */
+    private $object;
+
+    /**
+     *
+     */
+    public function setUp()
+    {
+        $this->object = new {{ bundle_basename }}Extension();
+    }
+
+    /**
+     *
+     */
+    public function tearDown()
+    {
+        unset($this->object);
+    }
+
+    /**
+     *
+        */
+    public function testObjectCreated()
+    {
+        $this->assertInstanceOf({{ bundle_basename }}Extension::class, $this->object);
+    }
+
+    /**
+    *
+    */
+    public function testLoad()
+    {
+        /** @var ContainerBuilder $container */
+        $container = $this->createMock(ContainerBuilder::class);
+        $this->expectException(RuntimeException::class);
+        $this->object->load([],$container);
+        $this->assertInstanceOf(ContainerBuilder::class,$container);
+    }
+{% endblock %}
+}
+{% endblock %}

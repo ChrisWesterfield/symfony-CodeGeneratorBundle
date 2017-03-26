@@ -1,0 +1,29 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% block generated %}{% endblock %}
+{% block namespace %}{% endblock %}
+
+{% block useSection %}
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Parameter;
+{% endblock %}
+
+{% block body %}
+/*
+
+{% block services %}
+$container->setDefinition(
+    '{{ extension_alias }}.example',
+    new Definition(
+        '{{ namespace }}\Example',
+        array(
+            new Reference('service_id'),
+            "plain_value",
+            new Parameter('parameter_name'),
+        )
+    )
+);
+{% endblock services %}
+
+*/
+{% endblock %}

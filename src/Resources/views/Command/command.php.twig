@@ -1,0 +1,52 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set class = class_name %}
+
+{% block namespace %}
+namespace {{ namespace }}\Command;
+{% endblock %}
+{% block generated %}{% endblock %}
+
+{% block useSection %}
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+{% endblock %}
+
+{% block body %}
+
+{% block class_definition %}
+class {{ class }} extends ContainerAwareCommand
+{% endblock class_definition %}
+{
+{% block class_body %}
+    /**
+     *
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('{{ name }}')
+            ->setDescription('...')
+            ->addArgument('argument', InputArgument::OPTIONAL, 'Argument description')
+            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $argument = $input->getArgument('argument');
+
+        if ($input->getOption('option'))
+        {
+            // ...
+        }
+
+        $output->writeln('Command result.');
+    }
+
+{% endblock class_body %}
+}
+
+{% endblock %}

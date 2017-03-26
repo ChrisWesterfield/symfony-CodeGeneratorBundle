@@ -1,15 +1,5 @@
 <?php
 declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Christopher Westerfield MJR.ONE
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 13/03/2017
- * Time: 21:28
- */
 
 namespace MjrOne\CodeGeneratorBundle\Services;
 
@@ -20,6 +10,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class RouterService
+ *
+ * @package MjrOne\CodeGeneratorBundle\Services
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class RouterService extends AbstractService implements CodeGeneratorInterface
 {
     /**
@@ -43,7 +42,7 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
     protected $cleanup=false;
 
     /**
-     * @var ConfigurationService
+     * @var ConfiguratorService
      */
     protected $configuration;
 
@@ -62,9 +61,9 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
      *
      * @param KernelInterface       $kernel
      * @param ReadAnnotationService $service
-     * @param ConfigurationService  $configuration
+     * @param ConfiguratorService   $configuration
      */
-    public function __construct(KernelInterface $kernel, ReadAnnotationService $service, ConfigurationService $configuration, EventDispatcherService $dispatcher)
+    public function __construct(KernelInterface $kernel, ReadAnnotationService $service, ConfiguratorService $configuration, EventDispatcherService $dispatcher)
     {
         $this->kernel = $kernel;
         $this->annotationService = $service;
@@ -205,6 +204,7 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
                         }
                         $rowSet = [
                             'resource' => $item['resource'],
+                            'type'=>$item['type'],
                         ];
                     break;
                     case CG\Routing::TYPE_XML:
@@ -214,6 +214,7 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
                         }
                         $rowSet = [
                             'resource' => $item['resource'],
+                            'type'=>$item['type'],
                         ];
                     break;
                     case CG\Routing::TYPE_YML:
@@ -223,6 +224,7 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
                         }
                         $rowSet = [
                             'resource' => $item['resource'],
+                            'type'=>$item['type'],
                         ];
                     break;
                 }
@@ -319,9 +321,9 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
     }
 
     /**
-     * @return ConfigurationService
+     * @return ConfiguratorService
      */
-    public function getConfiguration(): ConfigurationService
+    public function getConfiguration(): ConfiguratorService
     {
         return $this->configuration;
     }

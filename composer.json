@@ -1,6 +1,6 @@
 {
   "name": "mjr/code-generator-bundle",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "symfony-bundle",
   "description": "Code Generation based on twig",
   "keywords": [
@@ -28,7 +28,7 @@
     "symfony/property-info": "3.2.*",
     "phpdocumentor/reflection-docblock": "^3.0",
     "symfony/property-access": "3.2.*",
-    "mjr/cg-interfaces": "dev-master"
+    "mjr/cg-interfaces": "1.*"
   },
   "require-dev": {
   },

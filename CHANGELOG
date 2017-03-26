@@ -6,3 +6,10 @@ updated Composer File
 added Router Support
 Updated Readme file
 minor fixes
+1.2.0
+added Bundle Generator
+added Command Generator
+added Controller Generator
+added Doctrine Entities Generator
+several fixes
+Internal Structure Refactoring (moved Annotations and some of the Code Generator Classes)

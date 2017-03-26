@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\ServiceGenerator;
 
 /**
  * Service

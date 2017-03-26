@@ -5,8 +5,11 @@
  * Automatically created file
  * Changes will be overwritten on AutoGenerator Run!
  */
- {% endblock %}
+{% endblock %}
+
+{% block namespace %}
 {% if configuration.fileProperties.useNamespace == true %}namespace {{ namespace }};{% endif %}
+{% endblock %}
 
 {% block useSection %}
 {% endblock %}

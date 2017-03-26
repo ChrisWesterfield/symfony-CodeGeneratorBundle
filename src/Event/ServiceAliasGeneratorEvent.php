@@ -1,21 +1,21 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
+
+namespace MjrOne\CodeGeneratorBundle\Event;
+
+use MjrOne\CodeGeneratorBundle\Annotation as CG;
+use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceAliasGenerator;
+use Symfony\Component\EventDispatcher\Event;
+
 /**
+ * Class ServiceAliasGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 19/03/2017
- * Time: 17:41
  */
-
-namespace MjrOne\CodeGeneratorBundle\Event;
-use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorService\Driver\Service\ServiceAliasGenerator;
-use Symfony\Component\EventDispatcher\Event;
-
 class ServiceAliasGeneratorEvent extends Event
 {
     /**
