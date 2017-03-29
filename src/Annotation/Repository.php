@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\RepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\RepositoryGenerator;
 
 /**
  * Class Repository
@@ -12,6 +12,7 @@ use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\RepositoryGenerator;
  * @license LGPL V3
  * @link http://www.mjr.one
  * @package CodeGeneratorBundle\Annotation\ClassDefinition
+ * @author    Chris Westerfield <chris@mjr.one>
  * @Annotation
  * @Target({"CLASS"})
  */

@@ -4,12 +4,13 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\ServiceGenerator;
 
 /**
  * Service
  * Defines the master Properties for Services
  * @package CodeGeneratorBundle\Annotation\Service
+ * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one

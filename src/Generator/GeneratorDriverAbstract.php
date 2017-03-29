@@ -21,7 +21,7 @@ use Twig_Environment;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-abstract class GeneratorAbstract implements GeneratorInterface
+abstract class GeneratorDriverAbstract implements GeneratorDriverInterface
 {
     const REGEX_ROUTER_PREFIX1 = '/{(.*?)}/';
     const REGEX_ROUTER_PREFIX2 = '/_+/';
@@ -142,9 +142,9 @@ abstract class GeneratorAbstract implements GeneratorInterface
      * @param     $target
      * @param int $mode
      *
-     * @return GeneratorInterface
+     * @return GeneratorDriverInterface
      */
-    public function mkdir($target, $mode = 0777): GeneratorInterface
+    public function mkdir($target, $mode = 0777): GeneratorDriverInterface
     {
         if (!$this->fileSystem->exists($target))
         {

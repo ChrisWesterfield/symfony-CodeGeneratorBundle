@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Command\Helper\GeneratorCommandAbstract;
 use MjrOne\CodeGeneratorBundle\Command\Helper\QuestionHelper;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -489,10 +489,10 @@ class GenerateControllerCommand extends GeneratorCommandAbstract
     }
 
     /**
-     * @return GeneratorInterface
+     * @return GeneratorDriverInterface
      * @throws \LogicException
      */
-    protected function createGenerator(): GeneratorInterface
+    protected function createGenerator(): GeneratorDriverInterface
     {
         return $this->getContainer()->get('mjrone.codegenerator.generator.controller');
     }

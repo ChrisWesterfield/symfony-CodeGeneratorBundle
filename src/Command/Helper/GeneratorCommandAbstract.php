@@ -17,7 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 use InvalidArgumentException;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Generator\Generator;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -49,16 +49,16 @@ abstract class GeneratorCommandAbstract extends ContainerAwareCommand
     }
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface
+     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface
      */
-    abstract protected function createGenerator(): GeneratorInterface;
+    abstract protected function createGenerator(): GeneratorDriverInterface;
 
     /**
      * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface|null $bundle
      *
-     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface
+     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface
      */
-    protected function getGenerator(BundleInterface $bundle = null): GeneratorInterface
+    protected function getGenerator(BundleInterface $bundle = null): GeneratorDriverInterface
     {
         if (null === $this->generator)
         {

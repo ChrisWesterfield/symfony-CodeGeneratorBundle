@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Command;
 use MjrOne\CodeGeneratorBundle\Command\Helper\GeneratorCommandAbstract;
 use MjrOne\CodeGeneratorBundle\Document\Bundle;
 use MjrOne\CodeGeneratorBundle\Generator\BundleGenerator;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use MjrOne\CodeGeneratorBundle\Services\CreateBundleService;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -659,10 +659,10 @@ class GenerateBundleCommand extends GeneratorCommandAbstract
     }
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface
+     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface
      * @throws \LogicException
      */
-    protected function createGenerator(): GeneratorInterface
+    protected function createGenerator(): GeneratorDriverInterface
     {
         return $this->getContainer()->get('mjrone.codegenerator.generator.bundle');
     }

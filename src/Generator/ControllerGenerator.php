@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ControllerGenerator extends GeneratorAbstract
+class ControllerGenerator extends GeneratorDriverAbstract
 {
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Controller:';
     /** @noinspection MoreThanThreeArgumentsInspection */

@@ -6,7 +6,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceInjectionGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceInjectionGenerator;
 
 /**
  * Class Service
@@ -15,6 +15,7 @@ use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceInjectionGen
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license   LGPL V3
  * @link      http://www.mjr.one
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package   CodeGeneratorBundle\Annotation\SubDriverInterface
  * @Annotation
  * @Target({"CLASS"})

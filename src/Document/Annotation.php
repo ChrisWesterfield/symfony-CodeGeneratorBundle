@@ -74,6 +74,11 @@ class Annotation
     protected $eventDispatcher;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $methodAnnotations;
+
+    /**
      * Annotation constructor.
      */
     public function __construct(EventDispatcherService $eventDispatcher)
@@ -281,5 +286,18 @@ class Annotation
     public function getEventDispatcher(): EventDispatcherService
     {
         return $this->eventDispatcher;
+    }
+
+    protected function processMethodAnnotations()
+    {
+
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMethodAnnotations(): ArrayCollection
+    {
+        return $this->methodAnnotations;
     }
 }

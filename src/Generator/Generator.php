@@ -15,7 +15,7 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Generator extends GeneratorAbstract
+class Generator extends GeneratorDriverAbstract
 {
 
 }

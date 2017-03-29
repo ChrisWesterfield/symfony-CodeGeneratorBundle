@@ -5,6 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 /**
  * AbstractAnnotation
  * @package CodeGeneratorBundle\Annotation
+ * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one

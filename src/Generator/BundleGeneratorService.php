@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Command\GenerateCodeCommand;
@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * Class BundleGeneratorService
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators
+ * @package   MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE

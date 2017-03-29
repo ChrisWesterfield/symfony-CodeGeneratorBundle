@@ -31,7 +31,7 @@ use Twig_Environment;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class DoctrineEntityGenerator extends GeneratorAbstract
+class DoctrineEntityGenerator extends GeneratorDriverAbstract
 {
     /**
      * @var RegistryInterface

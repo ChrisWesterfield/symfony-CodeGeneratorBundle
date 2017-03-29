@@ -1,29 +1,33 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\EntityRepositoryGeneratorEvent;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 
 /**
  * Class EntityRepositoryGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class EntityRepositoryGenerator extends GeneratorAbstract implements GeneratorInterface
+class EntityRepositoryGenerator extends GeneratorAbstract implements GeneratorDriverInterface
 {
     const REPOSITORY_POSTFIX = 'Repository';
     const REPOSITORY_DIRECTORY = 'Repository';
     const FILE_EXTENSION = '.php';
 
-    public function process()
+    /**
+     * @return void
+     */
+    public function process():void
     {
         /** @var CG\Entity $workingAnnotation */
         $workingAnnotation = $this->getAnnotation();

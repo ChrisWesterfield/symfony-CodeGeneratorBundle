@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
@@ -10,8 +10,9 @@ use MjrOne\CodeGeneratorBundle\Document\Annotation;
 use MjrOne\CodeGeneratorBundle\Event\AddToListEvent;
 use MjrOne\CodeGeneratorBundle\Event\GeneratorAbstractGetBasicsPostEvent;
 use MjrOne\CodeGeneratorBundle\Event\GeneratorAbstractWriteToDiskEvent;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\CodeGeneratorService;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
 use MjrOne\CodeGeneratorBundle\Services\RenderService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -20,13 +21,13 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class GeneratorAbstract
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-abstract class GeneratorAbstract implements GeneratorInterface
+abstract class GeneratorAbstract implements GeneratorDriverInterface
 {
     CONST BUNDLE_DETECTION_NAME          = 'Bundle';
     CONST NAMESPACE_DIRECTORY_FOR_TRAITS = 'Traits/CodeGenerator';

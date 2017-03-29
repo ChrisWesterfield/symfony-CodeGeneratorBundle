@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,29 +19,29 @@ use Symfony\Component\EventDispatcher\Event;
 class EventAbstract extends Event
 {
     /**
-     * @var GeneratorInterface
+     * @var GeneratorDriverInterface
      */
     protected $subject;
 
-    public function __construct(GeneratorInterface $generator)
+    public function __construct(GeneratorDriverInterface $generator)
     {
         $this->subject = $generator;
     }
 
     /**
-     * @return GeneratorInterface
+     * @return GeneratorDriverInterface
      */
-    public function getSubject(): GeneratorInterface
+    public function getSubject(): GeneratorDriverInterface
     {
         return $this->subject;
     }
 
     /**
-     * @param GeneratorInterface $subject
+     * @param GeneratorDriverInterface $subject
      *
      * @return EventAbstract
      */
-    public function setSubject(GeneratorInterface $subject): EventAbstract
+    public function setSubject(GeneratorDriverInterface $subject): EventAbstract
     {
         $this->subject = $subject;
 

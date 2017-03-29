@@ -6,6 +6,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\PropertyInterface;
 
 /**
  * Class Mutator
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package CodeGeneratorBundle\Annotation\PropertyDefinition
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3

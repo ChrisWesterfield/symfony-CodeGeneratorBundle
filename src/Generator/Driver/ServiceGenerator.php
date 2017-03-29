@@ -1,27 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Service\Variable;
 use MjrOne\CodeGeneratorBundle\Event\ServiceGeneratorEvent;
 use MjrOne\CodeGeneratorBundle\Event\ServiceGeneratorUpdateDocumentAnnotationEvent;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServicePropertiesGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ServiceGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ServiceGenerator extends GeneratorAbstract
+class ServiceGenerator extends GeneratorAbstract implements GeneratorDriverInterface
 {
     const TEMPLATE  = 'MjrOneCodeGeneratorBundle:Service:base.php.twig';
     const TRAITNAME = 'TraitService';

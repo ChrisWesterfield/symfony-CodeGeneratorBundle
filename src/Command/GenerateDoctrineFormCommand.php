@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Command;
 
 use MjrOne\CodeGeneratorBundle\Command\Helper\GeneratorCommandAbstract;
 use MjrOne\CodeGeneratorBundle\Generator\DoctrineFormGenerator;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -126,10 +126,10 @@ class GenerateDoctrineFormCommand extends GeneratorCommandAbstract
     }
 
         /**
-     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface
+     * @return \MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface
      * @throws \LogicException
      */
-    protected function createGenerator():GeneratorInterface
+    protected function createGenerator():GeneratorDriverInterface
     {
         return $this->getContainer()->get('mjrone.codegenerator.generator.form');
     }

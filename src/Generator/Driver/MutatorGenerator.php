@@ -1,23 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Document\Property;
 use MjrOne\CodeGeneratorBundle\Event\MutatorGeneratorEvent;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
  * Class MutatorGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class MutatorGenerator extends GeneratorAbstract implements GeneratorInterface
+class MutatorGenerator extends GeneratorAbstract implements GeneratorDriverInterface
 {
     const TEMPLATE  = 'MjrOneCodeGeneratorBundle:Mutator:base.php.twig';
     const TRAITNAME = 'TraitMutator';
@@ -55,7 +56,7 @@ class MutatorGenerator extends GeneratorAbstract implements GeneratorInterface
     /**
      * @return bool
      */
-    public function process()
+    public function process():void
     {
         /** @var MutatorGeneratorEvent $event */
         $event = (new MutatorGeneratorEvent($this))->setSubject($this);
@@ -197,8 +198,6 @@ class MutatorGenerator extends GeneratorAbstract implements GeneratorInterface
             $this->getED()->dispatch($this->getED()->getEventName(self::class, 'process.postStorage'), $event);
             $this->checkFileForTrait($templateVars);
         }
-
-        return true;
     }
 
 }

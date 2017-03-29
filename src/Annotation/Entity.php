@@ -4,13 +4,14 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\EntityRepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\EntityRepositoryGenerator;
 
 
 /**
  * Class Entity
  * @package MjrOne\CodeGeneratorBundle\Annotation\Mutator
  * @copyright Christopher Westerfield <chris@mjr.one>
+ * @author    Chris Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
  * @Annotation

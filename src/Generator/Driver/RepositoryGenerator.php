@@ -1,24 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\RepositoryGeneratorEvent;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class RepositoryGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\CodeGenerators\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class RepositoryGenerator extends GeneratorAbstract implements GeneratorInterface
+class RepositoryGenerator extends GeneratorAbstract implements GeneratorDriverInterface
 {
     const TRAIT_NAME            = 'TraitRepository';
     const NAMESPACE_REPOSITORY  = '\\Repository\\';

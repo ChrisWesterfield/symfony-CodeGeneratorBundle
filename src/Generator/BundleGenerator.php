@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class BundleGenerator extends GeneratorAbstract
+class BundleGenerator extends GeneratorDriverAbstract
 {
 
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Bundle:';

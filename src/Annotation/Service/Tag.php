@@ -4,13 +4,14 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service\ServiceTagGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceTagGenerator;
 
 /**
  * Class Tag
  * @package CodeGeneratorBundle\Annotation\Service
  *
  * @copyright Christopher Westerfield <chris@mjr.one>
+ * @author    Chris Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
  * @package codegenerator\Annotation

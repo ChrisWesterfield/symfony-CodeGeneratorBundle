@@ -1,16 +1,16 @@
 <?php
 declare(strict_types = 1);
 
-namespace MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service;
+namespace MjrOne\CodeGeneratorBundle\Generator\Driver\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\ServiceTagGeneratorEvent;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\SubDriverInterface;
 
 /**
  * Class ServiceTagGenerator
  *
- * @package MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\Service
+ * @package MjrOne\CodeGeneratorBundle\Generator\Driver\Service
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE

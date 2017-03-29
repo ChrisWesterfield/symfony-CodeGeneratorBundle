@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\MutatorGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\MutatorGenerator;
 
 /**
  * Class Mutator
@@ -12,6 +12,7 @@ use MjrOne\CodeGeneratorBundle\CodeGenerators\Driver\MutatorGenerator;
  * @license LGPL V3
  * @link http://www.mjr.one
  * @package MjrOne\CodeGeneratorBundle\Annotation\Mutator
+ * @author    Chris Westerfield <chris@mjr.one>
  * @Annotation
  * @Target({"CLASS"})
  */

@@ -1,12 +1,12 @@
 services:
 
     mjrone.codegenerator.code.bundle:
-        class: MjrOne\CodeGeneratorBundle\CodeGenerators\BundleGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\BundleGeneratorService
         arguments:
             - '@mjrone.codegenerator.code.file'
 
     mjrone.codegenerator.code.file:
-        class: MjrOne\CodeGeneratorBundle\CodeGenerators\CodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService
         arguments:
             - '@mjrone.codegenerator.annotation'
             - '@mjrone.codegenerator.configuration'
@@ -118,3 +118,10 @@ services:
                 name: kernel.event_listener
                 event: mjrone.codegeneratorbundle.generator.doctrineentitygenerator.repository
                 method: onContentRepositoryGenerationEvent
+
+    mjrone.codegenerator.generator.unit_test:
+        class: MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
