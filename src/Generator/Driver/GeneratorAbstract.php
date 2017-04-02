@@ -29,9 +29,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class GeneratorAbstract implements GeneratorDriverInterface
 {
-    CONST BUNDLE_DETECTION_NAME          = 'Bundle';
-    CONST NAMESPACE_DIRECTORY_FOR_TRAITS = 'Traits/CodeGenerator';
-    CONST FILE_EXTENSION                 = '.php';
+    const BUNDLE_DETECTION_NAME          = 'Bundle';
+    const NAMESPACE_DIRECTORY_FOR_TRAITS = 'Traits/CodeGenerator';
+    const FILE_EXTENSION                 = '.php';
     const SERVICE_FILE                   = 'Resources/config/services.yml';
     /**
      * @var string

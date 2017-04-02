@@ -6,6 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\GeneratorAbstract as CoreAbstractGenerator;
 
 /**
  * Class GeneratorAbstract
@@ -16,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @license LGPL V3
  * @link http://www.mjr.one
  */
-abstract class GeneratorAbstract
+abstract class GeneratorAbstract extends CoreAbstractGenerator
 {
     /**
      * @var ArrayCollection
@@ -26,6 +27,11 @@ abstract class GeneratorAbstract
      * @var array
      */
     protected $config;
+
+    /**
+     * @var
+     */
+    protected $renderedOutput;
 
     /**
      * @return ArrayCollection
@@ -64,6 +70,26 @@ abstract class GeneratorAbstract
     public function setConfig(array $config): GeneratorAbstract
     {
         $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRenderedOutput()
+    {
+        return $this->renderedOutput;
+    }
+
+    /**
+     * @param mixed $renderedOutput
+     *
+     * @return GeneratorAbstract
+     */
+    public function setRenderedOutput($renderedOutput)
+    {
+        $this->renderedOutput = $renderedOutput;
 
         return $this;
     }

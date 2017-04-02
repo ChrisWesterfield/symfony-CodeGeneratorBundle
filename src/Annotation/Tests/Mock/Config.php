@@ -17,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-final class Config implements CG\PropertyInterface
+final class Config extends CG\AbstractAnnotation implements CG\PropertyInterface
 {
     /**
      * @var bool
@@ -45,34 +45,9 @@ final class Config implements CG\PropertyInterface
     public $constructorParameters;
 
     /**
-     * @var
-     */
-    public $mockClassName;
-
-    /**
      * @var bool
      */
     public $autoload=true;
-
-    /**
-     * @return mixed
-     */
-    public function getMockClassName()
-    {
-        return $this->mockClassName;
-    }
-
-    /**
-     * @param mixed $mockClassName
-     *
-     * @return Config
-     */
-    public function setMockClassName($mockClassName)
-    {
-        $this->mockClassName = $mockClassName;
-
-        return $this;
-    }
 
     /**
      * @return bool

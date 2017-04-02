@@ -13,3 +13,12 @@ added Controller Generator
 added Doctrine Entities Generator
 several fixes
 Internal Structure Refactoring (moved Annotations and some of the Code Generator Classes)
+1.3.0
+initial phpunit generator annotation
+1.3.1
+modified phpunit anotation
+initial code generator
+1.3.2
+updated code generator for phpunit
+added converter for properties, files, constants
+@todo method generator

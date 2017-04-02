@@ -8,6 +8,8 @@
 
     /**
      * @param \{{ configuration.user.entity }} $user
+     * @CG\Generated()
+     *
      * @return User|bool
      */
     protected function initializeUser({{ configuration.user.entity }} $user)
@@ -23,6 +25,8 @@
     }
 
     /**
+     * @CG\Generated()
+     *
      * @return bool|\{{ configuration.user.entity }}
      */
     protected function getCurrentUser(){% if strict %}:{{ configuration.user.entity }}{% endif %}

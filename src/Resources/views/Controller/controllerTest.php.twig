@@ -9,6 +9,7 @@ namespace {{ namespace }}\Tests\Controller;
 {% block generated %}{% endblock %}
 
 {% block useSection %}
+{{ parent() }}
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 {% endblock %}
 

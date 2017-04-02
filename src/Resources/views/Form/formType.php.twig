@@ -9,6 +9,7 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 {% block generated %}{% endblock %}
 
 {% block useSection %}
+{{ parent() }}
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,6 +31,7 @@ class {{ form_class }} extends AbstractType
     {%- if fields|length > 0 %}
     /**
      * {@inheritdoc}
+     * @CG\Generated()
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -50,6 +52,7 @@ class {{ form_class }} extends AbstractType
 
     /**
      * {@inheritdoc}
+     * @CG\Generated()
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -62,6 +65,7 @@ class {{ form_class }} extends AbstractType
 
     /**
      * {@inheritdoc}
+     * @CG\Generated()
      */
     public function getBlockPrefix()
     {
@@ -72,6 +76,7 @@ class {{ form_class }} extends AbstractType
     {%- if get_name_required %}
         /**
          * {@inheritdoc}
+         * @CG\Generated()
          */
         public function getName()
         {

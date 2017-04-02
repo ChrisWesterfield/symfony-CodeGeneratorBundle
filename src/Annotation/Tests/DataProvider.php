@@ -18,7 +18,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\DataProviderGenerator;
  * @Annotation
  * @Target({"CLASS","ANNOTATION"})
  */
-final class DataProvider implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
+final class DataProvider extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
     const DRIVER = DataProviderGenerator::class;
     /**

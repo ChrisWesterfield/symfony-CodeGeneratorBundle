@@ -3,6 +3,7 @@
      * Optional Setter
     {% for item in entry.optional %}     * @param {% if item.type is not empty %}{{ item.type }}{% endif %} $variable{{ item.name }}
     {% endfor %}
+     * @CG\Generated()
      *
      * @return $this
      */

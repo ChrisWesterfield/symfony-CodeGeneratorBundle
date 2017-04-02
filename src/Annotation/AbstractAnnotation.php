@@ -16,8 +16,9 @@ abstract class AbstractAnnotation
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray():array
     {
-        return (array)$this;
+        $json = json_encode($this);
+        return json_decode($json,true);
     }
 }

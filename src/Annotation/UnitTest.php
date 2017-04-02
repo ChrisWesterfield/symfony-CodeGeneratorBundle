@@ -6,6 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class UnitTest
@@ -17,7 +18,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService;
  * @Annotation
  * @Target({"CLASS"})
  */
-final class UnitTest implements ClassInterface, DriverInterface
+final class UnitTest extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
     const DRIVER = PhpUnitCodeGeneratorService::class;
     /**
@@ -31,6 +32,11 @@ final class UnitTest implements ClassInterface, DriverInterface
     public $name;
 
     /**
+     * @var string
+     */
+    public $extends = TestCase::class;
+
+    /**
      * @var array<\MjrOne\CodeGeneratorBundle\Annotation\Tests\MockObject>
      */
     public $mocks;
@@ -41,7 +47,7 @@ final class UnitTest implements ClassInterface, DriverInterface
     public $vfs;
 
     /**
-     * @var array<\MjrOne\CodeGeneratorBundle\Annotation\Tests\FunctionDefinition>
+     * @var array<\MjrOne\CodeGeneratorBundle\Annotation\Tests\TestFunction>
      */
     public $functions;
 

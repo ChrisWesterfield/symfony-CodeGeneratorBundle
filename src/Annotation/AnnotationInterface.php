@@ -15,5 +15,8 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
  */
 interface AnnotationInterface
 {
-
+    /**
+     * @return array
+     */
+    public function toArray():array;
 }

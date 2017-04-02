@@ -16,9 +16,9 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\FunctionGenerator;
  * @license LGPL V3
  * @link http://www.mjr.one
  * @Annotation
- * @Target({"CLASS","ANNOTATION", "METHODS"})
+ * @Target({"CLASS","ANNOTATION", "METHOD"})
  */
-final class FunctionDefinition implements CG\SubDriverInterface, CG\ClassInterface, CG\MethodInterface
+final class TestFunction extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\MethodInterface
 {
     const DRIVER = FunctionGenerator::class;
     /**
@@ -29,7 +29,37 @@ final class FunctionDefinition implements CG\SubDriverInterface, CG\ClassInterfa
     /**
      * @var string
      */
-    public $testName;
+    public $name;
+
+    /**
+     * @var string
+     */
+    public $dataProvider;
+
+    /**
+     * @var string
+     */
+    public $depends;
+
+    /**
+     * @return string
+     */
+    public function getDataProvider(): string
+    {
+        return $this->dataProvider;
+    }
+
+    /**
+     * @param string $dataProvider
+     *
+     * @return TestFunction
+     */
+    public function setDataProvider(string $dataProvider): TestFunction
+    {
+        $this->dataProvider = $dataProvider;
+
+        return $this;
+    }
 
     /**
      * @return bool
@@ -42,9 +72,9 @@ final class FunctionDefinition implements CG\SubDriverInterface, CG\ClassInterfa
     /**
      * @param bool $ignore
      *
-     * @return FunctionDefinition
+     * @return TestFunction
      */
-    public function setIgnore(bool $ignore): FunctionDefinition
+    public function setIgnore(bool $ignore): TestFunction
     {
         $this->ignore = $ignore;
 
@@ -54,19 +84,19 @@ final class FunctionDefinition implements CG\SubDriverInterface, CG\ClassInterfa
     /**
      * @return string
      */
-    public function getTestName(): string
+    public function getName(): string
     {
-        return $this->testName;
+        return $this->name;
     }
 
     /**
-     * @param string $testName
+     * @param string $name
      *
-     * @return FunctionDefinition
+     * @return TestFunction
      */
-    public function setTestName(string $testName): FunctionDefinition
+    public function setName(string $name): TestFunction
     {
-        $this->testName = $testName;
+        $this->name = $name;
 
         return $this;
     }

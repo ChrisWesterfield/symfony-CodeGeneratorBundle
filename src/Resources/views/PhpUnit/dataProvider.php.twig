@@ -1,0 +1,19 @@
+
+    /**
+     * Provider {{ methodName }}
+     * @return array
+     **/
+    public function {{ methodName }}(){% if strict %}:array{% endif %}
+    {
+        /** @var TestCase $this */
+        return
+        [
+{% if data|length > 0 %}{% for row in data %}
+            [
+{% if row|length > 0 %}{% for id,value in row %}
+                "{{ id|raw }}" => {{ value|raw }},
+{% endfor %}{% endif %}
+            ],
+{% endfor %}{% endif %}
+        ];
+    }

@@ -1,0 +1,18 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% set strict=configuration.fileProperties.useStrictTypes %}
+{% block useSection %}
+{{ parent() }}
+use MjrOne\CodeGeneratorBundle\Annotation\Test as UT;
+use PHPUnit\Framework\TestCase;
+{% endblock %}
+
+{% block comment %}
+ * @CG\Generated()
+{% endblock %}
+
+{% block body %}
+    class {{ className }} extends {{ extensionClass }}
+    {
+
+    }
+{% endblock %}

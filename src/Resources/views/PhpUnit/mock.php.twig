@@ -1,0 +1,80 @@
+
+    /**
+     * Mock Creates an Instance of {{ mockObjectClassName }}
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMock{{ MethodName }}(){% if strict %}:PHPUnit_Framework_MockObject_MockObject{% endif %}
+    {
+        //Build Mock Object
+        /** @var TestCase $this */
+        /** @var PHPUnit_Framework_MockObject_MockObject $mock **/
+{% if trait == false and abstract == false %}
+        $mock = $this->getMockBuilder(\{{ mockObjectClassName }}::class)
+            {% if config.originalConstructor %}->enableOriginalConstructor{% else %}->disableOriginalConstructor{% endif %}()
+
+            {% if config.originalClone %}->enableOriginalClone{% else %}->disableOriginalClone{% endif %}()
+
+            {% if config.argumentCloning %}->enableArgumentCloning{% else %}->disableArgumentCloning{% endif %}()
+
+            {% if config.mockUnknowTypes %}->disallowMockingUnknownTypes{% else %}->allowMockingUnknownTypes{% endif %}()
+
+            {% if config.constructorParameters is not null %}->setConstructorArgs(
+                [
+                    {% for parameter in config.constructorParmaters %}{{ parameter }}{% if loop.last != true  %},{% endif %}{% endfor %}
+                ]
+            )
+            ->getMock();{% endif %}
+
+            {% if config.autoload %}->enableAutoload{% else %}->disableAutoload{% endif %}();
+{% elseif abstract == true %}
+        $mock = $this->getMockForAbstractClass(\{{ mockObjectClassName }}::class);
+{% else %}
+        $mock = $this->getMockForTrait(\{{ mockObjectClassName }}::class);
+{% endif %}
+
+{% if mapping is not null %}
+        //Add Mapping
+        $map = [
+{% for map in mapping %}
+            {{ map }}{% if loop.last != true %},{% endif %}
+{% endfor %}
+        ];
+{% endif %}
+{% if methods|length > 0 %}
+        //Add Methods
+{% for method in methods %}{% if method.ignore != true %}
+        $mock->method('{{ method.name }}')
+{% if method.will is not empty %}
+            ->will(
+                {% if method.will.value is not empty %}$this->returnValue({{ method.will.value|raw }}){% elseif method.will.self == true %}$this->returnSelf(){% elseif method.will.argument is not empty %}$this->returnArgument({{ method.will.value|raw }}){% elseif method.will.mapName is not empty %}$this->returnValueMap(${{ method.will.mapName|raw }}) {% elseif method.will.callBack is not empty %}$this->returnCallback({{ method.will.callBack|raw }}){% elseif method.will.consecutiveCalls is not empty %}$this->onConsecutiveCalls({% for call in method.will.consecutiveCalls %}{{ call|raw }}{% if loop.last != true %},{% endif %}{% endfor %}){% endif %}
+
+            )
+{% endif %}
+{% if method.with is not empty and method.with|length > 0 %}
+            ->with({% for mockWith in method.with %}
+
+{% if mockWith.greater is not empty %}{% set firstElement=true %}$this->greaterThan({{ mockWith.greater|raw }}){% endif %}{% if mockWith.greaterEquals is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->GreaterThanOrEquals({{ mockWith.greaterEquals|raw }}){% endif %}{% if mockWith.less is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->lessThan({{ mockWith.less|raw }}){% endif %}{% if mockWith.lessEquals is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->lessThanOrEquals({{ mockWith.lessEquals|raw }}){% endif %}{% if  mockWith.contains is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->contains({{ mockWith.contains|raw }}{% endif %}{% if  mockWith.classHasAttribute is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->classHasAttribute({{ mockWith.classHasAttribute|raw }}){% endif %}{% if mockWith.equals is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->equalTo({{ mockWith.equals|raw }}){% elseif  mockWith.equalsTo is not empty %}$this->equalTo({{ mockWith.equalsTo.value|raw }},{{ mockWith.equalsTo.delta|raw }},{{ mockWith.equalsTo.maxDepth|raw }}){% endif %}{% if  mockWith.arrayHasKey is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->arrayHasKey({{ mockWith.arrayHasKey|raw }}){% endif %}{% if  mockWith.instanceOf is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->isInstanceOf({{ mockWith.instanceOf|raw }}){% endif %}{% if  mockWith.type is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->isType({{ mockWith.type|raw }}){% endif %}{% if  mockWith.matchRegularExpression is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}{% set firstElement=true %}                $this->matchesRegularExpression({{ mockWith.matchRegularExpression|raw }}){% endif %}{% if  mockWith.stringContains is not empty %}{% if firstElement is defined and firstElement==true %},
+{% endif %}                {% set firstElement=true %}$this->stringContains({{ mockWith.stringContains.string|raw }},{% if mockWith.stringContains.case == true %}true{% else %}false{% endif %}){% endif %}{% if mockWith.anything == true %}{% if firstElement is defined and firstElement==true %},
+{% endif %}                $this->anything(){% endif %}
+
+            )
+{% endfor %}{% endif %}
+            {% if method.expects is not empty %}->expects({% if method.expects.once == true %}$this->once(){% elseif method.expects.any == true %}$this->any(){% elseif method.expects.never == true %}$this->never(){% elseif method.expects.atLeastOnce == true %}$this->atLeastOnce(){% elseif method.expects.exactly is not empty %}$this->exactly({{ method.expects.exactly|raw }}){% elseif method.expects.atIndex == true %}$this->atIndex({{ method.expects.atIndex|raw }}){% endif %})
+{% endif %}
+{% endif %}
+        ;
+{% endfor %}
+{% endif %}
+        return $mock;
+    }

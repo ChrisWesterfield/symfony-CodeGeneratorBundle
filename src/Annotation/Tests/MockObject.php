@@ -5,6 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Annotation\Tests\Mock\Config;
 use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\MockObjectGenerator;
 
 /**
@@ -18,7 +19,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\MockObjectGenerator;
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-final class MockObject implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
+final class MockObject extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
     const DRIVER = MockObjectGenerator::class;
     /**
@@ -35,6 +36,11 @@ final class MockObject implements CG\SubDriverInterface, CG\ClassInterface, CG\P
      * @var bool
      */
     public $trait = false;
+
+    /**
+     * @var string
+     */
+    public $class;
 
     /**
      * @var string
@@ -195,4 +201,25 @@ final class MockObject implements CG\SubDriverInterface, CG\ClassInterface, CG\P
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return MockObject
+     */
+    public function setClass(string $class): MockObject
+    {
+        $this->class = $class;
+
+        return $this;
+    }
+
 }

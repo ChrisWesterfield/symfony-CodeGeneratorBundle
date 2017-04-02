@@ -17,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-final class Will implements CG\PropertyInterface
+final class Will extends CG\AbstractAnnotation implements CG\PropertyInterface
 {
     /**
      * @var mixed

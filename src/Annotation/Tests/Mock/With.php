@@ -17,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-class With implements CG\PropertyInterface
+class With extends CG\AbstractAnnotation implements CG\PropertyInterface
 {
     /**
      * @var mixed
@@ -37,20 +37,50 @@ class With implements CG\PropertyInterface
     /**
      * @var float
      */
-    public $lower;
+    public $less;
 
     /**
      * @var float
      */
-    public $lowerEquals;
+    public $lessEquals;
 
     /**
      * @var mixed
      */
-    public $notEquals;
+    public $contains;
 
     /**
      * @var string
+     */
+    public $classHasAttribute;
+
+    /**
+     * @var \MjrOne\CodeGeneratorBundle\Annotation\Tests\Mock\With\StringContains
+     */
+    public $equalsTo;
+
+    /**
+     * @var string
+     */
+    public $arrayHasKey;
+
+    /**
+     * @var string
+     */
+    public $instanceOf;
+
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string
+     */
+    public $matchRegularExpression;
+
+    /**
+     * @var \MjrOne\CodeGeneratorBundle\Annotation\Tests\Mock\With\StringContains
      */
     public $stringContains;
 
@@ -60,14 +90,24 @@ class With implements CG\PropertyInterface
     public $anything=false;
 
     /**
-     * @var string
+     * @return bool
      */
-    public $callBack;
+    public function isAnything(): bool
+    {
+        return $this->anything;
+    }
 
     /**
-     * @var array
+     * @param bool $anything
+     *
+     * @return With
      */
-    public $consecutiveCalls;
+    public function setAnything(bool $anything): With
+    {
+        $this->anything = $anything;
+
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -79,10 +119,14 @@ class With implements CG\PropertyInterface
 
     /**
      * @param mixed $equals
+     *
+     * @return With
      */
     public function setEquals($equals)
     {
         $this->equals = $equals;
+
+        return $this;
     }
 
     /**
@@ -95,10 +139,14 @@ class With implements CG\PropertyInterface
 
     /**
      * @param float $greater
+     *
+     * @return With
      */
-    public function setGreater(float $greater)
+    public function setGreater(float $greater): With
     {
         $this->greater = $greater;
+
+        return $this;
     }
 
     /**
@@ -111,62 +159,198 @@ class With implements CG\PropertyInterface
 
     /**
      * @param float $greaterEquals
+     *
+     * @return With
      */
-    public function setGreaterEquals(float $greaterEquals)
+    public function setGreaterEquals(float $greaterEquals): With
     {
         $this->greaterEquals = $greaterEquals;
+
+        return $this;
     }
 
     /**
      * @return float
      */
-    public function getLower()
+    public function getLess()
     {
-        return $this->lower;
+        return $this->less;
     }
 
     /**
-     * @param float $lower
+     * @param float $less
+     *
+     * @return With
      */
-    public function setLower(float $lower)
+    public function setLess(float $less): With
     {
-        $this->lower = $lower;
+        $this->less = $less;
+
+        return $this;
     }
 
     /**
      * @return float
      */
-    public function getLowerEquals()
+    public function getLessEquals()
     {
-        return $this->lowerEquals;
+        return $this->lessEquals;
     }
 
     /**
-     * @param float $lowerEquals
+     * @param float $lessEquals
+     *
+     * @return With
      */
-    public function setLowerEquals(float $lowerEquals)
+    public function setLessEquals(float $lessEquals): With
     {
-        $this->lowerEquals = $lowerEquals;
+        $this->lessEquals = $lessEquals;
+
+        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getNotEquals()
+    public function getContains()
     {
-        return $this->notEquals;
+        return $this->contains;
     }
 
     /**
-     * @param mixed $notEquals
+     * @param mixed $contains
+     *
+     * @return With
      */
-    public function setNotEquals($notEquals)
+    public function setContains($contains)
     {
-        $this->notEquals = $notEquals;
+        $this->contains = $contains;
+
+        return $this;
     }
 
     /**
      * @return string
+     */
+    public function getClassHasAttribute()
+    {
+        return $this->classHasAttribute;
+    }
+
+    /**
+     * @param string $classHasAttribute
+     *
+     * @return With
+     */
+    public function setClassHasAttribute(string $classHasAttribute): With
+    {
+        $this->classHasAttribute = $classHasAttribute;
+
+        return $this;
+    }
+
+    /**
+     * @return With\StringContains
+     */
+    public function getEqualsTo(): With\StringContains
+    {
+        return $this->equalsTo;
+    }
+
+    /**
+     * @param With\StringContains $equalsTo
+     *
+     * @return With
+     */
+    public function setEqualsTo(With\StringContains $equalsTo): With
+    {
+        $this->equalsTo = $equalsTo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArrayHasKey()
+    {
+        return $this->arrayHasKey;
+    }
+
+    /**
+     * @param string $arrayHasKey
+     *
+     * @return With
+     */
+    public function setArrayHasKey(string $arrayHasKey): With
+    {
+        $this->arrayHasKey = $arrayHasKey;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstanceOf()
+    {
+        return $this->instanceOf;
+    }
+
+    /**
+     * @param string $instanceOf
+     *
+     * @return With
+     */
+    public function setInstanceOf(string $instanceOf): With
+    {
+        $this->instanceOf = $instanceOf;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return With
+     */
+    public function setType(string $type): With
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMatchRegularExpression()
+    {
+        return $this->matchRegularExpression;
+    }
+
+    /**
+     * @param string $matchRegularExpression
+     *
+     * @return With
+     */
+    public function setMatchRegularExpression(string $matchRegularExpression): With
+    {
+        $this->matchRegularExpression = $matchRegularExpression;
+
+        return $this;
+    }
+
+    /**
+     * @return With\StringContains
      */
     public function getStringContains()
     {
@@ -174,58 +358,16 @@ class With implements CG\PropertyInterface
     }
 
     /**
-     * @param string $stringContains
+     * @param With\StringContains $stringContains
+     *
+     * @return With
      */
-    public function setStringContains(string $stringContains)
+    public function setStringContains(
+        With\StringContains $stringContains
+    ): With
     {
         $this->stringContains = $stringContains;
-    }
 
-    /**
-     * @return bool
-     */
-    public function isAnything(): bool
-    {
-        return $this->anything;
-    }
-
-    /**
-     * @param bool $anything
-     */
-    public function setAnything(bool $anything)
-    {
-        $this->anything = $anything;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCallBack()
-    {
-        return $this->callBack;
-    }
-
-    /**
-     * @param string $callBack
-     */
-    public function setCallBack(string $callBack)
-    {
-        $this->callBack = $callBack;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConsecutiveCalls()
-    {
-        return $this->consecutiveCalls;
-    }
-
-    /**
-     * @param array $consecutiveCalls
-     */
-    public function setConsecutiveCalls(array $consecutiveCalls)
-    {
-        $this->consecutiveCalls = $consecutiveCalls;
+        return $this;
     }
 }

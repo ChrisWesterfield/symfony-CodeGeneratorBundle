@@ -3,6 +3,7 @@
      * Trait and {{ short }} Constructor
 {% if injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}
      * @param {{ item.class }} ${{ item.name }}
+     * @CG\Generated()
 
 {% endfor %}{% else %}
      * @param {{ injection.class }} ${{ injection.name }}

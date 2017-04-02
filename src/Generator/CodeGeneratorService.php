@@ -115,7 +115,7 @@ class CodeGeneratorService extends AbstractService implements CodeGeneratorInter
                     {
                         continue;
                     }
-                    /** @var CG\ClassInterface $instance */
+                    /** @var GeneratorDriverInterface $instance */
                     $instance = new $driver($this->file, $classAnnotation, $this);
                     $instance->process();
                 }

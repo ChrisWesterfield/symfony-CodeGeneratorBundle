@@ -5,6 +5,9 @@ namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Document\RenderedOutput;
+use MjrOne\CodeGeneratorBundle\Exception\NoContentException;
+use MjrOne\CodeGeneratorBundle\Exception\TypeNotAllowedException;
 use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 
 /**
@@ -16,14 +19,17 @@ use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
  * @license LGPL V3
  * @link http://www.mjr.one
  */
-class VirtualFileSystemGenerator extends GeneratorAbstract implements GeneratorDriverInterface
+class VirtualFileSystemGenerator extends GeneratorAbstract implements GeneratorDriverInterface, UnitTestInterface
 {
-
     /**
      * @return void
+     * @throws TypeNotAllowedException
+     * @throws NoContentException
      */
     public function process(): void
     {
-        // TODO: Implement process() method.
+        $templateVariables = $this->getAnnotation()->toArray();
+        $templateVariables['basicClass'] = $this->getTemplateVariables()->toArray();
+        $this->setRenderedOutput(new RenderedOutput(RenderedOutput::TYPE_SETUP,$this->getRenderer()->renderTemplate('MjrOneCodeGeneratorBundle:PhpUnit:vfs.php.twig',$templateVariables)));
     }
 }

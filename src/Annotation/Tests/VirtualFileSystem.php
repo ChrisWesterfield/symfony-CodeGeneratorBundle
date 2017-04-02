@@ -18,7 +18,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\VirtualFileSystemGenerat
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-final class VirtualFileSystem implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
+final class VirtualFileSystem extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
     const DRIVER = VirtualFileSystemGenerator::class;
     /**

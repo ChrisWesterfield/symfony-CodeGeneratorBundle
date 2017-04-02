@@ -4,6 +4,7 @@
 {% set entityIface=configuration.entityInterfaceClass %}
 
 {% block useSection %}
+{{ parent() }}
 use {{ usedBy }};
 {% if settings.softdelete == true %}
 use Doctrine\ORM\EntityRepository;

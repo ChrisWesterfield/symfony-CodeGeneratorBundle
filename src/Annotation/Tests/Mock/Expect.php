@@ -17,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @Annotation
  * @Target({"CLASS","ANNOTATION", "PROPERTY"})
  */
-final class Expect implements CG\PropertyInterface
+final class Expect extends CG\AbstractAnnotation implements CG\PropertyInterface
 {
     /**
      * @var bool

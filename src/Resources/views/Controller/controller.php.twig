@@ -9,6 +9,7 @@ namespace {{ namespace }}\Controller;
 {% block generated %}{% endblock %}
 
 {% block useSection %}
+{{ parent() }}
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 {% if 'annotation' == format.routing -%}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

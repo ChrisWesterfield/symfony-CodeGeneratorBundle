@@ -10,6 +10,7 @@
      * @param string $route         The name of the route
      * @param mixed  $parameters    An array of parameters
      * @param int    $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     * @CG\Generated()
      *
      * @return string The generated URL
      *
@@ -25,6 +26,7 @@
      *
      * @param string $url    The URL to redirect to
      * @param int    $status The status code to use for the Response
+     * @CG\Generated()
      *
      * @return RedirectResponse
      * @throws \InvalidArgumentException
@@ -40,6 +42,7 @@
      * @param string $route      The name of the route
      * @param array  $parameters An array of parameters
      * @param int    $status     The status code to use for the Response
+     * @CG\Generated()
      *
      * @return RedirectResponse
      * @throws \InvalidArgumentException
@@ -53,6 +56,8 @@
      * post redirect
      * @param $route
      * @param array $variables
+     * @CG\Generated()
+     *
      * @return RedirectResponse
      */
     protected function redirectPost($route,array $variables=[]){% if strict %}:RedirectResponse{% endif %}

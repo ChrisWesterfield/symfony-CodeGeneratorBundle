@@ -1,0 +1,12 @@
+
+    /**
+     * @param array $testData Default Value=null
+     * {% if dataProvider is not empty %}@dataProvider {{ providerPrefix }}{{ dataProvider }}{% endif %}
+
+     * {% if dataProvider is empty and depends is not empty %}@depends {{ depends }}Test{% endif %}
+     * @return void|array
+     **/
+    public function {{ name }}Test({% if dataProvider is empty and depends is not empty %}array $testData=null{% endif %})
+    {
+
+    }

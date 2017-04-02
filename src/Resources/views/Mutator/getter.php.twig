@@ -1,5 +1,7 @@
     /**
      * {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}
+     * @CG\Generated()
+     *
      * @return {% if configuration.type|length > 0 %}{% if configuration.arrayType is not null %}{{ configuration.arrayType }}[]{% else %}{{ configuration.type }}{% endif %}{% else %}mixed{% endif %}
 
      */
