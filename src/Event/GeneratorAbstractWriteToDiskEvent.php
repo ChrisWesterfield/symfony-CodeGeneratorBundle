@@ -1,26 +1,25 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 18/03/2017
- * Time: 01:14
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 
+/**
+ * Class GeneratorAbstractWriteToDiskEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class GeneratorAbstractWriteToDiskEvent extends EventAbstract
 {
     protected $content;
     protected $name;
     protected $path;
-    protected $createDirectory=true;
+    protected $createDirectory = true;
 
     /**
      * @return mixed

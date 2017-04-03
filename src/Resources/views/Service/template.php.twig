@@ -10,6 +10,8 @@
      * @param $view
      * @param array $parameters
      * @param Response|null $response
+     * @CG\Generated()
+     *
      * @return Response
      * @throws \UnexpectedValueException
      */
@@ -20,5 +22,6 @@
             $response = new Response();
         }
         $response->setContent($this->twig->render($view,$parameters));
+
         return $response;
     }

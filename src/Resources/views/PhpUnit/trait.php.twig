@@ -1,0 +1,33 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+{% set strict=configuration.fileProperties.useStrictTypes %}
+{% block useSection %}
+{{ parent() }}
+use MjrOne\CodeGeneratorBundle\Annotation\Test as UT;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\TestCase;
+use \PHPUnit_Framework_MockObject_MockObject;
+{% endblock %}
+
+{% block comment %}
+ * @CG\Generated()
+{% endblock %}
+
+{% block body %}
+trait {{ class }}
+{
+{% if setup|length > 0 %}
+    public function setUp()
+    {
+        /** @var TestCase $this */
+{% for row in setup %}
+        {{ row|raw }}
+    }
+{% endfor %}{% endif %}
+
+{% if methods|length > 0 %}{% for method in methods %}
+    {{ method|raw }}
+{% endfor %}{% endif %}
+
+}
+{% endblock %}

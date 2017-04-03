@@ -1,15 +1,5 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 13/03/2017
- * Time: 23:06
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Services;
 
@@ -31,7 +21,11 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Class ReadAnnotation
  *
- * @package MjrOne\CodeGeneratorBundle\Services
+ * @package   MjrOne\CodeGeneratorBundle\Services
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  */
 class ReadAnnotationService
 {
@@ -57,7 +51,7 @@ class ReadAnnotationService
     /**
      * ReadAnnotationService constructor.
      *
-     * @param \MjrOne\CodeGeneratorBundle\Services\EventDispatcherService $eventDispatcher
+     * @param EventDispatcherService $eventDispatcher
      */
     public function __construct(EventDispatcherService $eventDispatcher)
     {
@@ -79,27 +73,41 @@ class ReadAnnotationService
         $class = $this->getClassFormFile($file);
 
         /** @var ReadAnnotationServiceReflectionClassEvent $eventReflCl */
-        $eventReflCl = (new ReadAnnotationServiceReflectionClassEvent())->setReflectionClass(new \ReflectionClass($class))->setSubject($this);
+        $eventReflCl =
+            (new ReadAnnotationServiceReflectionClassEvent())->setReflectionClass(new \ReflectionClass($class))
+                                                             ->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'setReflection'), $eventReflCl);
         $annotations->setReflectionClass($eventReflCl->getReflectionClass());
 
         /** @var ReadAnnotationServiceClassAnnotationsEvent $eventAnnotation */
-        $eventAnnotation = (new ReadAnnotationServiceClassAnnotationsEvent())->setAnnotations($this->annotationReader->getClassAnnotations($annotations->getReflectionClass()))->setSubject($this);
+        $eventAnnotation = (new ReadAnnotationServiceClassAnnotationsEvent())->setAnnotations(
+            $this->annotationReader->getClassAnnotations($annotations->getReflectionClass())
+        )->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'setRawClassAnnotation'), $eventAnnotation);
         $annotations->setRawClassAnnotations($eventAnnotation->getAnnotations());
 
         /** @var ReadAnnotationServicePropertiesEvent $eventProperty */
-        $eventProperty = (new ReadAnnotationServicePropertiesEvent())->setProperties(new ArrayCollection($annotations->getReflectionClass()->getProperties()))->setSubject($this);
+        $eventProperty = (new ReadAnnotationServicePropertiesEvent())->setProperties(
+            new ArrayCollection($annotations->getReflectionClass()->getProperties())
+        )->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getProperties'), $eventProperty);
 
-        if($eventProperty->getProperties()->count()>0)
+        if ($eventProperty->getProperties()->count() > 0)
         {
-            foreach($eventProperty->getProperties() as $property)
+            foreach ($eventProperty->getProperties() as $property)
             {
                 /** @var ReadAnnotationServiceReflectionPropertyEvent $eventReflectionProperty */
-                $eventReflectionProperty = (new ReadAnnotationServiceReflectionPropertyEvent())->setReflectionProperty(new ReflectionProperty($property->getDeclaringClass()->getName(),$property->getName()))->setSubject($this);
-                $this->getED()->dispatch($this->getED()->getEventName(self::class, 'readPropertyReflection'), $eventReflectionProperty);
-                $annotations->addPropertyAnnotation($property->getName(),$this->annotationReader->getPropertyAnnotations($eventReflectionProperty->getReflectionProperty()),$eventReflectionProperty->getReflectionProperty());
+                $eventReflectionProperty = (new ReadAnnotationServiceReflectionPropertyEvent())->setReflectionProperty(
+                    new ReflectionProperty($property->getDeclaringClass()->getName(), $property->getName())
+                )->setSubject($this);
+                $this->getED()->dispatch(
+                    $this->getED()->getEventName(self::class, 'readPropertyReflection'), $eventReflectionProperty
+                );
+                $annotations->addPropertyAnnotation(
+                    $property->getName(), $this->annotationReader->getPropertyAnnotations(
+                    $eventReflectionProperty->getReflectionProperty()
+                ), $eventReflectionProperty->getReflectionProperty()
+                );
             }
         }
 
@@ -144,8 +152,12 @@ class ReadAnnotationService
         }
 
         /** @var ReadAnnotationServiceGetClassFromFileEvent $event */
-        $event = (new ReadAnnotationServiceGetClassFromFileEvent())->setNamespace($namespace)->setClass($class)->setSubject($this);
+        $event =
+            (new ReadAnnotationServiceGetClassFromFileEvent())->setNamespace($namespace)->setClass($class)->setSubject(
+                $this
+            );
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getClassFromFile'), $event);
+
         return $event->getNamespace() ? $event->getNamespace() . '\\' . $event->getClass() : $event->getClass();
 
     }
@@ -167,9 +179,9 @@ class ReadAnnotationService
     }
 
     /**
-     * @return \Doctrine\Common\Annotations\AnnotationReader
+     * @return AnnotationReader
      */
-    public function getAnnotationReader(): \Doctrine\Common\Annotations\AnnotationReader
+    public function getAnnotationReader(): AnnotationReader
     {
         return $this->annotationReader;
     }

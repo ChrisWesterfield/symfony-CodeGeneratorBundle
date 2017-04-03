@@ -2,6 +2,7 @@
 {% set strict=configuration.fileProperties.useStrictTypes %}
 
 {% block useSection %}
+{{ parent() }}
 {% if useList is defined and useList|length > 0 %}
 {% for name,element in useList %}
 {% if name!='loc' %}

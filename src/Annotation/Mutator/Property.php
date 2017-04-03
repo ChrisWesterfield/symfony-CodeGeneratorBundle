@@ -1,17 +1,12 @@
 <?php
 declare(strict_types = 1);
-/**
- * Created by Christopher Westerfield
- * copyright by Christopher Westerfield
- * Date: 24/12/2016
- * Time: 13:52
- */
 namespace MjrOne\CodeGeneratorBundle\Annotation\Mutator;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\PropertyInterface;
 
 /**
  * Class Mutator
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package CodeGeneratorBundle\Annotation\PropertyDefinition
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3

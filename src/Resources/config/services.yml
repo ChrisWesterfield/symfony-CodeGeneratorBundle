@@ -1,47 +1,127 @@
 services:
-    mjrone.codegenerator.createbundle:
-        class: MjrOne\CodeGeneratorBundle\Services\CreateBundleService
+
     mjrone.codegenerator.code.bundle:
-        class: MjrOne\CodeGeneratorBundle\Services\BundleGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\BundleGeneratorService
+        arguments:
+            - '@mjrone.codegenerator.code.file'
+
     mjrone.codegenerator.code.file:
-        class: MjrOne\CodeGeneratorBundle\Services\CodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService
         arguments:
             - '@mjrone.codegenerator.annotation'
             - '@mjrone.codegenerator.configuration'
             - '@mjrone.codegenerator.renderer'
             - '@kernel'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.router:
         class: MjrOne\CodeGeneratorBundle\Services\RouterService
+        arguments:
+            - '@kernel'
+            - '@mjrone.codegenerator.annotation'
+            - '@mjrone.codegenerator.configuration'
+            - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.configuration:
-        class: MjrOne\CodeGeneratorBundle\Services\ConfigurationService
+        class: MjrOne\CodeGeneratorBundle\Services\ConfiguratorService
         arguments:
             - '%mjrone.codegenerator.configuration%'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.annotation:
         class: MjrOne\CodeGeneratorBundle\Services\ReadAnnotationService
         arguments:
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.renderer:
         class: MjrOne\CodeGeneratorBundle\Services\RenderService
         arguments:
             - '@twig'
             - '@mjrone.codegenerator.event'
+
     mjrone.codegenerator.event:
         class: MjrOne\CodeGeneratorBundle\Services\EventDispatcherService
         arguments:
             - '@event_dispatcher'
-    mjr_one.code_generator_bundle.tests.service_test:
-        class: MjrOne\CodeGeneratorBundle\Tests\ServiceTest
+
+    mjrone.codegenerator.validatior.bundle:
+        class: MjrOne\CodeGeneratorBundle\Validator\BundleValidation
+
+    mjrone.codegenerator.generator.bundle:
+        class: MjrOne\CodeGeneratorBundle\Generator\BundleGenerator
         arguments:
             - '@twig'
-            - '@router'
-            - '@spectware.framework_bundle.services.cache_service'
-            - '@event_dispatcher'
-            - '@doctrine.orm.entity_manager'
-            - '@mjrone.codegenerator.renderer'
-            - '@mjrone.codegenerator.renderer'
-        lazy: false
-        public: true
-    test2:
-        alias: mjr_one.code_generator_bundle.tests.service_test
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.generator:
+        class: MjrOne\CodeGeneratorBundle\Generator\Generator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.manipulator.kernel:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Kernel
+        arguments:
+            - '@kernel'
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.manipulator.router:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Router
+        arguments:
+            - '@mjrone.codegenerator.configuration'
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.manipulator.configuration:
+        class: MjrOne\CodeGeneratorBundle\Generator\Manipulators\Configuration
+        arguments:
+            - '@mjrone.codegenerator.generator.generator'
+
+    mjrone.codegenerator.generator.command:
+        class: MjrOne\CodeGeneratorBundle\Generator\CommandGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+    mjrone.codegenerator.generator.controller:
+        class: MjrOne\CodeGeneratorBundle\Generator\ControllerGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.generator.entity:
+        class: MjrOne\CodeGeneratorBundle\Generator\DoctrineEntityGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+            - '@doctrine'
+            - '@mjrone.codegenerator.event'
+
+    mjrone.codegenerator.generator.form:
+        class: MjrOne\CodeGeneratorBundle\Generator\DoctrineFormGenerator
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'
+
+    mjrone.codegenerator.event_listener.doctrineEntityGenerator:
+        class: MjrOne\CodeGeneratorBundle\EventListener\DoctrineEntityGeneratorEventListener
+        tags:
+            -
+                name: kernel.event_listener
+                event: mjrone.codegeneratorbundle.generator.doctrineentitygenerator.entity
+                method: onContentGenerationEvent
+            -
+                name: kernel.event_listener
+                event: mjrone.codegeneratorbundle.generator.doctrineentitygenerator.repository
+                method: onContentRepositoryGenerationEvent
+
+    mjrone.codegenerator.generator.unit_test:
+        class: MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService
+        arguments:
+            - '@twig'
+            - '@mjrone.codegenerator.configuration'
+            - '@kernel'

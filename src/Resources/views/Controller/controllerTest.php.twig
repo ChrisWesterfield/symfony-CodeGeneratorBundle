@@ -1,0 +1,33 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set class = controller ~ "Controller" %}
+
+{% block namespace %}
+namespace {{ namespace }}\Tests\Controller;
+{% endblock %}
+
+{% block generated %}{% endblock %}
+
+{% block useSection %}
+{{ parent() }}
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+{% endblock %}
+
+{% block body %}
+{% block class_definition %}
+class {{ class }} extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+{% for action in actions %}
+    public function test{{ action.basename|capitalize }}()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '{{ action.route }}');
+    }
+
+{% endfor -%}
+{% endblock class_body %}
+}
+{% endblock %}

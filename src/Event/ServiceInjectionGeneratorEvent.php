@@ -1,23 +1,22 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 19/03/2017
- * Time: 18:24
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceInjectionGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceInjectionGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ServiceInjectionGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class ServiceInjectionGeneratorEvent extends Event
 {
     /**

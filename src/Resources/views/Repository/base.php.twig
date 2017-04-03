@@ -1,0 +1,40 @@
+{% extends "MjrOneCodeGeneratorBundle::base.php.twig" %}
+
+{% set strict=configuration.fileProperties.useStrictTypes %}
+{% set entityIface=configuration.entityInterfaceClass %}
+
+{% block useSection %}
+{{ parent() }}
+use {{ usedBy }};
+{% if settings.softdelete == true %}
+use Doctrine\ORM\EntityRepository;
+{% endif %}
+{% if settings.result == true %}
+use Doctrine\ORM\AbstractQuery;
+{% endif %}
+{% if settings.em == true %}
+use Doctrine\ORM\EntityManager;
+{% endif %}
+{% if settings.queryBuilder == true %}
+use Doctrine\ORM\QueryBuilder;
+{% endif %}
+{% endblock %}
+
+{% block comment %}
+ * @method getEntityManager()
+{% endblock %}
+
+{% block body %}
+trait {{ class }}
+{
+
+{% if settings|length > 0 %}
+{% for service,setting in settings %}
+{% if setting == true %}
+{% include "MjrOneCodeGeneratorBundle:Repository:" ~ service ~ ".php.twig" %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+}
+{% endblock %}

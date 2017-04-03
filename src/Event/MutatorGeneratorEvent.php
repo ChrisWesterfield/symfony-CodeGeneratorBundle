@@ -1,21 +1,20 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 18/03/2017
- * Time: 02:17
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Document\Property;
 
+/**
+ * Class MutatorGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class MutatorGeneratorEvent extends EventAbstract
 {
     /**
@@ -159,7 +158,7 @@ class MutatorGeneratorEvent extends EventAbstract
      *
      * @return MutatorGeneratorEvent
      */
-    public function setField(string $field=null): MutatorGeneratorEvent
+    public function setField(string $field = null): MutatorGeneratorEvent
     {
         $this->field = $field;
 
@@ -219,7 +218,7 @@ class MutatorGeneratorEvent extends EventAbstract
      *
      * @return MutatorGeneratorEvent
      */
-    public function setType(string $type=null): MutatorGeneratorEvent
+    public function setType(string $type = null): MutatorGeneratorEvent
     {
         $this->type = $type;
 
@@ -239,7 +238,7 @@ class MutatorGeneratorEvent extends EventAbstract
      *
      * @return MutatorGeneratorEvent
      */
-    public function setPropertyArray(array $propertyArray=null): MutatorGeneratorEvent
+    public function setPropertyArray(array $propertyArray = null): MutatorGeneratorEvent
     {
         $this->propertyArray = $propertyArray;
 

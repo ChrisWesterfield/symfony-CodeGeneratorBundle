@@ -1,23 +1,22 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 19/03/2017
- * Time: 18:53
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ServicePropertiesGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class ServicePropertiesGeneratorEvent extends Event
 {
     /**
@@ -41,19 +40,20 @@ class ServicePropertiesGeneratorEvent extends Event
     protected $annotation;
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator
+     * @return \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator
      */
-    public function getSubject(): \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator
+    public function getSubject(): \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator
     {
         return $this->subject;
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator $subject
+     * @param \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator $subject
      *
      * @return ServicePropertiesGeneratorEvent
      */
-    public function setSubject(\MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServicePropertiesGenerator $subject
+    public function setSubject(
+        \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator $subject
     ): ServicePropertiesGeneratorEvent
     {
         $this->subject = $subject;

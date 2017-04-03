@@ -1,11 +1,5 @@
 <?php
 declare(strict_types = 1);
-/**
- * Created by Christopher Westerfield
- * copyright by Christopher Westerfield
- * Date: 24/12/2016
- * Time: 13:57
- */
 
 namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\PropertyInterface;
@@ -14,6 +8,10 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 /**
  * Class Property
  *
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * @package CodeGeneratorBundle\Annotation\PropertyDefinition
  * @Annotation
  * @Target({"PROPERTY"})

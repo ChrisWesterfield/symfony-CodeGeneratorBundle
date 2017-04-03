@@ -1,22 +1,21 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Christopher Westerfield <chris.westerfield@spectware.com>
- * @link      https://www.spectware.com
- * @copyright Spectware, Inc.
- * @license   SpectwarePro Source License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 20/03/2017
- * Time: 00:26
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\EntityRepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\EntityRepositoryGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class EntityRepositoryGeneratorEvent
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class EntityRepositoryGeneratorEvent extends Event
 {
     /**

@@ -1,0 +1,45 @@
+
+    /**
+     * begin Transaction
+     * @CG\Generated()
+     *
+     * @return {{ short }}
+     */
+    public function beginTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->beginTransaction();
+
+        return $this;
+    }
+
+    /**
+     * commit to transaction
+     * @CG\Generated()
+     *
+     * @return {{ short }}
+     */
+    public function commitTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->commit();
+
+        return $this;
+    }
+
+    /**
+     * roll back transaction
+     * @CG\Generated()
+     *
+     * @return {{ short }}
+     */
+    public function rollbackTransaction(){% if strict %}: {{ short }}{% endif %}
+
+    {
+        /** @var EntityRepository $this */
+        $this->getEntityManager()->rollback();
+
+        return $this;
+    }

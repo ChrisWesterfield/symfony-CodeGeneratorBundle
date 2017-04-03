@@ -1,48 +1,47 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 18/03/2017
- * Time: 01:08
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\Driver\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class EventAbstract
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Event
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class EventAbstract extends Event
 {
     /**
-     * @var GeneratorInterface
+     * @var GeneratorDriverInterface
      */
     protected $subject;
 
-    public function __construct(GeneratorInterface $generator)
+    public function __construct(GeneratorDriverInterface $generator)
     {
         $this->subject = $generator;
     }
 
     /**
-     * @return GeneratorInterface
+     * @return GeneratorDriverInterface
      */
-    public function getSubject(): GeneratorInterface
+    public function getSubject(): GeneratorDriverInterface
     {
         return $this->subject;
     }
 
     /**
-     * @param GeneratorInterface $subject
+     * @param GeneratorDriverInterface $subject
      *
      * @return EventAbstract
      */
-    public function setSubject(GeneratorInterface $subject): EventAbstract
+    public function setSubject(GeneratorDriverInterface $subject): EventAbstract
     {
         $this->subject = $subject;
 

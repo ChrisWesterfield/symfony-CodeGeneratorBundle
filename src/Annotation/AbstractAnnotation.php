@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 namespace MjrOne\CodeGeneratorBundle\Annotation;
-use MjrOne\CodeGeneratorBundle\Services\GeneratorInterface;
 
 /**
  * AbstractAnnotation
  * @package CodeGeneratorBundle\Annotation
+ * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
@@ -16,8 +16,9 @@ abstract class AbstractAnnotation
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray():array
     {
-        return (array)$this;
+        $json = json_encode($this);
+        return json_decode($json,true);
     }
 }

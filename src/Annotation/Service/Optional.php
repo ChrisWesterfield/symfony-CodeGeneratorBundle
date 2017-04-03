@@ -1,15 +1,5 @@
 <?php
 declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 19/03/2017
- * Time: 16:20
- */
 
 namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 
@@ -19,6 +9,10 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 /**
  * Class OptionalPropertyType
  *
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
  * @package MjrOne\CodeGeneratorBundle\Annotation\Service
  * @Target({"ANNOTATION","CLASS", "PROPERTY"})
  * @Annotation

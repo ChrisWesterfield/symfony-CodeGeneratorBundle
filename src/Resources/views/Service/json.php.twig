@@ -12,6 +12,8 @@
      * @param array $payload            payload
      * @param bool $success             success of the operation true=yes, false=no success
      * @param integer|null $timestamp   timestamp of action. If null the current time stamp is used
+     * @CG\Generated()
+     *
      * @return array                    Json Envelope
      */
     protected function getJsonResponseEnvelope(array $payload,$success=true,$timestamp=null):{% if strict %}:array{% endif %}
@@ -32,6 +34,7 @@
     /**
      * return Json Response
      * @param $return
+     * @CG\Generated()
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \InvalidArgumentException

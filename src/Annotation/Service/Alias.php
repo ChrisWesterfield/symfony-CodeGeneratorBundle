@@ -4,10 +4,11 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceAliasGenerator as AliasDriver;
+use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceAliasGenerator;
 
 /**
  * Class Alias
+ * @author    Chris Westerfield <chris@mjr.one>
  * @package CodeGeneratorBundle\Annotation\Service
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
@@ -18,7 +19,7 @@ use MjrOne\CodeGeneratorBundle\Services\Driver\Service\ServiceAliasGenerator as 
  */
 final class Alias extends AbstractAnnotation implements ClassInterface, ServiceInterface, SubDriverInterface
 {
-    const DRIVER = AliasDriver::class;
+    const DRIVER = ServiceAliasGenerator::class;
     /**
      * @var string
      */

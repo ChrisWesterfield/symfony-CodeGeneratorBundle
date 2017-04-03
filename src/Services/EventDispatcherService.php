@@ -1,15 +1,5 @@
 <?php
-declare(strict_types = 1);
-/**
- * @author    Chris Westerfield <chris@mjr.one>
- * @link      https://www.mjr.one
- * @copyright Spectware, Inc.
- * @license   GNU Lesser General Public License
- * Created by PhpStorm.
- * User: cwesterfield
- * Date: 18/03/2017
- * Time: 00:58
- */
+declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Services;
 
@@ -17,11 +7,20 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class EventDispatcherService
+ *
+ * @package   MjrOne\CodeGeneratorBundle\Services
+ * @author    Chris Westerfield <chris@mjr.one>
+ * @link      https://www.mjr.one
+ * @copyright Christopher Westerfield MJR.ONE
+ * @license   GNU Lesser General Public License
+ */
 class EventDispatcherService
 {
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -36,29 +35,32 @@ class EventDispatcherService
      *
      * @return mixed
      */
-    public function getEventName(string $class,string $property)
+    public function getEventName(string $class, string $property)
     {
-        return str_replace('\\','.',$class.'.'.$property);
+        $eventName = str_replace('\\', '.', $class . '.' . $property);
+        $eventName = strtolower($eventName);
+        return $eventName;
     }
 
     /**
      * Dispatch Event
      *
      * @param string $event
-     * @param Event $object
+     * @param Event  $object
      *
      * @return \Symfony\Component\EventDispatcher\Event
      */
-    public function dispatch(string $event,Event $object)
+    public function dispatch(string $event, Event $object)
     {
-        $this->getEventDispatcher()->dispatch($event,$object);
+        $this->getEventDispatcher()->dispatch($event, $object);
+
         return $object;
     }
 
     /**
-     * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @return EventDispatcherInterface
      */
-    public function getEventDispatcher(): \Symfony\Component\EventDispatcher\EventDispatcherInterface
+    public function getEventDispatcher(): EventDispatcherInterface
     {
         return $this->eventDispatcher;
     }
