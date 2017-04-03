@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Converter;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Document\CodeGeneratorProperty;
+use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Property as DocProperty;
 
 /**
  * Class Property
  *
- * @package   MjrOne\CodeGeneratorBundle\Converter
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
@@ -35,7 +35,7 @@ class Property
     public  function parseDocument(string $source,array $tokens)
     {
         $properties = [];
-        $propertyPrototype = new CodeGeneratorProperty();
+        $propertyPrototype = new DocProperty();
         $propertyObject = $propertyText = $property = $lastItem = null;
         $equals = false;
         foreach($tokens as $token)
@@ -71,7 +71,7 @@ class Property
                     $propertyObject->setComment($propertyText);
                     $propertyObject->setName(str_replace('$','',$text));
                 }
-                if($propertyObject instanceof CodeGeneratorProperty && $equals)
+                if($propertyObject instanceof DocProperty && $equals)
                 {
 
                     $value = null;
@@ -114,7 +114,7 @@ class Property
                 }
                 else
                 {
-                    if($propertyObject instanceof CodeGeneratorProperty)
+                    if($propertyObject instanceof DocProperty)
                     {
                         $properties[] = $propertyObject;
                     }

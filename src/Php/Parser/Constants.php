@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Converter;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Document\CodeGeneratorConstants;
+use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Constants as DocConstants;
 use ReflectionClass;
 
 /**
  * Class Constants
  *
- * @package   MjrOne\CodeGeneratorBundle\Converter
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
@@ -40,7 +40,7 @@ class Constants
     {
         $constants = [];
         $lastItem = $constObject = null;
-        $constPrototype = new CodeGeneratorConstants();
+        $constPrototype = new DocConstants();
         $equals = $constItem = false;
         foreach($tokens as $token)
         {
@@ -75,11 +75,12 @@ class Constants
                     }
                 }
                 else
-                    if($id === T_STRING && $constItem && $constObject instanceof CodeGeneratorConstants)
+                    if($id === T_STRING && $constItem && $constObject instanceof Constants)
                 {
+                    /** @var DocConstants $constObject */
                     $constObject->setName(trim($text));
                 }
-                if($constObject instanceof CodeGeneratorConstants && $constObject->hasName() && $constItem && $equals && $id !== T_WHITESPACE)
+                if($constObject instanceof Constants && $constObject->hasName() && $constItem && $equals && $id !== T_WHITESPACE)
                 {
                     if(in_array($constObject->getVisibility(),[self::CONST_PRIVATE, self::CONST_PROTECTED]))
                     {

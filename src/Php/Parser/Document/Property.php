@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorProperty
  *
- * @package   MjrOne\CodeGeneratorBundle\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class CodeGeneratorProperty
+class Property
 {
     /**
      * @var string|null
@@ -48,9 +48,9 @@ class CodeGeneratorProperty
     /**
      * @param string $visibility
      *
-     * @return CodeGeneratorProperty
+     * @return Property
      */
-    public function setVisibility(string $visibility): CodeGeneratorProperty
+    public function setVisibility(string $visibility): Property
     {
         $this->visibility = $visibility;
 
@@ -68,9 +68,9 @@ class CodeGeneratorProperty
     /**
      * @param string $name
      *
-     * @return CodeGeneratorProperty
+     * @return Property
      */
-    public function setName(string $name): CodeGeneratorProperty
+    public function setName(string $name): Property
     {
         $this->name = $name;
 
@@ -88,7 +88,7 @@ class CodeGeneratorProperty
     /**
      * @param mixed $defaultValue
      *
-     * @return CodeGeneratorProperty
+     * @return Property
      */
     public function setDefaultValue($defaultValue)
     {
@@ -108,7 +108,7 @@ class CodeGeneratorProperty
     /**
      * @param mixed $comment
      *
-     * @return CodeGeneratorProperty
+     * @return Property
      */
     public function setComment($comment)
     {

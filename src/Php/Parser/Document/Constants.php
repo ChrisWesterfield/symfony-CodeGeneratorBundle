@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorConstants
  *
- * @package   MjrOne\CodeGeneratorBundle\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class CodeGeneratorConstants
+class Constants
 {
     /**
      * @var string
@@ -51,9 +51,9 @@ class CodeGeneratorConstants
     /**
      * @param string $name
      *
-     * @return CodeGeneratorConstants
+     * @return Constants
      */
-    public function setName(string $name): CodeGeneratorConstants
+    public function setName(string $name): Constants
     {
         $this->name = $name;
 
@@ -71,9 +71,9 @@ class CodeGeneratorConstants
     /**
      * @param string $visibility
      *
-     * @return CodeGeneratorConstants
+     * @return Constants
      */
-    public function setVisibility(string $visibility): CodeGeneratorConstants
+    public function setVisibility(string $visibility): Constants
     {
         $this->visibility = $visibility;
 
@@ -91,7 +91,7 @@ class CodeGeneratorConstants
     /**
      * @param mixed $value
      *
-     * @return CodeGeneratorConstants
+     * @return Constants
      */
     public function setValue($value)
     {

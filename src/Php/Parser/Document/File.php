@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class CodeGenerator
+class File
 {
     /**
      * @var bool
@@ -43,17 +43,17 @@ class CodeGenerator
     protected $interfaces;
 
     /**
-     * @var CodeGeneratorMethod[]
+     * @var Method[]
      */
     protected $methods;
 
     /**
-     * @var CodeGeneratorProperty[]
+     * @var Property[]
      */
     protected $properties;
 
     /**
-     * @var CodeGeneratorProperty[]
+     * @var Property[]
      */
     protected $constants;
 
@@ -87,7 +87,7 @@ class CodeGenerator
     }
 
     /**
-     * @return CodeGeneratorProperty[]
+     * @return Property[]
      */
     public function getConstants(): array
     {
@@ -95,11 +95,11 @@ class CodeGenerator
     }
 
     /**
-     * @param CodeGeneratorProperty[] $constants
+     * @param Property[] $constants
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setConstants(array $constants): CodeGenerator
+    public function setConstants(array $constants): File
     {
         $this->constants = $constants;
 
@@ -117,9 +117,9 @@ class CodeGenerator
     /**
      * @param bool $abstractClass
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setAbstractClass(bool $abstractClass): CodeGenerator
+    public function setAbstractClass(bool $abstractClass): File
     {
         $this->abstractClass = $abstractClass;
 
@@ -137,9 +137,9 @@ class CodeGenerator
     /**
      * @param string $namespace
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setNamespace(string $namespace): CodeGenerator
+    public function setNamespace(string $namespace): File
     {
         $this->namespace = $namespace;
 
@@ -157,9 +157,9 @@ class CodeGenerator
     /**
      * @param array $usedNamespaces
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setUsedNamespaces(array $usedNamespaces): CodeGenerator
+    public function setUsedNamespaces(array $usedNamespaces): File
     {
         $this->usedNamespaces = $usedNamespaces;
 
@@ -177,9 +177,9 @@ class CodeGenerator
     /**
      * @param bool $noFileExists
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setNoFileExists(bool $noFileExists): CodeGenerator
+    public function setNoFileExists(bool $noFileExists): File
     {
         $this->noFileExists = $noFileExists;
 
@@ -197,9 +197,9 @@ class CodeGenerator
     /**
      * @param bool $strict
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setStrict(bool $strict): CodeGenerator
+    public function setStrict(bool $strict): File
     {
         $this->strict = $strict;
 
@@ -217,9 +217,9 @@ class CodeGenerator
     /**
      * @param string $classComment
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setClassComment(string $classComment): CodeGenerator
+    public function setClassComment(string $classComment): File
     {
         $this->classComment = $classComment;
 
@@ -237,9 +237,9 @@ class CodeGenerator
     /**
      * @param string $className
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setClassName(string $className): CodeGenerator
+    public function setClassName(string $className): File
     {
         $this->className = $className;
 
@@ -257,9 +257,9 @@ class CodeGenerator
     /**
      * @param string $extends
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setExtends(string $extends): CodeGenerator
+    public function setExtends(string $extends): File
     {
         $this->extends = $extends;
 
@@ -277,9 +277,9 @@ class CodeGenerator
     /**
      * @param string $interfaces
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setInterfaces(array $interfaces): CodeGenerator
+    public function setInterfaces(array $interfaces): File
     {
         $this->interfaces = $interfaces;
 
@@ -287,7 +287,7 @@ class CodeGenerator
     }
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Document\CodeGeneratorMethod[]
+     * @return \MjrOne\CodeGeneratorBundle\Php\Parser\Document\Method[]
      */
     public function getMethods()
     {
@@ -295,11 +295,11 @@ class CodeGenerator
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Document\CodeGeneratorMethod[] $methods
+     * @param \MjrOne\CodeGeneratorBundle\Php\Parser\Document\Method[] $methods
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setMethods(array $methods): CodeGenerator
+    public function setMethods(array $methods): File
     {
         $this->methods = $methods;
 
@@ -307,7 +307,7 @@ class CodeGenerator
     }
 
     /**
-     * @return CodeGeneratorProperty[]
+     * @return Property[]
      */
     public function getProperties()
     {
@@ -315,11 +315,11 @@ class CodeGenerator
     }
 
     /**
-     * @param CodeGeneratorProperty[] $properties
+     * @param Property[] $properties
      *
-     * @return CodeGenerator
+     * @return File
      */
-    public function setProperties(array $properties): CodeGenerator
+    public function setProperties(array $properties): File
     {
         $this->properties = $properties;
 

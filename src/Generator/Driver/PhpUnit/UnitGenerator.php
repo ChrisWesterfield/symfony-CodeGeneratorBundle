@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Converter\File;
+use MjrOne\CodeGeneratorBundle\Php\Parser\File;
 use MjrOne\CodeGeneratorBundle\Document\Annotation;
 use MjrOne\CodeGeneratorBundle\Document\RenderedOutput;
 use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;

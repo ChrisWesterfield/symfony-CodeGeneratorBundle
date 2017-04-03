@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Converter;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Document\CodeGenerator;
 use MjrOne\CodeGeneratorBundle\Exception\TestClassDoesNotExistException;
+use MjrOne\CodeGeneratorBundle\Php\Parser\Document\File as DocFile;
 
 /**
  * Class File
  *
- * @package   MjrOne\CodeGeneratorBundle\Converter
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
@@ -46,7 +46,7 @@ class File
         $this->property = new Property();
     }
 
-    public function readFile($file,\ReflectionClass $class)
+    public function readFile($file)
     {
         if(!file_exists($file))
         {
@@ -54,7 +54,7 @@ class File
         }
         $content = file_get_contents($file);
         $tokens = token_get_all($content);
-        return $this->parseDocument($content, $tokens, $class);
+        return $this->parseDocument($content, $tokens);
     }
 
     /**
@@ -62,11 +62,11 @@ class File
      * @param array            $tokens
      * @param \ReflectionClass $reflectionClass
      *
-     * @return \MjrOne\CodeGeneratorBundle\Document\CodeGenerator
+     * @return \MjrOne\CodeGeneratorBundle\Php\Parser\Document\File
      */
     protected function parseDocument(string $source,array $tokens)
     {
-        $fileContainer = new CodeGenerator();
+        $fileContainer = new DocFile();
         $this->getDeclarStrict($tokens, $fileContainer);
         $this->getNamespaceDeclaration($tokens, $fileContainer);
         $this->getUsedClasses($tokens,$fileContainer);
@@ -79,12 +79,12 @@ class File
     }
 
     /**
-     * @param array         $tokens
-     * @param CodeGenerator $fileContainer
+     * @param array $tokens
+     * @param DocFile  $fileContainer
      *
      * @return bool
      */
-    public function getClassHeaders(array $tokens, CodeGenerator $fileContainer)
+    public function getClassHeaders(array $tokens, DocFile $fileContainer)
     {
         $abstract = $class = $extends = $implements = $useBool = $classBody = false;
         $classComment = '';
@@ -164,12 +164,12 @@ class File
     }
 
     /**
-     * @param array         $tokens
-     * @param CodeGenerator $fileContainer
+     * @param array $tokens
+     * @param DocFile  $fileContainer
      *
      * @return bool
      */
-    protected function getUsedClasses(array $tokens,CodeGenerator $fileContainer)
+    protected function getUsedClasses(array $tokens, DocFile $fileContainer)
     {
         $useClasses = false;
         $useRow = '';
@@ -211,12 +211,12 @@ class File
     }
 
     /**
-     * @param array         $tokens
-     * @param CodeGenerator $fileContainer
+     * @param array $tokens
+     * @param DocFile  $fileContainer
      *
      * @return bool
      */
-    protected function getNamespaceDeclaration(array $tokens,CodeGenerator $fileContainer)
+    protected function getNamespaceDeclaration(array $tokens, DocFile $fileContainer)
     {
         $fullNameSpace = '';
         $namespace = false;
@@ -252,12 +252,12 @@ class File
     }
 
     /**
-     * @param array         $tokens
-     * @param CodeGenerator $fileContainer
+     * @param array $tokens
+     * @param DocFile  $fileContainer
      *
      * @return bool
      */
-    protected function getDeclarStrict(array $tokens, CodeGenerator $fileContainer)
+    protected function getDeclarStrict(array $tokens, DocFile $fileContainer)
     {
         $tokenStart = false;
         $strictType=false;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorMethod
  *
- * @package   MjrOne\CodeGeneratorBundle\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class CodeGeneratorMethod
+class Method
 {
     /**
      * @var string
@@ -53,9 +53,9 @@ class CodeGeneratorMethod
     /**
      * @param string $mutator
      *
-     * @return CodeGeneratorMethod
+     * @return Method
      */
-    public function setMutator(string $mutator): CodeGeneratorMethod
+    public function setMutator(string $mutator): Method
     {
         $this->mutator = $mutator;
 
@@ -73,9 +73,9 @@ class CodeGeneratorMethod
     /**
      * @param string $methodName
      *
-     * @return CodeGeneratorMethod
+     * @return Method
      */
-    public function setMethodName(string $methodName): CodeGeneratorMethod
+    public function setMethodName(string $methodName): Method
     {
         $this->methodName = $methodName;
 
@@ -93,9 +93,9 @@ class CodeGeneratorMethod
     /**
      * @param bool $final
      *
-     * @return CodeGeneratorMethod
+     * @return Method
      */
-    public function setFinal(bool $final): CodeGeneratorMethod
+    public function setFinal(bool $final): Method
     {
         $this->final = $final;
 
@@ -113,9 +113,9 @@ class CodeGeneratorMethod
     /**
      * @param \string[] $body
      *
-     * @return CodeGeneratorMethod
+     * @return Method
      */
-    public function setBody(array $body): CodeGeneratorMethod
+    public function setBody(array $body): Method
     {
         $this->body = $body;
 
@@ -133,9 +133,9 @@ class CodeGeneratorMethod
     /**
      * @param \string[] $comment
      *
-     * @return CodeGeneratorMethod
+     * @return Method
      */
-    public function setComment(array $comment): CodeGeneratorMethod
+    public function setComment(array $comment): Method
     {
         $this->comment = $comment;
 
