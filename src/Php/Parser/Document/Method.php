@@ -20,12 +20,12 @@ class Method
     /**
      * @var string
      */
-    protected $mutator;
+    protected $visibility;
 
     /**
      * @var string
      */
-    protected $methodName;
+    protected $name;
 
     /**
      * @var bool
@@ -43,21 +43,26 @@ class Method
     protected $comment;
 
     /**
+     * @var array[]
+     */
+    protected $variables;
+
+    /**
      * @return string
      */
-    public function getMutator(): string
+    public function getVisibility(): string
     {
-        return $this->mutator;
+        return $this->visibility;
     }
 
     /**
-     * @param string $mutator
+     * @param string $visibility
      *
      * @return Method
      */
-    public function setMutator(string $mutator): Method
+    public function setVisibility(string $visibility): Method
     {
-        $this->mutator = $mutator;
+        $this->visibility = $visibility;
 
         return $this;
     }
@@ -65,19 +70,19 @@ class Method
     /**
      * @return string
      */
-    public function getMethodName(): string
+    public function getName(): string
     {
-        return $this->methodName;
+        return $this->name;
     }
 
     /**
-     * @param string $methodName
+     * @param string $name
      *
      * @return Method
      */
-    public function setMethodName(string $methodName): Method
+    public function setName(string $name): Method
     {
-        $this->methodName = $methodName;
+        $this->name = $name;
 
         return $this;
     }
@@ -138,6 +143,18 @@ class Method
     public function setComment(array $comment): Method
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @param Variable $variable
+     *
+     * @return Method
+     */
+    public function addVariable(Variable $variable):Method
+    {
+        $this->variables[] = $variable;
 
         return $this;
     }
