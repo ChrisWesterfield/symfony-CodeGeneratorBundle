@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,25 +19,30 @@ use Symfony\Component\EventDispatcher\Event;
 class ServiceGeneratorUpdateDocumentAnnotationEvent extends Event
 {
     /**
-     * @var ServiceGenerator
+     * @var CodeGeneratorService
      */
     protected $subject;
+
     /**
      * @var array
      */
     protected $fileArray;
+
     /**
      * @var array
      */
     protected $newFileArray;
+
     /**
      * @var string
      */
     protected $file;
+
     /**
      * @var string
      */
     protected $newFile;
+
     /**
      * @var CG\Service
      */
@@ -145,19 +150,19 @@ class ServiceGeneratorUpdateDocumentAnnotationEvent extends Event
     }
 
     /**
-     * @return ServiceGenerator
+     * @return CodeGeneratorService
      */
-    public function getSubject(): ServiceGenerator
+    public function getSubject(): CodeGeneratorService
     {
         return $this->subject;
     }
 
     /**
-     * @param ServiceGenerator $subject
+     * @param CodeGeneratorService $subject
      *
      * @return ServiceGeneratorUpdateDocumentAnnotationEvent
      */
-    public function setSubject(ServiceGenerator $subject
+    public function setSubject(CodeGeneratorService $subject
     ): ServiceGeneratorUpdateDocumentAnnotationEvent
     {
         $this->subject = $subject;

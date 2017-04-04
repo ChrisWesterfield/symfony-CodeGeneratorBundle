@@ -1,11 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-namespace MjrOne\CodeGeneratorBundle\Services;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\RoutingEvent;
+use MjrOne\CodeGeneratorBundle\Services\ConfiguratorService;
+use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
+use MjrOne\CodeGeneratorBundle\Services\ReadAnnotationService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -19,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class RouterService extends AbstractService implements CodeGeneratorInterface
+class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGeneratorInterface
 {
     /**
      * @var KernelInterface
@@ -331,9 +334,9 @@ class RouterService extends AbstractService implements CodeGeneratorInterface
     /**
      * @param bool $cleanup
      *
-     * @return RouterService
+     * @return RouteGenerator
      */
-    public function setCleanup(bool $cleanup): RouterService
+    public function setCleanup(bool $cleanup): RouteGenerator
     {
         $this->cleanup = $cleanup;
         return $this;

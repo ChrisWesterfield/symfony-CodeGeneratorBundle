@@ -21,6 +21,7 @@ abstract class ManipulatorAbstract
      * @var array
      */
     protected $tokens;
+
     /**
      * @var int
      */

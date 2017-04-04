@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
@@ -10,9 +10,9 @@ use MjrOne\CodeGeneratorBundle\Document\Annotation;
 use MjrOne\CodeGeneratorBundle\Event\AddToListEvent;
 use MjrOne\CodeGeneratorBundle\Event\GeneratorAbstractGetBasicsPostEvent;
 use MjrOne\CodeGeneratorBundle\Event\GeneratorAbstractWriteToDiskEvent;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
-use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGenerator;
 use MjrOne\CodeGeneratorBundle\Services\RenderService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,13 +21,13 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class GeneratorAbstract
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-abstract class GeneratorAbstract implements GeneratorDriverInterface
+abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
 {
     const BUNDLE_DETECTION_NAME          = 'Bundle';
     const NAMESPACE_DIRECTORY_FOR_TRAITS = 'Traits/CodeGenerator';
@@ -54,7 +54,7 @@ abstract class GeneratorAbstract implements GeneratorDriverInterface
     protected $renderer;
 
     /**
-     * @var CodeGeneratorService
+     * @var CodeGenerator
      */
     protected $generator;
 
@@ -83,9 +83,9 @@ abstract class GeneratorAbstract implements GeneratorDriverInterface
      *
      * @param                                                            $file
      * @param AnnotationInterface                                        $currentAnnotation
-     * @param CodeGeneratorService                                       $generator
+     * @param CodeGenerator                                              $generator
      */
-    public function __construct($file, AnnotationInterface $currentAnnotation, CodeGeneratorService $generator)
+    public function __construct($file, AnnotationInterface $currentAnnotation, CodeGenerator $generator)
     {
         $this->file = $file;
         $this->annotation = $currentAnnotation;
@@ -146,9 +146,9 @@ abstract class GeneratorAbstract implements GeneratorDriverInterface
     }
 
     /**
-     * @return CodeGeneratorService
+     * @return CodeGenerator
      */
-    protected function getGenerator(): CodeGeneratorService
+    protected function getGenerator(): CodeGenerator
     {
         return $this->generator;
     }
@@ -344,9 +344,9 @@ abstract class GeneratorAbstract implements GeneratorDriverInterface
     }
 
     /**
-     * @return CodeGeneratorService
+     * @return CodeGenerator
      */
-    public function getService(): CodeGeneratorService
+    public function getService(): CodeGenerator
     {
         return $this->service;
     }

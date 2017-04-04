@@ -22,14 +22,17 @@ class RenderServiceEvent extends Event
      * @var RenderService
      */
     protected $subject;
+
     /**
      * @var string
      */
     protected $template;
+
     /**
      * @var array
      */
     protected $vars;
+
     /**
      * @var string
      */

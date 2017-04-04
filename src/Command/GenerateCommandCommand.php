@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Command;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Command\Helper\GeneratorCommandAbstract;
 use MjrOne\CodeGeneratorBundle\Generator\CommandGenerator;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -194,10 +194,10 @@ class GenerateCommandCommand extends GeneratorCommandAbstract
     }
 
     /**
-     * @return CommandGenerator|GeneratorDriverInterface
+     * @return CommandGenerator|CodeGeneratorInterface
      * @throws \LogicException
      */
-    protected function createGenerator():GeneratorDriverInterface
+    protected function createGenerator():CodeGeneratorInterface
     {
         return $this->getContainer()->get('mjrone.codegenerator.generator.command');
     }

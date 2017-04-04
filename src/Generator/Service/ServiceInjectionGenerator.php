@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\Service;
+namespace MjrOne\CodeGeneratorBundle\Generator\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\ServiceInjectionGeneratorEvent;
 use MjrOne\CodeGeneratorBundle\Configuration\User;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\SubCodeGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Templating\PhpEngine;
 use Symfony\Component\DependencyInjection\Container;
@@ -28,13 +28,13 @@ use Twig_Environment;
 /**
  * Class ServiceInjectionGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\Service
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Service
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ServiceInjectionGenerator extends SubGeneratorAbstract implements SubDriverInterface
+class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubCodeGeneratorInterface
 {
     /**
      * @var array

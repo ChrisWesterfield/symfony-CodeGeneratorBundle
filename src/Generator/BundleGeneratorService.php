@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Generator;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Command\GenerateCodeCommand;
 use MjrOne\CodeGeneratorBundle\Exception\BundleDoesNotExistException;
-use MjrOne\CodeGeneratorBundle\Services\AbstractService;
+use MjrOne\CodeGeneratorBundle\Services\CodeGeneratorSupportAbstract;
 use MjrOne\CodeGeneratorBundle\Services\CodeGeneratorInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,10 +22,10 @@ use Symfony\Component\Finder\Finder;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class BundleGeneratorService extends AbstractService implements CodeGeneratorInterface
+class BundleGeneratorService extends GeneratorAbstract implements GeneratorInterface
 {
     /**
-     * @var CodeGeneratorService
+     * @var CodeGenerator
      */
     protected $generatorService;
     /**
@@ -46,9 +46,9 @@ class BundleGeneratorService extends AbstractService implements CodeGeneratorInt
     /**
      * BundleGeneratorService constructor.
      *
-     * @param CodeGeneratorService $cg
+     * @param CodeGenerator $cg
      */
-    public function __construct(CodeGeneratorService $cg)
+    public function __construct(CodeGenerator $cg)
     {
         $this->generatorService = $cg;
     }
@@ -104,9 +104,9 @@ class BundleGeneratorService extends AbstractService implements CodeGeneratorInt
     }
 
     /**
-     * @return CodeGeneratorService
+     * @return CodeGenerator
      */
-    protected function getGeneratorService(): CodeGeneratorService
+    protected function getGeneratorService(): CodeGenerator
     {
         return $this->generatorService;
     }

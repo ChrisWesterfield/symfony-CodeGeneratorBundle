@@ -21,10 +21,10 @@ use Twig_Environment;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-abstract class GeneratorDriverAbstract implements GeneratorDriverInterface
+abstract class GeneratorAbstract implements GeneratorInterface
 {
-    const REGEX_ROUTER_PREFIX1 = '/{(.*?)}/';
-    const REGEX_ROUTER_PREFIX2 = '/_+/';
+    public const REGEX_ROUTER_PREFIX1 = '/{(.*?)}/';
+    public const REGEX_ROUTER_PREFIX2 = '/_+/';
     /**
      * @var string|array
      */
@@ -91,8 +91,7 @@ abstract class GeneratorDriverAbstract implements GeneratorDriverInterface
     {
         if($this->projectRootDirectory === null)
         {
-            $path = realpath(__DIR__.'/../../../../../');
-            return $path;
+            return realpath(__DIR__.'/../../../../../');
         }
         return $this->projectRootDirectory;
     }
@@ -142,14 +141,14 @@ abstract class GeneratorDriverAbstract implements GeneratorDriverInterface
      * @param     $target
      * @param int $mode
      *
-     * @return GeneratorDriverInterface
+     * @return GeneratorInterface
      */
-    public function mkdir($target, $mode = 0777): GeneratorDriverInterface
+    public function mkdir($target, $mode = 0777): GeneratorInterface
     {
         if (!$this->fileSystem->exists($target))
         {
             $this->fileSystem->mkdir($target, $mode);
-            $this->writeln('<fg=green>created</> %s', $this->relativizePath($target));
+            $this->writeln(sprintf('<fg=green>created</> %s', $this->relativizePath($target)));
         }
 
         return $this;

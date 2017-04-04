@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\MutatorGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorMutator;
 
 /**
  * Class Mutator
@@ -18,7 +18,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\MutatorGenerator;
  */
 final class Mutator extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = MutatorGenerator::class;
+    const DRIVER = CodeGeneratorMutator::class;
     /**
      * enables getter methods (get<PROPERTY>)
      * @var bool

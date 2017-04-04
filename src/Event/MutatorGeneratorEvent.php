@@ -21,14 +21,17 @@ class MutatorGeneratorEvent extends EventAbstract
      * @var Property
      */
     protected $propertyItem;
+
     /**
      * @var CG\Mutator\Property
      */
     protected $propertyAnnotation;
+
     /**
      * @var string
      */
     protected $content;
+
     /**
      * @var array
      */

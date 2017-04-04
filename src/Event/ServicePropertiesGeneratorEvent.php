@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServicePropertiesGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -40,20 +40,20 @@ class ServicePropertiesGeneratorEvent extends Event
     protected $annotation;
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator
+     * @return ServicePropertiesGenerator
      */
-    public function getSubject(): \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator
+    public function getSubject(): ServicePropertiesGenerator
     {
         return $this->subject;
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator $subject
+     * @param ServicePropertiesGenerator $subject
      *
      * @return ServicePropertiesGeneratorEvent
      */
     public function setSubject(
-        \MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServicePropertiesGenerator $subject
+        ServicePropertiesGenerator $subject
     ): ServicePropertiesGeneratorEvent
     {
         $this->subject = $subject;
@@ -103,19 +103,19 @@ class ServicePropertiesGeneratorEvent extends Event
     }
 
     /**
-     * @return \MjrOne\CodeGeneratorBundle\Annotation\Service\Property
+     * @return CG\Service\Property
      */
-    public function getAnnotation(): \MjrOne\CodeGeneratorBundle\Annotation\Service\Property
+    public function getAnnotation(): CG\Service\Property
     {
         return $this->annotation;
     }
 
     /**
-     * @param \MjrOne\CodeGeneratorBundle\Annotation\Service\Property $annotation
+     * @param CG\Service\Property $annotation
      *
      * @return ServicePropertiesGeneratorEvent
      */
-    public function setAnnotation(\MjrOne\CodeGeneratorBundle\Annotation\Service\Property $annotation
+    public function setAnnotation(CG\Service\Property $annotation
     ): ServicePropertiesGeneratorEvent
     {
         $this->annotation = $annotation;

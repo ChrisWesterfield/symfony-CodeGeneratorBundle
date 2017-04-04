@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Services;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,13 +10,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class AbstractService
  *
- * @package   MjrOne\CodeGeneratorBundle\Services
+ * @package   MjrOne\CodeGeneratorBundle
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-abstract class AbstractService
+abstract class CodeGeneratorSupportAbstract
 {
     /**
      * @var InputInterface
@@ -30,9 +30,9 @@ abstract class AbstractService
     /**
      * @param InputInterface $input
      *
-     * @return \MjrOne\CodeGeneratorBundle\Services\AbstractService
+     * @return CodeGeneratorSupportAbstract
      */
-    public function setInput(InputInterface $input): AbstractService
+    public function setInput(InputInterface $input): CodeGeneratorSupportAbstract
     {
         $this->input = $input;
 
@@ -42,9 +42,9 @@ abstract class AbstractService
     /**
      * @param OutputInterface $output
      *
-     * @return \MjrOne\CodeGeneratorBundle\Services\AbstractService
+     * @return CodeGeneratorSupportAbstract
      */
-    public function setOutput(OutputInterface $output): AbstractService
+    public function setOutput(OutputInterface $output): CodeGeneratorSupportAbstract
     {
         $this->output = $output;
 

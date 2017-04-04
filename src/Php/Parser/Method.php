@@ -35,6 +35,7 @@ class Method
      */
     public  function parseDocument(string $source,array $tokens)
     {
+        $sourceArray = explode("\n",$source);
         $methods = [];
         $methodPrototype = new DocMethod();
         $variablePrototype = new Variable();
@@ -75,9 +76,12 @@ class Method
                         }
                     }
                     $methodObject->setComment(explode("\n",$comment));
-                    $methodObject->setName(str_replace('$','',$text));
                     $methodObject->setFinal($final);
                     $functions = true;
+                }
+                if($functions === true && !$methodObject->hasName() && $id === T_STRING)
+                {
+                    $methodObject->setName(str_replace('$','',$text));
                 }
                 if($functions && $id === T_STRING)
                 {
@@ -135,9 +139,9 @@ class Method
                 {
                     $methodObject->addVariable($variableObject);
                 }
-                if($token === '{' && $functions)
+                if($token === '{' && $functions && $methodObject->hasName())
                 {
-                    $this->getFunctionBody($methodObject);
+                    $methodObject->setBody($this->getFunctionBody($methodObject, $sourceArray));
                     $methods[] = $methodObject;
                     $comment = $modifier = $lastItem = $variableObject = $type = $methodObject = null;
                     $final = $functions = $valueDefinition = $type = false;
@@ -150,9 +154,51 @@ class Method
 
     /**
      * extract method Body from source File
+     *
      * @param DocMethod $methodObject
+     *
+     * @return array
      */
-    protected function getFunctionBody(DocMethod $methodObject)
+    protected function getFunctionBody(DocMethod $methodObject,array $source)
     {
+        $body = [];
+        $bracket = 0;
+        $method = false;
+        $first = false;
+        foreach($source as $row)
+        {
+            $check = strtolower($row);
+            $check2 = str_replace(' ', '', $check);
+            $search = $methodObject->getName().'(';
+            $search = strtolower($search);
+            if(
+                strpos($check, strtolower($methodObject->getVisibility()))!==false
+                &&
+                strpos($check, 'function') !== false
+                &&
+                strpos($check2, $search) !==false
+            )
+            {
+                $method = true;
+            }
+            if($method)
+            {
+                $bracket -= substr_count($row, '}');
+                if($bracket >= 1)
+                {
+                    $body[] = $row;
+                }
+                $bracket += substr_count($row, '{');
+                if(!$first && $bracket > 0)
+                {
+                    $first = true;
+                }
+                if($bracket === 0 && $first === true)
+                {
+                    break;
+                }
+            }
+        }
+        return $body;
     }
 }

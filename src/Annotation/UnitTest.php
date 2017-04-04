@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorPhpUnit;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnitTest extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = PhpUnitCodeGeneratorService::class;
+    const DRIVER = CodeGeneratorPhpUnit::class;
     /**
      * @var bool
      */

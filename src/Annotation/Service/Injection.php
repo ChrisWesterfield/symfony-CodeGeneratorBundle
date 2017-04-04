@@ -6,7 +6,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceInjectionGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServiceInjectionGenerator;
 
 /**
  * Class Service

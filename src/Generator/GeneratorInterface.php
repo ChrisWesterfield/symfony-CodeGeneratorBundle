@@ -14,20 +14,20 @@ namespace MjrOne\CodeGeneratorBundle\Generator;
  */
 interface GeneratorInterface
 {
-    const FILE_EXTENSION            = 'Extension';
-    const FILE_CONFIGURATION        = 'Configuration';
-    const FILE_TEST                 = 'Test';
-    const FILE_EXTENSION_PHP        = '.php';
-    const FILE_EXTENSION_TWIG       = '.twig';
-    const FILE_COMPOSER             = 'composer.json';
-    const FILE_README               = 'README.md';
-    const FILE_CHANGELOG            = 'CHANGELOG.md';
-    const FILE_LICENSE              = 'license';
-    const FILE_EXTENSION_CONTROLLER = 'Controller';
-    const DIRECTORY_COMMAND         = 'Command';
-    const DIRECTORY_CONTROLLER      = 'Controller';
-    const DIRECTORY_TESTS           = 'Tests';
-    const DIRECTORY_SRC             = 'src';
+    public const FILE_EXTENSION            = 'Extension';
+    public const FILE_CONFIGURATION        = 'Configuration';
+    public const FILE_TEST                 = 'Test';
+    public const FILE_EXTENSION_PHP        = '.php';
+    public const FILE_EXTENSION_TWIG       = '.twig';
+    public const FILE_COMPOSER             = 'composer.json';
+    public const FILE_README               = 'README.md';
+    public const FILE_CHANGELOG            = 'CHANGELOG.md';
+    public const FILE_LICENSE              = 'license';
+    public const FILE_EXTENSION_CONTROLLER = 'Controller';
+    public const DIRECTORY_COMMAND         = 'Command';
+    public const DIRECTORY_CONTROLLER      = 'Controller';
+    public const DIRECTORY_TESTS           = 'Tests';
+    public const DIRECTORY_SRC             = 'src';
 
     /**
      * @return string

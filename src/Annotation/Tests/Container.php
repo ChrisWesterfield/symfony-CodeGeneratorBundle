@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\ContainerGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\ContainerCodeGenerator;
 
 
 /**
@@ -21,7 +21,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\ContainerGenerator;
  */
 class Container extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
-    const DRIVER = ContainerGenerator::class;
+    const DRIVER = ContainerCodeGenerator::class;
 
     /**
      * @var  string

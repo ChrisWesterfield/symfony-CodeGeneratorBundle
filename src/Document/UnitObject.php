@@ -10,7 +10,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class UnitObject
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit
+ * @package   MjrOne\CodeGeneratorBundle\Generator\PhpUnit
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE

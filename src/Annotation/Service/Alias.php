@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Service;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\SubDriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceAliasGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServiceAliasGenerator;
 
 /**
  * Class Alias

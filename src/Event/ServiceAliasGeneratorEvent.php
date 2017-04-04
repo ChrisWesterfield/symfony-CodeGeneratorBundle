@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceAliasGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServiceAliasGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

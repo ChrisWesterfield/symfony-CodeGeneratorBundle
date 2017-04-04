@@ -1,28 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
+namespace MjrOne\CodeGeneratorBundle\Generator\PhpUnit;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\GeneratorAbstract as CoreAbstractGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorAbstract as CoreAbstractGenerator;
 
 /**
  * Class GeneratorAbstract
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit
+ * @package   MjrOne\CodeGeneratorBundle\Generator\PhpUnit
  * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
  */
-abstract class GeneratorAbstract extends CoreAbstractGenerator
+abstract class CodeGeneratorAbstract extends CoreAbstractGenerator
 {
     /**
      * @var ArrayCollection
      */
     protected $templateVariables;
+
     /**
      * @var array
      */
@@ -44,10 +45,10 @@ abstract class GeneratorAbstract extends CoreAbstractGenerator
     /**
      * @param ArrayCollection $templateVariables
      *
-     * @return GeneratorAbstract
+     * @return CodeGeneratorAbstract
      */
     public function setTemplateVariables(ArrayCollection $templateVariables
-    ): GeneratorAbstract
+    ): CodeGeneratorAbstract
     {
         $this->templateVariables = $templateVariables;
 
@@ -65,9 +66,9 @@ abstract class GeneratorAbstract extends CoreAbstractGenerator
     /**
      * @param array $config
      *
-     * @return GeneratorAbstract
+     * @return CodeGeneratorAbstract
      */
-    public function setConfig(array $config): GeneratorAbstract
+    public function setConfig(array $config): CodeGeneratorAbstract
     {
         $this->config = $config;
 
@@ -85,7 +86,7 @@ abstract class GeneratorAbstract extends CoreAbstractGenerator
     /**
      * @param mixed $renderedOutput
      *
-     * @return GeneratorAbstract
+     * @return CodeGeneratorAbstract
      */
     public function setRenderedOutput($renderedOutput)
     {

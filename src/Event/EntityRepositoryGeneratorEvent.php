@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\EntityRepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorEntityRepository;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\Event;
 class EntityRepositoryGeneratorEvent extends Event
 {
     /**
-     * @var EntityRepositoryGenerator
+     * @var CodeGeneratorEntityRepository
      */
     public $subject;
 
@@ -34,19 +34,19 @@ class EntityRepositoryGeneratorEvent extends Event
     public $content;
 
     /**
-     * @return EntityRepositoryGenerator
+     * @return CodeGeneratorEntityRepository
      */
-    public function getSubject(): EntityRepositoryGenerator
+    public function getSubject(): CodeGeneratorEntityRepository
     {
         return $this->subject;
     }
 
     /**
-     * @param EntityRepositoryGenerator $subject
+     * @param CodeGeneratorEntityRepository $subject
      *
      * @return EntityRepositoryGeneratorEvent
      */
-    public function setSubject(EntityRepositoryGenerator $subject
+    public function setSubject(CodeGeneratorEntityRepository $subject
     ): EntityRepositoryGeneratorEvent
     {
         $this->subject = $subject;

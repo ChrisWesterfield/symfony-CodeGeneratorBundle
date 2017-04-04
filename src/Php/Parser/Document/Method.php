@@ -158,4 +158,9 @@ class Method
 
         return $this;
     }
+
+    public function hasName()
+    {
+        return !empty($this->name);
+    }
 }

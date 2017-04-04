@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceTagGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServiceTagGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -22,6 +22,7 @@ class ServiceTagGeneratorEvent extends Event
      * @var ServiceTagGenerator
      */
     protected $subject;
+
     /**
      * @var array
      */

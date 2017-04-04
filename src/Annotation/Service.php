@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
 
 /**
  * Service
@@ -19,7 +19,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\ServiceGenerator;
  */
 final class Service extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = ServiceGenerator::class;
+    const DRIVER = CodeGeneratorService::class;
     /**
      * Name of the Service
      * @var string

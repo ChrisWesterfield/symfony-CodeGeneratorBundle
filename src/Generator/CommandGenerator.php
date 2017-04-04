@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class CommandGenerator extends GeneratorDriverAbstract
+class CommandGenerator extends GeneratorAbstract
 {
 
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Command:';

@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\ServiceGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -20,13 +20,15 @@ use Symfony\Component\EventDispatcher\Event;
 class ServiceGeneratorEvent extends Event
 {
     /**
-     * @var ServiceGenerator
+     * @var CodeGeneratorService
      */
     protected $subject;
+
     /**
      * @var ArrayCollection
      */
     protected $templateVars;
+
     /**
      * @var array
      */
@@ -38,19 +40,19 @@ class ServiceGeneratorEvent extends Event
     protected $content;
 
     /**
-     * @return ServiceGenerator
+     * @return CodeGeneratorService
      */
-    public function getSubject(): ServiceGenerator
+    public function getSubject(): CodeGeneratorService
     {
         return $this->subject;
     }
 
     /**
-     * @param ServiceGenerator $subject
+     * @param CodeGeneratorService $subject
      *
      * @return ServiceGeneratorEvent
      */
-    public function setSubject(ServiceGenerator $subject
+    public function setSubject(CodeGeneratorService $subject
     ): ServiceGeneratorEvent
     {
         $this->subject = $subject;

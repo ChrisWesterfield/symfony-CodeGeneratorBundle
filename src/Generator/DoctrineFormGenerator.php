@@ -31,7 +31,7 @@ use Twig_Environment;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class DoctrineFormGenerator extends GeneratorDriverAbstract
+class DoctrineFormGenerator extends GeneratorAbstract
 {
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Form:';
     /**

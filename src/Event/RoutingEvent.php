@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Services\RouterService;
+use MjrOne\CodeGeneratorBundle\Generator\RouteGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\Event;
 class RoutingEvent extends Event
 {
     /**
-     * @var RouterService
+     * @var RouteGenerator
      */
     protected $subject;
 
@@ -124,19 +124,19 @@ class RoutingEvent extends Event
     }
 
     /**
-     * @return RouterService
+     * @return RouteGenerator
      */
-    public function getSubject(): RouterService
+    public function getSubject(): RouteGenerator
     {
         return $this->subject;
     }
 
     /**
-     * @param RouterService $subject
+     * @param RouteGenerator $subject
      *
      * @return RoutingEvent
      */
-    public function setSubject(RouterService $subject): RoutingEvent
+    public function setSubject(RouteGenerator $subject): RoutingEvent
     {
         $this->subject = $subject;
 

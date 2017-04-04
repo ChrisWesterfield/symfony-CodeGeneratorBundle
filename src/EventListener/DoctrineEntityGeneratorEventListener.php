@@ -51,6 +51,7 @@ class DoctrineEntityGeneratorEventListener
         }
         $event->setContent(implode("\n", $newContent));
     }
+
     /**
      * @param DoctrineEntityGeneratorContentEvent $event
      */

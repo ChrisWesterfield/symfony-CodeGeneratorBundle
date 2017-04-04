@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\VirtualFileSystemGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\VirtualFileSystemCodeGenerator;
 
 /**
  * Class VirtualFileSystem
@@ -20,7 +20,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\VirtualFileSystemGenerat
  */
 final class VirtualFileSystem extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
-    const DRIVER = VirtualFileSystemGenerator::class;
+    const DRIVER = VirtualFileSystemCodeGenerator::class;
     /**
      * @var string
      */

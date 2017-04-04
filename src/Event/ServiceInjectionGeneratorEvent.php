@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\Service\ServiceInjectionGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\Service\ServiceInjectionGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -28,6 +28,7 @@ class ServiceInjectionGeneratorEvent extends Event
      * @var ArrayCollection
      */
     protected $templateVars;
+
     /**
      * @var array
      */

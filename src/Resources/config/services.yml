@@ -6,7 +6,7 @@ services:
             - '@mjrone.codegenerator.code.file'
 
     mjrone.codegenerator.code.file:
-        class: MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\CodeGenerator
         arguments:
             - '@mjrone.codegenerator.annotation'
             - '@mjrone.codegenerator.configuration'
@@ -15,7 +15,7 @@ services:
             - '@mjrone.codegenerator.event'
 
     mjrone.codegenerator.router:
-        class: MjrOne\CodeGeneratorBundle\Services\RouterService
+        class: MjrOne\CodeGeneratorBundle\Generator\RouteGenerator
         arguments:
             - '@kernel'
             - '@mjrone.codegenerator.annotation'
@@ -120,7 +120,7 @@ services:
                 method: onContentRepositoryGenerationEvent
 
     mjrone.codegenerator.generator.unit_test:
-        class: MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnitCodeGeneratorService
+        class: MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorPhpUnit
         arguments:
             - '@twig'
             - '@mjrone.codegenerator.configuration'

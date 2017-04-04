@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\RepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorRepository;
 
 /**
  * Class Repository
@@ -18,7 +18,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\RepositoryGenerator;
  */
 final class Repository extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = RepositoryGenerator::class;
+    const DRIVER = CodeGeneratorRepository::class;
 
     /**
      * @var bool

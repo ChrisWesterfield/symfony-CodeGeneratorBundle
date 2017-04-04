@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\DataProviderGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\DataProviderCodeGenerator;
 
 /**
  * Class DataProvider
@@ -20,7 +20,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\DataProviderGenerator;
  */
 final class DataProvider extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
-    const DRIVER = DataProviderGenerator::class;
+    const DRIVER = DataProviderCodeGenerator::class;
     /**
      * @var string
      */

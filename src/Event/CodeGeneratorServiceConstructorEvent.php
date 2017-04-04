@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorService;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGenerator;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -19,24 +19,24 @@ use Symfony\Component\EventDispatcher\Event;
 class CodeGeneratorServiceConstructorEvent extends Event
 {
     /**
-     * @var CodeGeneratorService
+     * @var CodeGenerator
      */
     protected $subject;
 
     /**
-     * @return CodeGeneratorService
+     * @return CodeGenerator
      */
-    public function getSubject(): CodeGeneratorService
+    public function getSubject(): CodeGenerator
     {
         return $this->subject;
     }
 
     /**
-     * @param CodeGeneratorService $subject
+     * @param CodeGenerator $subject
      *
      * @return CodeGeneratorServiceConstructorEvent
      */
-    public function setSubject(CodeGeneratorService $subject
+    public function setSubject(CodeGenerator $subject
     ): CodeGeneratorServiceConstructorEvent
     {
         $this->subject = $subject;

@@ -9,7 +9,7 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Command\Helper\GeneratorCommandAbstract;
 use MjrOne\CodeGeneratorBundle\Command\Helper\QuestionHelper;
 use MjrOne\CodeGeneratorBundle\Generator\DoctrineEntityGenerator;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 use MjrOne\CodeGeneratorBundle\Validator\BundleValidation;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -521,9 +521,9 @@ class GenerateDoctrineEntityCommand extends GeneratorCommandAbstract
     }
 
     /**
-     * @return GeneratorDriverInterface|DoctrineEntityGenerator
+     * @return CodeGeneratorInterface|DoctrineEntityGenerator
      */
-    protected function createGenerator(): GeneratorDriverInterface
+    protected function createGenerator(): CodeGeneratorInterface
     {
         return $this->getContainer()->get('mjrone.codegenerator.generator.entity');
     }

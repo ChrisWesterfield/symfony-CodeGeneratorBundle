@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
+namespace MjrOne\CodeGeneratorBundle\Generator\PhpUnit;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Document\RenderedOutput;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 
 
 /**
  * Class ContainerGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit
+ * @package   MjrOne\CodeGeneratorBundle\Generator\PhpUnit
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license   GNU Lesser General Public License
  */
-class ContainerGenerator extends GeneratorAbstract implements GeneratorDriverInterface, UnitTestInterface
+class ContainerCodeGenerator extends CodeGeneratorAbstract implements CodeGeneratorInterface, UnitTestInterface
 {
     /**
      * @return void

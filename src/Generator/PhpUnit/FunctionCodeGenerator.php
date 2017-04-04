@@ -1,23 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit;
+namespace MjrOne\CodeGeneratorBundle\Generator\PhpUnit;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Document\RenderedOutput;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 
 /**
  * Class FunctionGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit
+ * @package   MjrOne\CodeGeneratorBundle\Generator\PhpUnit
  * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license   LGPL V3
  * @link      http://www.mjr.one
  */
-class FunctionGenerator extends GeneratorAbstract implements GeneratorDriverInterface, UnitTestInterface
+class FunctionCodeGenerator extends CodeGeneratorAbstract implements CodeGeneratorInterface, UnitTestInterface
 {
     /**
      * @return void
@@ -30,7 +30,7 @@ class FunctionGenerator extends GeneratorAbstract implements GeneratorDriverInte
         $annotation = $this->getAnnotation();
         $templateVariables = $annotation->toArray();
         $templateVariables['baseClass'] = $this->getTemplateVariables()->toArray();
-        $templateVariables['providerPrefix'] = DataProviderGenerator::PROVIDER_PREFIX;
+        $templateVariables['providerPrefix'] = DataProviderCodeGenerator::PROVIDER_PREFIX;
         $templateVariables['strict'] = $this->getService()->getConfig()->getFileProperties()->isUseStrictTypes();
         $this->setRenderedOutput(
             new RenderedOutput(

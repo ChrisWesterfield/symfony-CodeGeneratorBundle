@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\FunctionGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\FunctionCodeGenerator;
 
 /**
  * Class FunctionDefinition
@@ -20,7 +20,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\FunctionGenerator;
  */
 final class TestFunction extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\MethodInterface
 {
-    const DRIVER = FunctionGenerator::class;
+    const DRIVER = FunctionCodeGenerator::class;
     /**
      * @var bool
      */

@@ -1,22 +1,22 @@
 <?php
 declare(strict_types = 1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 
 /**
  * Interface SubDriverInterface
  *
- * @package MjrOne\CodeGeneratorBundle\Generator\Driver
+ * @package MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-interface SubDriverInterface extends GeneratorDriverInterface
+interface SubCodeGeneratorInterface extends CodeGeneratorInterface
 {
     /**
      * @return void
@@ -36,15 +36,15 @@ interface SubDriverInterface extends GeneratorDriverInterface
     /**
      * @param ArrayCollection $templateVariables
      *
-     * @return SubDriverInterface
+     * @return SubCodeGeneratorInterface
      */
-    public function setTemplateVariables(ArrayCollection $templateVariables):SubDriverInterface;
+    public function setTemplateVariables(ArrayCollection $templateVariables):SubCodeGeneratorInterface;
 
     /**
      * @param array $config
      *
-     * @return SubDriverInterface
+     * @return SubCodeGeneratorInterface
      */
-    public function setConfig(array $config):SubDriverInterface;
+    public function setConfig(array $config):SubCodeGeneratorInterface;
 
 }

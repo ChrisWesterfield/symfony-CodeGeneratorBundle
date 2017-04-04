@@ -1,23 +1,23 @@
 <?php
 declare(strict_types = 1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\Service;
+namespace MjrOne\CodeGeneratorBundle\Generator\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\ServiceAliasGeneratorEvent;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\SubCodeGeneratorInterface;
 
 /**
  * Class ServiceAliasGenerator
  *
- * @package MjrOne\CodeGeneratorBundle\Generator\Driver\Service
+ * @package MjrOne\CodeGeneratorBundle\Generator\Service
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ServiceAliasGenerator extends SubGeneratorAbstract implements SubDriverInterface
+class ServiceAliasGenerator extends SubCodeGeneratorAbstract implements SubCodeGeneratorInterface
 {
     /**
      * @return void

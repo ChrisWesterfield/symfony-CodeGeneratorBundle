@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\EntityRepositoryGeneratorEvent;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 
 /**
  * Class EntityRepositoryGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class EntityRepositoryGenerator extends GeneratorAbstract implements GeneratorDriverInterface
+class CodeGeneratorEntityRepository extends CodeGeneratorAbstract implements CodeGeneratorInterface
 {
     const REPOSITORY_POSTFIX = 'Repository';
     const REPOSITORY_DIRECTORY = 'Repository';

@@ -1,27 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Document\UnitObject;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\UnitGenerator;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\UnitTestInterface;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\UnitCodeGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\UnitTestInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 use Zend\Code\Generator\GeneratorInterface;
 
 /**
  * Class PhpUnitCodeGeneratorService
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license LGPL V3
  * @link http://www.mjr.one
  */
-class PhpUnitCodeGeneratorService extends GeneratorAbstract implements GeneratorInterface, GeneratorDriverInterface
+class CodeGeneratorPhpUnit extends CodeGeneratorAbstract implements GeneratorInterface, CodeGeneratorInterface
 {
     const TRAIT_NAME = 'TraitUnitTest';
     /**
@@ -47,7 +47,7 @@ class PhpUnitCodeGeneratorService extends GeneratorAbstract implements Generator
         $this->processObject($parameters);
 
         // First Run Unit Test Preperation
-        $unitTest = new UnitGenerator($this->file, $annotation, $this->getService());
+        $unitTest = new UnitCodeGenerator($this->file, $annotation, $this->getService());
         $unitTest->setTemplateVariables($templateVariable)->setConfig($config);
         $unitTest->setTemplateVariables($templateVariable);
         $unitTest->setRenderedOutput($parameters->getRenderedCollection());
@@ -68,7 +68,7 @@ class PhpUnitCodeGeneratorService extends GeneratorAbstract implements Generator
             {
                 $class = get_class($objectItem);
                 $driver = $class::DRIVER;
-                /** @var \MjrOne\CodeGeneratorBundle\Generator\Driver\SubDriverInterface $instance */
+                /** @var \MjrOne\CodeGeneratorBundle\Generator\SubCodeGeneratorInterface $instance */
                 $instance = new $driver($this->file, $objectItem, $this->getService());
                 if(!($instance instanceof UnitTestInterface))
                 {

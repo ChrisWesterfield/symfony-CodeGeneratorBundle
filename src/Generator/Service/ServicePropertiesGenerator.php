@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver\Service;
+namespace MjrOne\CodeGeneratorBundle\Generator\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Service\Property;
 use MjrOne\CodeGeneratorBundle\Document\Property as PropertyDocument;
 use MjrOne\CodeGeneratorBundle\Event\ServicePropertiesGeneratorEvent;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\SubDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\SubCodeGeneratorInterface;
 
 /**
  * Class ServicePropertiesGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver\Service
+ * @package   MjrOne\CodeGeneratorBundle\Generator\Service
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ServicePropertiesGenerator extends SubGeneratorAbstract implements SubDriverInterface
+class ServicePropertiesGenerator extends SubCodeGeneratorAbstract implements SubCodeGeneratorInterface
 {
     /**
      * @return void

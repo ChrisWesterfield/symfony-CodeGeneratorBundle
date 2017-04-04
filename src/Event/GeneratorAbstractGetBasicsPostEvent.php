@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Document\Annotation;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 
 /**
  * Class GeneratorAbstractGetBasicsPostEvent
@@ -28,7 +28,7 @@ class GeneratorAbstractGetBasicsPostEvent extends EventAbstract
      */
     protected $documentAnnotation;
 
-    public function __construct(GeneratorDriverInterface $subject, array $fileBasics, Annotation $doc)
+    public function __construct(CodeGeneratorInterface $subject, array $fileBasics, Annotation $doc)
     {
         parent::__construct($subject);
         $this->fileBasics = $fileBasics;

@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation\Tests;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests\Mock\Config;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\MockObjectGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\MockObjectCodeGenerator;
 
 /**
  * Class MockObject
@@ -21,7 +21,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\PhpUnit\MockObjectGenerator;
  */
 final class MockObject extends CG\AbstractAnnotation implements CG\SubDriverInterface, CG\ClassInterface, CG\PropertyInterface
 {
-    const DRIVER = MockObjectGenerator::class;
+    const DRIVER = MockObjectCodeGenerator::class;
     /**
      * @var bool
      */

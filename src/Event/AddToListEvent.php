@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\GeneratorInterface;
+use MjrOne\CodeGeneratorBundle\Generator\GeneratorInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

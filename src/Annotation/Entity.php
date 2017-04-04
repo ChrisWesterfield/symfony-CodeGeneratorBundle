@@ -4,7 +4,7 @@ namespace MjrOne\CodeGeneratorBundle\Annotation;
 use MjrOne\CodeGeneratorBundle\Annotation\AbstractAnnotation;
 use MjrOne\CodeGeneratorBundle\Annotation\ClassInterface;
 use MjrOne\CodeGeneratorBundle\Annotation\DriverInterface;
-use MjrOne\CodeGeneratorBundle\Generator\Driver\EntityRepositoryGenerator;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorEntityRepository;
 
 
 /**
@@ -19,7 +19,7 @@ use MjrOne\CodeGeneratorBundle\Generator\Driver\EntityRepositoryGenerator;
  */
 final class Entity extends AbstractAnnotation implements ClassInterface, DriverInterface
 {
-    const DRIVER = EntityRepositoryGenerator::class;
+    const DRIVER = CodeGeneratorEntityRepository::class;
     /**
      * @var string
      */

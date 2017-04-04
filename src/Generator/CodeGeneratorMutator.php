@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Generator\Driver;
+namespace MjrOne\CodeGeneratorBundle\Generator;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Document\Property;
 use MjrOne\CodeGeneratorBundle\Event\MutatorGeneratorEvent;
-use MjrOne\CodeGeneratorBundle\Generator\GeneratorDriverInterface;
+use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 /**
  * Class MutatorGenerator
  *
- * @package   MjrOne\CodeGeneratorBundle\Generator\Driver
+ * @package   MjrOne\CodeGeneratorBundle\Generator
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class MutatorGenerator extends GeneratorAbstract implements GeneratorDriverInterface
+class CodeGeneratorMutator extends CodeGeneratorAbstract implements CodeGeneratorInterface
 {
     const TEMPLATE  = 'MjrOneCodeGeneratorBundle:Mutator:base.php.twig';
     const TRAITNAME = 'TraitMutator';

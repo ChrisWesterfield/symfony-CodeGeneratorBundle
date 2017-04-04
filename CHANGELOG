@@ -22,3 +22,5 @@ initial code generator
 updated code generator for phpunit
 added converter for properties, files, constants
 @todo method generator
+1.3.3
+finished File Reader

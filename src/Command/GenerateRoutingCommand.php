@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Command;
 
 use MjrOne\CodeGeneratorBundle\Services\CodeGeneratorInterface;
-use MjrOne\CodeGeneratorBundle\Services\RouterService;
+use MjrOne\CodeGeneratorBundle\Generator\RouteGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +41,7 @@ class GenerateRoutingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        /** @var RouterService $service */
+        /** @var RouteGenerator $service */
         $service = $this->getContainer()->get('mjrone.codegenerator.router')->setOutput($output);
         $service->setCleanup($input->getArgument('cleanup') !== null);
         /** @var CodeGeneratorInterface $service */

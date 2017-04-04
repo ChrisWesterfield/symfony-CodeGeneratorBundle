@@ -16,9 +16,24 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
  */
 class GeneratorAbstractWriteToDiskEvent extends EventAbstract
 {
+    /**
+     * @var string
+     */
     protected $content;
+
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var string
+     */
     protected $path;
+
+    /**
+     * @var bool
+     */
     protected $createDirectory = true;
 
     /**
