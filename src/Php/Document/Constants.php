@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorConstants
  *
- * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Constants
+class Constants Extends DocumentAbstract
 {
     /**
      * @var string

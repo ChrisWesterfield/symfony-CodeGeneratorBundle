@@ -5,8 +5,8 @@ namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Method as DocMethod;
-use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Variable;
+use MjrOne\CodeGeneratorBundle\Php\Document\Method as DocMethod;
+use MjrOne\CodeGeneratorBundle\Php\Document\Variable;
 
 /**
  * Class Method
@@ -142,6 +142,7 @@ class Method
                 if($token === '{' && $functions && $methodObject->hasName())
                 {
                     $methodObject->setBody($this->getFunctionBody($methodObject, $sourceArray));
+                    $methodObject->resetUpdateNeeded();
                     $methods[] = $methodObject;
                     $comment = $modifier = $lastItem = $variableObject = $type = $methodObject = null;
                     $final = $functions = $valueDefinition = $type = false;

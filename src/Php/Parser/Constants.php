@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Constants as DocConstants;
+use MjrOne\CodeGeneratorBundle\Php\Document\Constants as DocConstants;
 use ReflectionClass;
 
 /**
@@ -116,6 +116,7 @@ class Constants
                         $value = constant("$className::$constName");
                     }
                     $constObject->setValue($value);
+                    $constObject->resetUpdateNeeded();
                     $constants[] = $constObject;
                     $constObject = null;
                     $equals = $constItem = false;

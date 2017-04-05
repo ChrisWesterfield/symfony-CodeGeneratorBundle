@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorProperty
  *
- * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Property
+class Property Extends DocumentAbstract
 {
     /**
      * @var string|null
@@ -115,5 +115,21 @@ class Property
         $this->comment = $comment;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultValue():bool
+    {
+        return !empty($this->defaultValue);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasComment():bool
+    {
+        return !empty($this->comment);
     }
 }

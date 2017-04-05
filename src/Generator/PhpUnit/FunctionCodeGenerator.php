@@ -19,6 +19,7 @@ use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorInterface;
  */
 class FunctionCodeGenerator extends CodeGeneratorAbstract implements CodeGeneratorInterface, UnitTestInterface
 {
+    protected $methodDefinition;
     /**
      * @return void
      * @throws \MjrOne\CodeGeneratorBundle\Exception\TypeNotAllowedException

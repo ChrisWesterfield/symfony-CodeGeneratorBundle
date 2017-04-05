@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MjrOne\CodeGeneratorBundle\Php\Parser\Document;
+namespace MjrOne\CodeGeneratorBundle\Php\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
@@ -9,13 +9,13 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 /**
  * Class CodeGeneratorMethod
  *
- * @package   MjrOne\CodeGeneratorBundle\Php\Parser\Document
+ * @package   MjrOne\CodeGeneratorBundle\Php\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @link      https://www.mjr.one
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Method
+class Method Extends DocumentAbstract
 {
     /**
      * @var string
@@ -148,6 +148,14 @@ class Method
     }
 
     /**
+     * @return Variable[]|array
+     */
+    public function getVariables()
+    {
+        return $this->variables;
+    }
+
+    /**
      * @param Variable $variable
      *
      * @return Method
@@ -159,8 +167,27 @@ class Method
         return $this;
     }
 
-    public function hasName()
+    /**
+     * @return bool
+     */
+    public function hasName():bool
     {
         return !empty($this->name);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasComment():bool
+    {
+        return !empty($this->comment);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasVariables():bool
+    {
+        return !empty($this->variables);
     }
 }

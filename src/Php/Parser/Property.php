@@ -5,7 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Php\Parser\Document\Property as DocProperty;
+use MjrOne\CodeGeneratorBundle\Php\Document\Property as DocProperty;
 
 /**
  * Class Property
@@ -116,6 +116,7 @@ class Property
                 {
                     if($propertyObject instanceof DocProperty)
                     {
+                        $propertyObject->resetUpdateNeeded();
                         $properties[] = $propertyObject;
                     }
                     $propertyObject = $propertyText = $property = $lastItem = null;

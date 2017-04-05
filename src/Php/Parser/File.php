@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Exception\TestClassDoesNotExistException;
-use MjrOne\CodeGeneratorBundle\Php\Parser\Document\File as DocFile;
+use MjrOne\CodeGeneratorBundle\Php\Document\File as DocFile;
 
 /**
  * Class File
@@ -62,7 +62,7 @@ class File
      * @param array            $tokens
      * @param \ReflectionClass $reflectionClass
      *
-     * @return \MjrOne\CodeGeneratorBundle\Php\Parser\Document\File
+     * @return \MjrOne\CodeGeneratorBundle\Php\Document\File
      */
     protected function parseDocument(string $source,array $tokens)
     {
@@ -74,7 +74,7 @@ class File
         $fileContainer->setConstants((new Constants())->parseDocument($source, $tokens, $fileContainer->getNamespace().'\\'.$fileContainer->getClassName()));
         $fileContainer->setMethods((new Method())->parseDocument($source, $tokens));
         $fileContainer->setProperties((new Property())->parseDocument($source, $tokens));
-
+        $fileContainer->resetUpdateNeeded();
         return $fileContainer;
     }
 
