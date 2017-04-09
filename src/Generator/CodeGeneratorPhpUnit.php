@@ -86,6 +86,5 @@ class CodeGeneratorPhpUnit extends CodeGeneratorAbstract implements GeneratorInt
 
     public function generate()
     {
-
     }
 }

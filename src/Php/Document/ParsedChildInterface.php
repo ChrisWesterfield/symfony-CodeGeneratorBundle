@@ -7,18 +7,23 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 
 /**
- * Class DocumentInterface
- *
- * @package   MjrOne\CodeGeneratorBundle\Php\Document
+ * Class ParsedChildInterface
+ * @package MjrOne\CodeGeneratorBundle\Php\Document
  * @author    Chris Westerfield <chris@mjr.one>
  * @copyright Christopher Westerfield <chris@mjr.one>
  * @license   LGPL V3
  * @link      http://www.mjr.one
  */
-interface DocumentInterface
+interface ParsedChildInterface
 {
     /**
-     * @return DocumentInterface
+     * @return mixed
      */
-    public function updateFileContainer():DocumentInterface;
+    public function getName();
+
+    /**
+     * @param DocumentInterface|null $parent
+     * @return DocumentAbstract
+     */
+    public function setParent($parent);
 }

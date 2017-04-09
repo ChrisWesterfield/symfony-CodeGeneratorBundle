@@ -15,7 +15,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Constants Extends DocumentAbstract
+class Constants Extends DocumentAbstract implements ParsedChildInterface
 {
     /**
      * @var string
@@ -31,6 +31,19 @@ class Constants Extends DocumentAbstract
      * @var mixed
      */
     protected $value;
+
+    /**
+     * @var bool
+     */
+    protected $arrayValue=false;
+
+    /**
+     * @return bool
+     */
+    public function isArrayValue(): bool
+    {
+        return $this->arrayValue;
+    }
 
     /**
      * @return string
@@ -56,6 +69,7 @@ class Constants Extends DocumentAbstract
     public function setName(string $name): Constants
     {
         $this->name = $name;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -63,7 +77,7 @@ class Constants Extends DocumentAbstract
     /**
      * @return string
      */
-    public function getVisibility(): string
+    public function getVisibility()
     {
         return $this->visibility;
     }
@@ -76,6 +90,7 @@ class Constants Extends DocumentAbstract
     public function setVisibility(string $visibility): Constants
     {
         $this->visibility = $visibility;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -96,6 +111,8 @@ class Constants Extends DocumentAbstract
     public function setValue($value)
     {
         $this->value = $value;
+        $this->arrayValue = is_array($value);
+        $this->updateFileContainer();
 
         return $this;
     }

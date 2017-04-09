@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Php\Document;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Php\Parser\AbstractParser;
 
 /**
  * Class CodeGeneratorProperty
@@ -15,7 +17,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Property Extends DocumentAbstract
+class Property Extends DocumentAbstract implements ParsedChildInterface
 {
     /**
      * @var string|null
@@ -23,7 +25,7 @@ class Property Extends DocumentAbstract
     protected $comment;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $visibility;
 
@@ -38,9 +40,38 @@ class Property Extends DocumentAbstract
     protected $defaultValue;
 
     /**
+     * @var bool
+     */
+    protected $nulled=false;
+
+    /**
+     * @var bool
+     */
+    protected $arrayValue=false;
+
+    /**
+     * @return bool
+     */
+    public function isNulled(): bool
+    {
+        return $this->nulled;
+    }
+
+    /**
+     * @return Property
+     */
+    public function setNulled(): Property
+    {
+        $this->nulled = true;
+        $this->updateFileContainer();
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public function getVisibility(): string
+    public function getVisibility()
     {
         return $this->visibility;
     }
@@ -53,6 +84,7 @@ class Property Extends DocumentAbstract
     public function setVisibility(string $visibility): Property
     {
         $this->visibility = $visibility;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -73,6 +105,7 @@ class Property Extends DocumentAbstract
     public function setName(string $name): Property
     {
         $this->name = $name;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -93,6 +126,8 @@ class Property Extends DocumentAbstract
     public function setDefaultValue($defaultValue)
     {
         $this->defaultValue = $defaultValue;
+        $this->arrayValue = is_array($defaultValue)||$defaultValue instanceof ArrayCollection;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -102,6 +137,33 @@ class Property Extends DocumentAbstract
      */
     public function getComment()
     {
+        if($this->comment === null && $this->isArrayValue())
+        {
+            switch($this->defaultValue)
+            {
+                case is_array($this->defaultValue):
+                    $comment = AbstractParser::TYPE_ARRAY;
+                break;
+                case is_int($this->defaultValue):
+                    $comment = AbstractParser::TYPE_INT;
+                break;
+                case is_float($this->defaultValue):
+                    $comment = AbstractParser::TYPE_FLOAT;
+                break;
+                case (in_array($this->defaultValue,[AbstractParser::VALUE_FALSE, AbstractParser::VALUE_TRUE])):
+                    $comment = AbstractParser::TYPE_BOOL;
+                break;
+                case is_string($this->defaultValue):
+                    $comment = AbstractParser::TYPE_STRING;
+                break;
+                default:
+                    $comment = AbstractParser::TYPE_MIXED;
+                break;
+            }
+            $this->comment = '/**
+     * @var array
+     */ ';
+        }
         return $this->comment;
     }
 
@@ -113,6 +175,7 @@ class Property Extends DocumentAbstract
     public function setComment($comment)
     {
         $this->comment = $comment;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -131,5 +194,13 @@ class Property Extends DocumentAbstract
     public function hasComment():bool
     {
         return !empty($this->comment);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isArrayValue(): bool
+    {
+        return $this->arrayValue;
     }
 }

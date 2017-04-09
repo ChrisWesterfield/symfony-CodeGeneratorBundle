@@ -1,0 +1,45 @@
+<?php
+{% if file.strict %}declare(strict_types=1);{% endif %}
+
+
+{% if file.namespace is not empty %}namespace {{ file.namespace }};{% endif %}
+
+
+{% if file.usedNamespaces|length > 0 %}{% for usedNamespace in file.usedNamespaces %}
+use {{ usedNamespace }};
+{% endfor %}
+{% endif %}
+
+{{ file.classComment }}
+{% if file.abstractClass %}abstract {% endif %}class {{ file.className }} {% if file.extends is not empty %}extends {{ file.extends }}{% endif %} {% if file.interfaces|length > 0 %}implements {% for iface in file.interfaces %}{{ iface }}{% if loop.last != true %},{% endif %}{% endfor %}{% endif %}
+
+{
+{% if file.traitUses|length > 0 %}{% for trait in file.traitUses %}
+    use {{ trait }};
+{% endfor %}{% endif %}
+
+{% if file.constants|length > 0 %}{% for constant in file.constants %}
+    {% if constant.visibility is not empty %}{{ constant.visibility|raw }} {% endif %}const {{ constant.name }} = {% if constant.arrayValue == false %}{{ constant.value|raw }};
+{% elseif constant.value|length > 0 %}
+
+    [
+{% for value in constant.value %}    {% if value is not iterable %}{{ value|raw }}{% else %}{% for item in value %}{{ item|raw }}{% if loop.last != true %}=>{% endif %}{% endfor %}{% endif %}
+
+{% endfor %}
+    ];
+{% endif %}
+{% endfor %}{% endif %}
+
+{% if file.properties|length > 0 %}{% for property in file.properties %}
+    {% if property.comment is not empty %}{{ property.comment }}
+    {% endif %}{% if property.visibility is not empty %}{{ property.visibility }} {% endif %}${{ property.name }}{% if property.arrayValue %}{% if property.defaultValue|length > 0 %} =
+    [
+{% for value in property.defaultValue %}    {% if value is not iterable %}{{ value|raw }}{% else %}{% for item in value %}{{ item|raw }}{% if loop.last != true %}=>{% endif %}{% endfor %}{% endif %}
+
+{% endfor %}
+    ]{% endif %}{% else %}{% if property.defaultValue is not empty %} = {% if property.nulled == true %}null{% else %}{{ property.defaultValue|raw }}{% endif %}{% endif %}{% endif %};
+
+{% endfor %}{% endif %}
+{% include 'MjrOneCodeGeneratorBundle:Writer:method.php.twig' with {'method': methods} %}
+
+}

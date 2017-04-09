@@ -125,3 +125,31 @@ services:
             - '@twig'
             - '@mjrone.codegenerator.configuration'
             - '@kernel'
+
+    mjrone.codegenerator.php.writer:
+        class: MjrOne\CodeGeneratorBundle\Php\Writer\Writer
+        arguments:
+            - '@twig'
+
+    mjrone.codegenerator.php.parser.constant:
+        class: MjrOne\CodeGeneratorBundle\Php\Parser\Constants
+        arguments:
+            - '@mjrone.codegenerator.event'
+
+    mjrone.codegenerator.php.parser.method:
+        class: MjrOne\CodeGeneratorBundle\Php\Parser\Method
+        arguments:
+            - '@mjrone.codegenerator.event'
+
+    mjrone.codegenerator.php.parser.property:
+        class: MjrOne\CodeGeneratorBundle\Php\Parser\Property
+        arguments:
+            - '@mjrone.codegenerator.event'
+
+    mjrone.codegenerator.php.parser.file:
+        class: MjrOne\CodeGeneratorBundle\Php\Parser\File
+        arguments:
+            - '@mjrone.codegenerator.event'
+            - '@mjrone.codegenerator.php.parser.constant'
+            - '@mjrone.codegenerator.php.parser.method'
+            - '@mjrone.codegenerator.php.parser.property'

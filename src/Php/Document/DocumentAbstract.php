@@ -23,24 +23,22 @@ class DocumentAbstract implements DocumentInterface
      * @var DocumentInterface|null
      */
     protected $parent=null;
-    /**
-     * @var bool
-     */
-    protected $updateNeeded;
 
+    /**
+     * DocumentAbstract constructor.
+     * @param DocumentInterface|null $parent
+     */
     public function __construct(DocumentInterface $parent=null)
     {
         $this->parent = $parent;
-        $this->updateNeeded = false;
     }
 
     /**
      * @return DocumentInterface
      */
-    public function setUpdateNeeded():DocumentInterface
+    public function updateFileContainer():DocumentInterface
     {
-        $this->updateNeeded = true;
-        if($this->parent instanceof DocumentInterface)
+        if($this->parent instanceof File)
         {
             $this->parent->setUpdateNeeded();
         }
@@ -49,20 +47,12 @@ class DocumentAbstract implements DocumentInterface
     }
 
     /**
-     * @return DocumentInterface
+     * @param DocumentInterface|null $parent
+     * @return DocumentAbstract
      */
-    public function resetUpdateNeeded():DocumentInterface
+    public function setParent($parent):DocumentAbstract
     {
-        $this->updateNeeded = false;
-
+        $this->parent = $parent;
         return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUpdateNeeded(): bool
-    {
-        return $this->updateNeeded;
     }
 }

@@ -15,7 +15,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Method Extends DocumentAbstract
+class Method Extends DocumentAbstract implements ParsedChildInterface
 {
     /**
      * @var string
@@ -48,6 +48,32 @@ class Method Extends DocumentAbstract
     protected $variables;
 
     /**
+     * @var string|null
+     */
+    protected $methodReturn;
+
+    /**
+     * @return null|string
+     */
+    public function getMethodReturn()
+    {
+        return $this->methodReturn;
+    }
+
+    /**
+     * @param null|string $methodReturn
+     *
+     * @return Method
+     */
+    public function setMethodReturn($methodReturn)
+    {
+        $this->methodReturn = $methodReturn;
+        $this->updateFileContainer();
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getVisibility(): string
@@ -63,6 +89,7 @@ class Method Extends DocumentAbstract
     public function setVisibility(string $visibility): Method
     {
         $this->visibility = $visibility;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -83,6 +110,7 @@ class Method Extends DocumentAbstract
     public function setName(string $name): Method
     {
         $this->name = $name;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -103,6 +131,7 @@ class Method Extends DocumentAbstract
     public function setFinal(bool $final): Method
     {
         $this->final = $final;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -123,6 +152,7 @@ class Method Extends DocumentAbstract
     public function setBody(array $body): Method
     {
         $this->body = $body;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -143,6 +173,7 @@ class Method Extends DocumentAbstract
     public function setComment(array $comment): Method
     {
         $this->comment = $comment;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -152,7 +183,7 @@ class Method Extends DocumentAbstract
      */
     public function getVariables()
     {
-        return $this->variables;
+        return $this->variables!==null?$this->variables:[];
     }
 
     /**
@@ -163,6 +194,7 @@ class Method Extends DocumentAbstract
     public function addVariable(Variable $variable):Method
     {
         $this->variables[] = $variable;
+        $this->updateFileContainer();
 
         return $this;
     }
@@ -189,5 +221,21 @@ class Method Extends DocumentAbstract
     public function hasVariables():bool
     {
         return !empty($this->variables);
+    }
+
+    /**
+     * @param \array[]|null $variables
+     * @return Method
+     */
+    public function setVariables(array $variables=null):Method
+    {
+        if($variables === null)
+        {
+            $variables = [];
+        }
+        $this->variables = $variables;
+        $this->updateFileContainer();
+
+        return $this;
     }
 }

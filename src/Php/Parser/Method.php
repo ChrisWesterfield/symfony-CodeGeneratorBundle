@@ -17,135 +17,119 @@ use MjrOne\CodeGeneratorBundle\Php\Document\Variable;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Method
+class Method extends AbstractParser
 {
-    public const METHOD_PRIVATE = 'private';
-    public const METHOD_PROTECTED = 'protected';
-    public const METHOD_PUBLIC  = 'public';
-    public const METHOD_ALLOWED = [
-        T_PUBLIC,
-        T_PRIVATE,
-        T_PROTECTED,
-    ];
     /**
      * @param string $source
      * @param array  $tokens
      *
-     *  @return array;
+     * @return array;
      */
-    public  function parseDocument(string $source,array $tokens)
+    public function parseDocument(string $source, array $tokens)
     {
-        $sourceArray = explode("\n",$source);
+        $sourceArray = explode("\n", $source);
         $methods = [];
         $methodPrototype = new DocMethod();
         $variablePrototype = new Variable();
-        $comment = $modifier = $lastItem = $variableObject = $type = $methodObject = null;
-        $final = $functions = $valueDefinition = $type = false;
-        foreach($tokens as $token)
+        $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
+        $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
+        foreach ($tokens as $tokenRaw)
         {
-            if(!is_string($token))
+            $token = new Token($tokenRaw);
+            if (!$token->isStringToken())
             {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id===T_FINAL)
+                if ($token->isFinal())
                 {
                     $final = true;
                 }
-                if($id === T_DOC_COMMENT)
+                if ($token->isDocComment())
                 {
-                    $comment = $text;
+                    $comment = $token->getText();
                 }
-                if($id === T_FUNCTION)
+                if ($token->isFunction())
                 {
-                    list($lId, $lText) = $lastItem;
-                    $lId = (int)$lId;
                     $methodObject = clone $methodPrototype;
-                    if(in_array($lId, self::METHOD_ALLOWED))
+                    $methodObject->setVisibility($this->getModifier($lastToken));
+                    $comment = explode("\n",$comment);
+                    $newComment = [];
+                    foreach($comment as $com)
                     {
-                        switch($lId)
-                        {
-                            case T_PUBLIC:
-                                $methodObject->setVisibility(self::METHOD_PUBLIC);
-                                break;
-                            case T_PROTECTED:
-                                $methodObject->setVisibility(self::METHOD_PROTECTED);
-                                break;
-                            case T_PRIVATE:
-                                $methodObject->setVisibility(self::METHOD_PRIVATE);
-                                break;
-                        }
+                        $newComment[] = str_replace('     *      *', '     *', $com);
                     }
-                    $methodObject->setComment(explode("\n",$comment));
+                    $methodObject->setComment($newComment);
                     $methodObject->setFinal($final);
                     $functions = true;
                 }
-                if($functions === true && !$methodObject->hasName() && $id === T_STRING)
+                if ($functions === true && !$methodObject->hasName() && $token->isString())
                 {
-                    $methodObject->setName(str_replace('$','',$text));
+                    $methodObject->setName($token->getName());
                 }
-                if($functions && $id === T_STRING)
+                if ($functions && $token->isString())
                 {
-                    $type = $text;
+                    $type = $token->getText();
                 }
-                if($functions && $id === T_VARIABLE)
+                if ($functions && $token->isVariable())
                 {
                     $variableObject = clone $variablePrototype;
-                    $variableObject->setName(str_replace('$','',$text));
-                    if($type !== null)
+                    $variableObject->setName(str_replace('$', '', $token->getText()));
+                    if ($type !== null && $type !== 'false')
                     {
                         $variableObject->setType($type);
                     }
                     $valueDefinition = true;
                 }
-                if($functions && $valueDefinition)
+                if ($functions && $valueDefinition && !$token->isVariable() && $variableObject instanceof Variable)
                 {
-
-                    $value = null;
-                    switch($id)
+                    $text = $this->getDataType($token);
+                    $variableObject->setDefaultValue($text);
+                    if (
+                        (
+                            $text === self::VALUE_TRUE
+                            ||
+                            $text === self::VALUE_FALSE
+                        )
+                        &&
+                        $variableObject->getType() === self::TYPE_STRING
+                    )
                     {
-                        case T_DNUMBER:
-                            $value = (double)$text;
-                        break;
-                        case T_LNUMBER:
-                            $value = (int)$text;
-                        break;
-                        case T_STRING:
-                            if($text === 'true')
-                            {
-                                $value = true;
-                            }
-                            else
-                                if($text === 'false')
-                            {
-                                $value = false;
-                            }
-                            else
-                            {
-                                $value = '\''.(string)$text.'\'';
-                            }
-                        break;
+                        $variableObject->setType('bool');
                     }
-                    $variableObject->setDefaultValue($value);
+                    if ($token->isNullable())
+                    {
+                        $variableObject->setNulled(true);
+                    }
+                    $methodObject->addVariable($variableObject);
+                    $variableObject = null;
                 }
 
-                if($id!==T_WHITESPACE)
+                if ($functions && $functionEnd && $methodReturn && $token->isString())
                 {
-                    $lastItem = $token;
+                    $methodObject->setMethodReturn($token->getText());
+                    $functionEnd = false;
+                    $methodReturn = false;
+                }
+
+                if (!$token->isWhiteSpace())
+                {
+                    $lastToken = $token;
                 }
             }
             else
             {
-                if($token === ',' && $functions && $valueDefinition && $variableObject instanceof Variable)
+                if ($functions && $token->tokenEquals(')'))
                 {
-                    $methodObject->addVariable($variableObject);
+                    $functionEnd = true;
                 }
-                if($token === '{' && $functions && $methodObject->hasName())
+                if ($functions && $functionEnd && $token->tokenEquals(':'))
+                {
+                    $methodReturn = true;
+                }
+                if ($functions && $token->tokenEquals('{') &&  $methodObject->hasName())
                 {
                     $methodObject->setBody($this->getFunctionBody($methodObject, $sourceArray));
-                    $methodObject->resetUpdateNeeded();
                     $methods[] = $methodObject;
-                    $comment = $modifier = $lastItem = $variableObject = $type = $methodObject = null;
-                    $final = $functions = $valueDefinition = $type = false;
+                    $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
+                    $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
                 }
             }
         }
@@ -157,49 +141,49 @@ class Method
      * extract method Body from source File
      *
      * @param DocMethod $methodObject
+     * @param array     $source
      *
      * @return array
      */
-    protected function getFunctionBody(DocMethod $methodObject,array $source)
+    protected function getFunctionBody(DocMethod $methodObject, array $source)
     {
         $body = [];
         $bracket = 0;
         $method = false;
         $first = false;
-        foreach($source as $row)
+        foreach ($source as $row)
         {
             $check = strtolower($row);
             $check2 = str_replace(' ', '', $check);
-            $search = $methodObject->getName().'(';
+            $search = $methodObject->getName() . '(';
             $search = strtolower($search);
-            if(
-                strpos($check, strtolower($methodObject->getVisibility()))!==false
-                &&
-                strpos($check, 'function') !== false
-                &&
-                strpos($check2, $search) !==false
+            if (
+                strpos($check, self::TYPE_FUNCTION) !== false
+                && strpos($check2, $search) !== false
+                && strpos($check, strtolower($methodObject->getVisibility())) !== false
             )
             {
                 $method = true;
             }
-            if($method)
+            if ($method)
             {
                 $bracket -= substr_count($row, '}');
-                if($bracket >= 1)
+                if ($bracket >= 1)
                 {
                     $body[] = $row;
                 }
                 $bracket += substr_count($row, '{');
-                if(!$first && $bracket > 0)
+                if (!$first && $bracket > 0)
                 {
                     $first = true;
                 }
-                if($bracket === 0 && $first === true)
+                if ($bracket === 0 && $first === true)
                 {
                     break;
                 }
             }
         }
+
         return $body;
     }
 }

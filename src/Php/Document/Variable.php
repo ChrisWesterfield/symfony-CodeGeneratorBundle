@@ -33,6 +33,31 @@ class Variable Extends DocumentAbstract
     protected $defaultValue;
 
     /**
+     * @var bool
+     */
+    protected $nulled=false;
+
+    /**
+     * @return bool
+     */
+    public function isNulled(): bool
+    {
+        return $this->nulled;
+    }
+
+    /**
+     * @param bool $nulled
+     *
+     * @return Variable
+     */
+    public function setNulled(bool $nulled): Variable
+    {
+        $this->nulled = $nulled;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string

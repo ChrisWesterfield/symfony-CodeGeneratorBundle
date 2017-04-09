@@ -7,9 +7,8 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Php\Document\DocumentInterface;
 use MjrOne\CodeGeneratorBundle\Php\Document\File;
-use MjrOne\CodeGeneratorBundle\Php\Document\Constants;
-use MjrOne\CodeGeneratorBundle\Php\Document\Method;
-use MjrOne\CodeGeneratorBundle\Php\Document\Property;
+use Symfony\Component\Filesystem\Filesystem;
+use Twig_Environment;
 
 /**
  * Class Writer
@@ -22,116 +21,36 @@ use MjrOne\CodeGeneratorBundle\Php\Document\Property;
  */
 class Writer
 {
+
+    /**
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
+     * Writer constructor.
+     *
+     * @param Twig_Environment $twig_Environment
+     */
+    public function __construct(Twig_Environment $twig_Environment)
+    {
+        $this->twig = $twig_Environment;
+    }
+
     /**
      * @param DocumentInterface|File $document
+     * @param $file
      */
-    public function writeDocument(DocumentInterface $document)
+    public function writeDocument(DocumentInterface $document, $file)
     {
-        if ($document->isUpdateNeeded())
-        {
-            $prepared = [
-                'constants'  => '',
-                'properties' => '',
-                'methods'    => '',
-            ];
-            $prepared['constants'] = $this->prepareConstants($document->getConstants());
-            $prepared['properties'] = $this->prepareProperties($document->getProperties());
-            $prepared['methods'] = $this->prepareMethods($document->getMethods());
-            $documentString = $this->prepareFile($document, $prepared);
-            $this->saveDocument($document, $documentString);
-        }
-    }
-
-    /**
-     * @param DocumentInterface[]|Constants[] $constants
-     *
-     * @return string
-     */
-    protected function prepareConstants(array $constants): string
-    {
-        $outputString = '';
-        if(!empty($constants))
-        {
-            foreach($constants as $constant)
-            {
-                $outputString .= '    '.$constant->getVisibility().' '.$constant->getName().' = '.$constant->getValue().';'."\n";
-            }
-        }
-        return $outputString;
-    }
-
-    /**
-     * @param DocumentInterface[]|Property[] $properties
-     *
-     * @return string
-     */
-    protected function prepareProperties(array $properties): string
-    {
-        $outputString = '';
-        if(!empty($properties))
-        {
-            foreach($properties as $property)
-            {
-                if($property->hasComment())
-                {
-                    $outputString .= implode("\n",$property->getComment())."\n\n";
-                }
-                $outputString .= '    '.$property->getVisibility().' $'.$property->getName().($property->hasDefaultValue()?' = '.$property->getDefaultValue():'').';'."\n";
-            }
-        }
-        return $outputString;
-    }
-
-    /**
-     * @param DocumentInterface[]|Method[] $methods
-     *
-     * @return string
-     */
-    protected function prepareMethods(array $methods): string
-    {
-        $outputString = '';
-        if(!empty($methods))
-        {
-            foreach($methods as $method)
-            {
-                if($method->hasComment())
-                {
-                    $outputString .= implode("\n",$method->getComment());
-                    $outputString .= "\n";
-                }
-                $outputString .= '    '.$method->getVisibility().' function '.$method->getName().'( ';
-                if(!$method->hasVariables())
-                {
-                    foreach($method->getVariables() as $variable)
-                    {
-                        $outputString .= (!$variable->getType()!==false?$variable->getType()).' $'.$variable->getName().($variable->hasDefaultValue()?' = '.$variable->getDefaultValue():'');
-                    }
-                }
-                $outputString .= ')'."\n".'    {'."\n".$method->getBody()."\n    }"."\n\n";
-            }
-        }
-        return $outputString;
-    }
-
-    /**
-     * @param DocumentInterface $document
-     * @param array             $prepared
-     *
-     * @return string
-     */
-    protected function prepareFile(DocumentInterface $document, array $prepared): string
-    {
-        $outputString = '';
-
-        return $outputString;
-    }
-
-    /**
-     * @param DocumentInterface $document
-     * @param string            $documentString
-     */
-    protected function saveDocument(DocumentInterface $document, string $documentString): void
-    {
-
+        $data = [
+            'file'       => $document,
+            'methods'    => $document->getMethods(),
+            'properties' => $document->getProperties(),
+            'constants'  => $document->getConstants(),
+        ];
+        $output = $this->twig->render('MjrOneCodeGeneratorBundle:Writer:base.php.twig',$data);
+        $fs = new Filesystem();
+        $fs->dumpFile($file, $output);
     }
 }

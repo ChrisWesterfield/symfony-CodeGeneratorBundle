@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Event\PhpParserFileEvent;
 use MjrOne\CodeGeneratorBundle\Exception\TestClassDoesNotExistException;
 use MjrOne\CodeGeneratorBundle\Php\Document\File as DocFile;
+use MjrOne\CodeGeneratorBundle\Php\Document\ParsedChildInterface;
+use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
 
 /**
  * Class File
@@ -17,7 +21,7 @@ use MjrOne\CodeGeneratorBundle\Php\Document\File as DocFile;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class File
+class File extends AbstractParser
 {
     /**
      * @var Constants
@@ -34,23 +38,25 @@ class File
      */
     protected $property;
 
-    protected $fileContainer;
-
     /**
      * File constructor.
+     * @param EventDispatcherService $eventDispatcher
+     * @param Constants $constants
+     * @param Method $method
+     * @param Property $property
      */
-    public function __construct()
+    public function __construct(EventDispatcherService $eventDispatcher, Constants $constants, Method $method, Property $property)
     {
-        $this->constants = new Constants();
-        $this->methods = new Method();
-        $this->property = new Property();
+        parent::__construct($eventDispatcher);
+        $this->constants = $constants;
+        $this->methods = $method;
+        $this->property = $property;
     }
 
     public function readFile($file)
     {
-        if(!file_exists($file))
-        {
-            throw new TestClassDoesNotExistException('Test Class '.$file.' does not exist');
+        if (!file_exists($file)) {
+            throw new TestClassDoesNotExistException('Test Class ' . $file . ' does not exist');
         }
         $content = file_get_contents($file);
         $tokens = token_get_all($content);
@@ -58,29 +64,59 @@ class File
     }
 
     /**
-     * @param string           $source
-     * @param array            $tokens
+     * @param string $source
+     * @param array $tokens
      * @param \ReflectionClass $reflectionClass
      *
      * @return \MjrOne\CodeGeneratorBundle\Php\Document\File
      */
-    protected function parseDocument(string $source,array $tokens)
+    protected function parseDocument(string $source, array $tokens)
     {
         $fileContainer = new DocFile();
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setSource($source)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPre'),$event);
         $this->getDeclarStrict($tokens, $fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostDeclareStrict'),$event);
         $this->getNamespaceDeclaration($tokens, $fileContainer);
-        $this->getUsedClasses($tokens,$fileContainer);
-        $this->getClassHeaders($tokens,$fileContainer);
-        $fileContainer->setConstants((new Constants())->parseDocument($source, $tokens, $fileContainer->getNamespace().'\\'.$fileContainer->getClassName()));
-        $fileContainer->setMethods((new Method())->parseDocument($source, $tokens));
-        $fileContainer->setProperties((new Property())->parseDocument($source, $tokens));
-        $fileContainer->resetUpdateNeeded();
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostNamespace'),$event);
+        $this->getUsedClasses($tokens, $fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostUsedClasses'),$event);
+        $this->getClassHeaders($tokens, $fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostClassHeaders'),$event);
+        $this->getClassTraits($tokens, $fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostTraits'),$event);
+        /** @var \MjrOne\CodeGeneratorBundle\Php\Document\Constants[] $constants */
+        $this->addObject($this->constants->parseDocument($source, $tokens, $fileContainer->getNamespace() . '\\' . $fileContainer->getClassName()),$fileContainer,'addConstant');
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostConstants'),$event);
+        $this->addObject($this->methods->parseDocument($source, $tokens),$fileContainer,'addMethod');
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostMethods'),$event);
+        $this->addObject($this->property->parseDocument($source, $tokens),$fileContainer,'addProperty');
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPostProperty'),$event);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'ParseDocumentPreReturn'),$event);
         return $fileContainer;
     }
 
     /**
+     * @param array $objects
+     * @param DocFile $file
+     * @param string $addMethod
+     * @return void
+     */
+    protected function addObject(array $objects, DocFile $file, string $addMethod):void
+    {
+        if(!empty($objects))
+        {
+            foreach($objects as $object)
+            {
+                $object->setParent($file);
+                $file->$addMethod($object);
+            }
+        }
+    }
+
+    /**
      * @param array $tokens
-     * @param DocFile  $fileContainer
+     * @param DocFile $fileContainer
      *
      * @return bool
      */
@@ -89,73 +125,57 @@ class File
         $abstract = $class = $extends = $implements = $useBool = $classBody = false;
         $classComment = '';
         $implementsArray = $classUse = [];
-        foreach($tokens as $token)
-        {
-            if (!is_string($token))
-            {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id === T_DOC_COMMENT)
-                {
-                    $classComment = $text;
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getClassHeaders'),$event);
+        $tokens = $event->getTokens();
+        foreach ($tokens as $tokenRaw) {
+            $token = new Token($tokenRaw);
+            if (!$token->isStringToken()) {
+                if ($token->isDocComment()) {
+                    $classComment = $token->getText();
                 }
-                if($id === T_ABSTRACT)
-                {
+                if ($token->isAbstract()) {
                     $abstract = true;
                 }
-                if($id === T_CLASS)
-                {
+                if ($token->isClass()) {
                     $fileContainer->setClassComment($classComment);
-                    if($abstract)
-                    {
+                    if ($abstract) {
                         $fileContainer->setAbstractClass(true);
                     }
                     $class = true;
                 }
-                if($class && $id === T_STRING)
-                {
-                    $fileContainer->setClassName($text);
+                if ($class && $token->isString()) {
+                    $fileContainer->setClassName($token->getText());
                     $class = false;
                 }
-                if($id === T_EXTENDS)
-                {
+                if ($token->isExtends()) {
                     $extends = true;
                 }
-                if($extends && $id === T_STRING)
-                {
-                    $fileContainer->setExtends($text);
+                if ($extends && $token->isString()) {
+                    $fileContainer->setExtends($token->getText());
                     $extends = false;
                 }
-                if($id === T_IMPLEMENTS)
-                {
+                if ($token->isImplements()) {
                     $implements = true;
                 }
-                if($implements && $id === T_STRING)
-                {
-                    $implementsArray[] = $text;
+                if ($implements && $token->isString()) {
+                    $implementsArray[] = $token->getText();
                 }
-                if($classBody)
-                {
-                    if($id === T_USE)
-                    {
+                if ($classBody) {
+                    if ($token->isUse()) {
                         $useBool = true;
                     }
-                    if($useBool && $id === T_STRING)
-                    {
-                        $classUse[] = $text;
+                    if ($useBool && $token->isString()) {
+                        $classUse[] = $token->getText();
                     }
                 }
-            }
-            else
-            {
-                if($token === '{')
-                {
+            } else {
+                if ($token->tokenEquals('{')) {
                     $implements = false;
                     $fileContainer->setInterfaces($implementsArray);
                     $classBody = true;
                 }
-                if($token === ';' && $classBody && $useBool)
-                {
+                if ($token->tokenEquals(';') && $classBody && $useBool) {
                     $useBool = false;
                 }
             }
@@ -165,7 +185,7 @@ class File
 
     /**
      * @param array $tokens
-     * @param DocFile  $fileContainer
+     * @param DocFile $fileContainer
      *
      * @return bool
      */
@@ -175,36 +195,36 @@ class File
         $useRow = '';
         $useArray = [];
         $useBool = false;
-        foreach($tokens as $token)
-        {
-            if(!is_string($token))
-            {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id === T_USE)
-                {
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getUsedClassesPre'),$event);
+        $tokens = $event->getTokens();
+        foreach ($tokens as $tokenRaw) {
+            $token = new Token($tokenRaw);
+            if (!$token->isStringToken()) {
+                if ($token->isUse()) {
                     $useBool = true;
                 }
-                if($useBool && in_array($id, [T_STRING, T_NS_SEPARATOR]))
-                {
-                    $useRow .= $text;
+                if ($useBool && $token->isNameSpaceElement()) {
+                    $useRow .= $token->getText();
                 }
-                if($id === T_CLASS)
+                if($useBool && $token->isAs())
                 {
+                    $useRow .= ' as ';
+                }
+                if ($token->isClass()) {
                     break;
                 }
-            }
-            else
-                if($token === ';' && !empty($useRow))
-            {
-                $useArray[] = $useRow;
-                $useRow = '';
-                $useBool = false;
-            }
+            } else
+                if ($token->tokenEquals(';') && !empty($useRow)) {
+                    $useArray[] = $useRow;
+                    $useRow = '';
+                    $useBool = false;
+                }
         }
-        if(!empty($useArray))
-        {
+        if (!empty($useArray)) {
             $fileContainer->setUsedNamespaces($useArray);
+            $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class,'getUsedClassesPost'),$event);
             return true;
         }
         return false;
@@ -212,7 +232,7 @@ class File
 
     /**
      * @param array $tokens
-     * @param DocFile  $fileContainer
+     * @param DocFile $fileContainer
      *
      * @return bool
      */
@@ -220,32 +240,28 @@ class File
     {
         $fullNameSpace = '';
         $namespace = false;
-        foreach($tokens as $token)
-        {
-            if(!is_string($token))
-            {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id === T_NAMESPACE)
-                {
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getNamesoaceDeclarationPre'),$event);
+        $tokens = $event->getTokens();
+        foreach ($tokens as $tokenRaw) {
+            $token = new Token($tokenRaw);
+            if (!$token->isStringToken()) {
+                if ($token->isNamespace()) {
                     $namespace = true;
                 }
-                if($namespace && in_array($id, [T_STRING, T_NS_SEPARATOR]))
-                {
-                    $fullNameSpace .= $text;
+                if ($namespace && $token->isNameSpaceElement()) {
+                    $fullNameSpace .= $token->getText();
                 }
-            }
-            else
-            {
-                if($namespace && $token===';')
-                {
+            } else {
+                if ($namespace && $token->tokenEquals(';')) {
                     break;
                 }
             }
         }
-        if(!empty($fullNameSpace))
-        {
+        if (!empty($fullNameSpace)) {
             $fileContainer->setNamespace($fullNameSpace);
+            $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class,'getNamesoaceDeclarationPost'),$event);
             return true;
         }
         return false;
@@ -253,36 +269,91 @@ class File
 
     /**
      * @param array $tokens
-     * @param DocFile  $fileContainer
+     * @param DocFile $fileContainer
      *
      * @return bool
      */
     protected function getDeclarStrict(array $tokens, DocFile $fileContainer)
     {
         $tokenStart = false;
-        $strictType=false;
-        foreach($tokens as $token)
-        {
-            if(!is_string($token))
-            {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id === T_DECLARE)
-                {
+        $strictType = false;
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getDeclarStrictPre'),$event);
+        $tokens = $event->getTokens();
+        foreach ($tokens as $tokenRaw) {
+            $token = new Token($tokenRaw);
+            if (!$token->isStringToken()) {
+                if ($token->isDeclare()) {
                     $tokenStart = true;
                 }
-                if($tokenStart && $id === T_STRING && $text === 'strict_types')
-                {
+                if ($tokenStart && $token->isString() && $token->equalsText(self::TYPE_STRICT)) {
                     $strictType = true;
                 }
-                if($tokenStart && $strictType && $id === T_LNUMBER && $text === '1')
-                {
+                if ($tokenStart && $strictType && $token->isInteger() && $token->equalsText('1')) {
                     $fileContainer->setStrict(true);
+                    $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class,'getDeclarStrictPost'),$event);
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param array $tokens
+     * @param DocFile $fileContainer
+     */
+    protected function getClassTraits(array $tokens, DocFile $fileContainer)
+    {
+        $bracket = $class = $use = false;
+        $namespace = null;
+        $trait = null;
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getClassTraitsPre'),$event);
+        $tokens = $event->getTokens();
+        foreach($tokens as $tokenRaw)
+        {
+            $token = new Token($tokenRaw);
+            if(!$class && !$token->isStringToken() && $token->isClass())
+            {
+                $class = true;
+            }
+            if(!$bracket && $class && $token->isStringToken() && $token->getToken() === '{')
+            {
+                $bracket = true;
+            }
+            if($class && $bracket && !$token->isStringToken() && $token->isUse())
+            {
+                $use = true;
+            }
+            if($class && $bracket && $use && !$token->isStringToken() && $token->isNamespaceSeperator())
+            {
+                $namespace .= (string)'\\';
+            }
+            if($class && $bracket && $use && !$token->isStringToken() && $token->isString())
+            {
+                $namespace .= $token->getText();
+                $trait = $token->getText();
+            }
+            if($class && $bracket && $use && $token->isStringToken() && $token->getToken() === ';')
+            {
+                if(!$fileContainer->hasTraitUse($namespace) && !empty($trait))
+                {
+                    if(!$fileContainer->hasUsedNamespace(ltrim($namespace,'\\')))
+                    {
+                        $fileContainer->addUsedNamespace(ltrim($namespace,'\\'));
+                    }
+                    $fileContainer->addTraitUse($trait);
+                    $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class,'getClassTraitsPostAdd'),$event);
+                }
+                $namespace = $trait = '';
+                $use = false;
+            }
+        }
+        $event = (new PhpParserFileEvent())->setSubject($this)->setTokens($tokens)->setFileObject($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getClassTraitsPost'),$event);
     }
 }

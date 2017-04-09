@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Php\Document\Property as DocProperty;
@@ -16,115 +17,271 @@ use MjrOne\CodeGeneratorBundle\Php\Document\Property as DocProperty;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class Property
+class Property extends AbstractParser
 {
-    public const VAR_PRIVATE = 'private';
-    public const VAR_PROTECTED = 'protected';
-    public const VAR_PUBLIC  = 'public';
-    public const VAR_ALLOWED = [
-        T_PUBLIC,
-        T_PRIVATE,
-        T_PROTECTED,
-    ];
     /**
      * @param string $source
      * @param array  $tokens
      *
-     *  @return array;
+     * @return array;
      */
-    public  function parseDocument(string $source,array $tokens)
+    public function parseDocument(string $source, array $tokens)
     {
-        $properties = [];
+        $arrayRows = new ArrayCollection();
+        $properties = new ArrayCollection();
         $propertyPrototype = new DocProperty();
-        $propertyObject = $propertyText = $property = $lastItem = null;
-        $equals = false;
-        foreach($tokens as $token)
+        $propertyComment = $propertyObject = $lastToken = null;
+        $arrayHandling = $function = $equals = $constLink = false;
+        $arrayRow = null;
+        $functionBrackets = $bracketCounter = 0;
+        foreach ($tokens as $tokenArray)
         {
-            if(!is_string($token))
+            $token = new Token($tokenArray);
+            if ($token->isStringToken())
             {
-                list($id, $text) = $token;
-                $id = (int)$id;
-                if($id === T_DOC_COMMENT)
+                if (!$function && $token->tokenEquals('='))
                 {
-                    $propertyText = $text;
+                    $equals = true;
                 }
-                if($id === T_VARIABLE)
+                if (!$function && $propertyObject instanceof DocProperty && $token->tokenEquals(';'))
                 {
-                    list($lId, $lText) = $lastItem;
-                    $lId = (int)$lId;
-                    $propertyObject = clone $propertyPrototype;
-                    if(in_array($lId, self::VAR_ALLOWED))
+                    if($arrayRow !== null)
                     {
-                        switch($lId)
-                        {
-                            case T_PUBLIC:
-                                $propertyObject->setVisibility(self::VAR_PUBLIC);
-                            break;
-                            case T_PROTECTED:
-                                $propertyObject->setVisibility(self::VAR_PROTECTED);
-                            break;
-                            case T_PRIVATE:
-                                $propertyObject->setVisibility(self::VAR_PRIVATE);
-                            break;
-                        }
+                        $this->addValue($arrayRows, $arrayRow);
+                        $arrayRow = null;
                     }
-                    $propertyObject->setComment($propertyText);
-                    $propertyObject->setName(str_replace('$','',$text));
-                }
-                if($propertyObject instanceof DocProperty && $equals)
-                {
-
-                    $value = null;
-                    switch($id)
+                    if(!empty($arrayRows) && $arrayHandling)
                     {
-                        case T_DNUMBER:
-                            $value = (double)$text;
-                        break;
-                        case T_LNUMBER:
-                            $value = (int)$text;
-                        break;
-                        case T_STRING:
-                            if($text === 'true')
-                            {
-                                $value = true;
-                            }
-                            else
-                                if($text === 'false')
-                            {
-                                $value = false;
-                            }
-                            else
-                            {
-                                $value = '\''.(string)$text.'\'';
-                            }
-                        break;
+                        $propertyObject->setDefaultValue($arrayRows);
+                        $arrayRows = new ArrayCollection();
                     }
-                    $propertyObject->setDefaultValue($value);
+                    $properties->add($propertyObject);
+                    $propertyComment = $propertyObject = $lastToken = null;
+                    $arrayHandling = $function = $equals = false;
                 }
-                if($id!==T_WHITESPACE)
+                if ($propertyObject instanceof DocProperty && !$function && $token->tokenEquals('['))
                 {
-                    $lastItem = $token;
+                    $this->addBracketOrArray($arrayRows, $arrayRow, $bracketCounter, $arrayHandling,'[');
+                    if(is_array($arrayRow))
+                    {
+                        $arrayRow = null;
+                    }
+                }
+                if ($propertyObject instanceof DocProperty && !$function && $arrayHandling && $token->tokenEquals(']'))
+                {
+                    if(!empty($arrayRow))
+                    {
+                        $this->addValue($arrayRows, $arrayRow);
+                        $arrayRow = null;
+                    }
+                    if ($bracketCounter > 1)
+                    {
+                        $this->addValue($arrayRows,$this->getStringSeperators($bracketCounter - 1) . ']');
+                    }
+                    $bracketCounter--;
+                }
+                if ($propertyObject instanceof DocProperty && !$function && $arrayHandling && $token->tokenEquals(','))
+                {
+                    if ($arrayRow !== null)
+                    {
+                        $this->addValue($arrayRows, $arrayRow);
+                    }
+                    $arrayRow = null;
+                    $constLink = false;
+                }
+                if ($propertyObject instanceof DocProperty && !$function && $arrayHandling && $token->tokenEquals('('))
+                {
+                    if (!empty($arrayRow))
+                    {
+                        $this->addValue($arrayRows, $arrayRow);
+                    }
+                    if ($bracketCounter > 0)
+                    {
+                        $this->addValue($arrayRows,$this->getStringSeperators($bracketCounter) . '(');
+                    }
+                    $bracketCounter++;
+                }
+                if ($propertyObject instanceof DocProperty && !$function && $arrayHandling && $token->tokenEquals(')'))
+                {
+                    if(!empty($arrayRow))
+                    {
+                        $this->addValue($arrayRows, $arrayRow);
+                        $arrayRow = null;
+                    }
+                    if ($bracketCounter > 1)
+                    {
+                        $this->addValue($arrayRows, $this->getStringSeperators($bracketCounter - 1) . ')');
+                    }
+                    $bracketCounter--;
+                }
+                if($token->tokenEquals('{'))
+                {
+                    $functionBrackets++;
+                }
+                if ($function && $token->tokenEquals('}'))
+                {
+                    $functionBrackets--;
+                    if($functionBrackets < 1)
+                    {
+                        $function = false;
+                        $equals = false;
+                    }
                 }
             }
             else
             {
-                if($token === '=')
+                if ($token->isFunction())
                 {
-                    $equals = true;
+                    $function = true;
                 }
-                else
+                if (!$function && $token->isDocComment())
                 {
-                    if($propertyObject instanceof DocProperty)
+                    $propertyComment = $token->getText();
+                }
+                if (!$function && $token->isVariable())
+                {
+                    $propertyObject = $this->getPropertyObject($token, $lastToken, $propertyPrototype);
+                    if (!empty($propertyComment))
                     {
-                        $propertyObject->resetUpdateNeeded();
-                        $properties[] = $propertyObject;
+                        $propertyObject->setComment($propertyComment);
                     }
-                    $propertyObject = $propertyText = $property = $lastItem = null;
-                    $equals = false;
+                }
+                if (
+                    !$function
+                    &&
+                    $propertyObject instanceof DocProperty
+                    &&
+                    $equals
+                    &&
+                    !$token->isWhiteSpace()
+                    &&
+                    !$token->isVariable()
+                )
+                {
+                    if ($arrayHandling)
+                    {
+                        $text = $this->getDataType($token, $arrayHandling);
+                        if ($token->isString() || $token->isEscapedString())
+                        {
+                            if (!$constLink && !is_array($arrayRow))
+                            {
+                                $arrayRow = $this->getStringSeperators($bracketCounter) . $text;
+                            }
+                            else
+                            {
+                                if(is_array($arrayRow))
+                                {
+                                    if(!$constLink)
+                                    {
+                                        $arrayRow[] = $text;
+                                    }
+                                    else
+                                    {
+                                        if(count($arrayRow) === 1)
+                                        {
+                                            $arrayRow[] = $text;
+                                        }
+                                        else
+                                        {
+                                            $lastElement = array_pop($arrayRow);
+                                            $lastElement .= $text;
+                                            $arrayRow[] = $lastElement;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    $arrayRow .= $text;
+                                }
+                            }
+                        }
+                        else if ($token->isPaamayimNeukudotayim())
+                        {
+                            if(is_array($arrayRow))
+                            {
+                                $lastElement = array_pop($arrayRow);
+                                $lastElement .= $text;
+                                $arrayRow[] = $lastElement;
+                            }
+                            else
+                            {
+                                $arrayRow .= $text;
+                            }
+                            $constLink = true;
+                        }
+                        else
+                            if ($token->isDoubleArrow())
+                        {
+                            $arrayRow = [$arrayRow];
+                        }
+                        else
+                        {
+                            if(!empty($text))
+                            {
+                                if(is_array($arrayRow) && $text === 'array')
+                                {
+                                    $arrayRow[] = $text;
+                                    $this->addValue($arrayRows,$arrayRow);
+                                    $arrayRow = null;
+                                }
+                                else
+                                {
+                                    $this->addValue($arrayRows,$this->getStringSeperators($bracketCounter) . $text);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if ($token->isArray())
+                        {
+                            $arrayHandling = true;
+                        }
+                        else
+                        {
+                            if($token->isNullable())
+                            {
+                                $propertyObject->setNulled();
+                            }
+                            else
+                            {
+                                $propertyObject->setDefaultValue($this->getDataType($token, $arrayHandling));
+                            }
+                        }
+                    }
+                }
+                if(!$token->isWhiteSpace())
+                {
+                    $lastToken = $token;
                 }
             }
         }
 
-        return $properties;
+        return $properties->toArray();
+    }
+
+
+    /**
+     * @param Token       $token
+     * @param Token       $lastToken
+     * @param DocProperty $propertyPrototype
+     *
+     * @return \MjrOne\CodeGeneratorBundle\Php\Document\Property
+     */
+    public function getPropertyObject(
+        Token $token,
+        Token $lastToken = null,
+        DocProperty $propertyPrototype
+    ): DocProperty
+    {
+        /** @var  $propertyObject */
+        $propertyObject = clone $propertyPrototype;
+        if ($lastToken instanceof Token)
+        {
+            $propertyObject->setVisibility($this->getModifier($lastToken));
+        }
+        $propertyObject->setName($token->getName());
+
+        return $propertyObject;
     }
 }
