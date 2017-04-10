@@ -14,6 +14,7 @@ use MjrOne\CodeGeneratorBundle\Event\ReadAnnotationServiceConstructorEvent;
 use MjrOne\CodeGeneratorBundle\Event\ReadAnnotationServiceReflectionClassEvent;
 use MjrOne\CodeGeneratorBundle\Event\ReadAnnotationServiceReflectionPropertyEvent;
 use MjrOne\CodeGeneratorBundle\Exception\FileDoesNotExistException;
+use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -109,6 +110,14 @@ class ReadAnnotationService
                 ), $eventReflectionProperty->getReflectionProperty()
                 );
             }
+        }
+        $class = $annotations->getReflectionClass()->getName();
+        $methods = get_class_methods($class);
+        foreach($methods as $method)
+        {
+            $methodReflection = new ReflectionMethod($class, $method);
+            $methodAnnotations = $this->getAnnotationReader()->getMethodAnnotations($methodReflection);
+            $annotations->addMethodAnnotation($methodReflection->getName(),$methodAnnotations,$methodReflection);
         }
 
         return $annotations;

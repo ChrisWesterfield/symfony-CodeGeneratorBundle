@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Event;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Generator\PhpUnit\UnitCodeGenerator;
@@ -53,6 +54,98 @@ class UnitCodeGeneratorEvent extends Event
      * @var array
      */
     protected $templateVariables;
+
+    /**
+     * @var string|null
+     */
+    protected $rendered;
+
+    /**
+     * @var string|null
+     */
+    protected $fullPath;
+
+    /**
+     * @var string|null
+     */
+    protected $fileName;
+
+    /**
+     * @var ArrayCollection|string[]|null
+     */
+    protected $traitMethods;
+
+    /**
+     * @return ArrayCollection|null|\string[]
+     */
+    public function getTraitMethods()
+    {
+        return $this->traitMethods;
+    }
+
+    /**
+     * @param ArrayCollection|null|\string[] $traitMethods
+     * @return UnitCodeGeneratorEvent
+     */
+    public function setTraitMethods(ArrayCollection $traitMethods)
+    {
+        $this->traitMethods = $traitMethods;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * @param null|string $fileName
+     * @return UnitCodeGeneratorEvent
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFullPath()
+    {
+        return $this->fullPath;
+    }
+
+    /**
+     * @param null|string $fullPath
+     * @return UnitCodeGeneratorEvent
+     */
+    public function setFullPath($fullPath)
+    {
+        $this->fullPath = $fullPath;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRendered()
+    {
+        return $this->rendered;
+    }
+
+    /**
+     * @param null|string $rendered
+     * @return UnitCodeGeneratorEvent
+     */
+    public function setRendered($rendered)
+    {
+        $this->rendered = $rendered;
+        return $this;
+    }
 
     /**
      * @return array
