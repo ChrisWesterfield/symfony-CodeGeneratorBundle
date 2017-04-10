@@ -8,5 +8,7 @@
      **/
     public function {{ name }}Test({% if dataProvider is empty and depends is not empty %}array $testData=null{% endif %})
     {
-
+{% if symfonyController is defined and symfonyController == true %}
+        {% include "MjrOneCodeGeneratorBundle:PhpUnit:SymfonyControllerBody.php.twig" %}
+{% endif %}
     }

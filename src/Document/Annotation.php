@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Event\DocumentAnnotationObjectEvent;
 use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
+use ReflectionMethod;
 use ReflectionProperty;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -59,6 +60,11 @@ class Annotation
     protected $propertyAnnotationPrototype;
 
     /**
+     * @var Method
+     */
+    protected $methodAnnotationPrototype;
+
+    /**
      * @var string
      */
     protected $bundleRootNamespace;
@@ -79,6 +85,11 @@ class Annotation
     protected $methodAnnotations;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $methods;
+
+    /**
      * Annotation constructor.
      */
     public function __construct(EventDispatcherService $eventDispatcher)
@@ -86,7 +97,9 @@ class Annotation
         $this->eventDispatcher = $eventDispatcher;
         $this->classes = new ArrayCollection();
         $this->properties = new ArrayCollection();
+        $this->methods = new ArrayCollection();
         $this->propertyAnnotationPrototype = new Property($eventDispatcher);
+        $this->methodAnnotationPrototype = new Method($eventDispatcher);
         $event = (new DocumentAnnotationObjectEvent())->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'constructor'),$event);
     }
@@ -99,6 +112,7 @@ class Annotation
         $this->reflectionClass = null;
         $this->classes = new ArrayCollection();
         $this->properties = new ArrayCollection();
+        $this->methods = new ArrayCollection();
         $this->raw = null;
         $event = (new DocumentAnnotationObjectEvent())->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'clone'),$event);
@@ -249,6 +263,23 @@ class Annotation
     }
 
     /**
+     * @param string $methodName
+     * @param array $methodAnnotations
+     * @param ReflectionMethod $methodReflection
+     * @return Annotation
+     */
+    public function addMethodAnnotation(string $methodName, array $methodAnnotations, ReflectionMethod $methodReflection):Annotation
+    {
+        $method = clone $this->methodAnnotationPrototype;
+        $method->setEventDispatcher($this->getED());
+        $method->setClass($this);
+        $method->readAnnotation($methodName, $methodAnnotations, $methodReflection);
+        $this->methods->set($methodName, $method);
+
+        return $this;
+    }
+
+    /**
      * @return Property
      */
     public function getPropertyAnnotationPrototype(): Property
@@ -288,16 +319,56 @@ class Annotation
         return $this->eventDispatcher;
     }
 
-    protected function processMethodAnnotations()
-    {
-
-    }
-
     /**
      * @return ArrayCollection
      */
     public function getMethodAnnotations(): ArrayCollection
     {
         return $this->methodAnnotations;
+    }
+
+    /**
+     * @param $class
+     * @return bool|object
+     */
+    public function getClassAnnotation($class)
+    {
+        if($this->classes->count() > 0)
+        {
+            foreach($this->classes as $classObject)
+            {
+                if($classObject instanceof $class)
+                {
+                    return $classObject;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param string $field
+     * @return bool|Property
+     */
+    public function getPropertyAnnotation(string $field)
+    {
+        if($this->properties->containsKey($field))
+        {
+            return $this->properties->get($field);
+        }
+        return false;
+    }
+
+    /**
+     * @param string $field
+     * @return bool|Method|null
+     */
+    public function getMethodAnnotation(string $field)
+    {
+        if($this->methods->containsKey($field))
+        {
+            return $this->methods->get($field);
+        }
+        return false;
     }
 }

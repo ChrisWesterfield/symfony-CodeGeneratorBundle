@@ -67,9 +67,32 @@ final class UnitTest extends AbstractAnnotation implements ClassInterface, Drive
     public $container=false;
 
     /**
+     * @var bool
+     */
+    public $addAllMethodTests=false;
+
+    /**
      * @var array<\MjrOne\CodeGeneratorBundle\Annotation\Tests\DataProvider>
      */
     public $dataProvider;
+
+    /**
+     * @return bool
+     */
+    public function isAddAllMethodTests(): bool
+    {
+        return $this->addAllMethodTests;
+    }
+
+    /**
+     * @param bool $addAllMethodTests
+     * @return UnitTest
+     */
+    public function setAddAllMethodTests(bool $addAllMethodTests): UnitTest
+    {
+        $this->addAllMethodTests = $addAllMethodTests;
+        return $this;
+    }
 
     /**
      * @return array

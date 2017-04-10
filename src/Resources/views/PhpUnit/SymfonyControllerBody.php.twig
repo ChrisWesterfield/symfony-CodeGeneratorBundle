@@ -1,0 +1,5 @@
+$client = static::createClient();
+
+{% if methods|length > 0 %}{% for mehtod in methods %}
+        $crawler = $client->request('{{ mehtod }}', '{{ Route }}');
+{% endfor %}{% endif %}
