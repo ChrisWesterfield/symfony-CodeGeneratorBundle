@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Event\PhpParserMethodsEvent;
 use MjrOne\CodeGeneratorBundle\Php\Document\Method as DocMethod;
 use MjrOne\CodeGeneratorBundle\Php\Document\Variable;
 
@@ -28,9 +30,17 @@ class Method extends AbstractParser
     public function parseDocument(string $source, array $tokens)
     {
         $sourceArray = explode("\n", $source);
-        $methods = [];
+        $methods = new ArrayCollection();
         $methodPrototype = new DocMethod();
         $variablePrototype = new Variable();
+
+        $event = (new PhpParserMethodsEvent())
+            ->setTokens($tokens)
+            ->setSubject($this)
+            ->setMethods($methods);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'parseDocumentPre'),$event);
+        $tokens = $event->getTokens();
+
         $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
         $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
         foreach ($tokens as $tokenRaw)
@@ -49,6 +59,10 @@ class Method extends AbstractParser
                 if ($token->isFunction())
                 {
                     $methodObject = clone $methodPrototype;
+
+                    $event->setToken($token)->setLastToken($lastToken);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentObjectPreCreate'), $event);
+
                     $methodObject->setVisibility($this->getModifier($lastToken));
                     $comment = explode("\n",$comment);
                     $newComment = [];
@@ -58,6 +72,8 @@ class Method extends AbstractParser
                     }
                     $methodObject->setComment($newComment);
                     $methodObject->setFinal($final);
+
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentObjectPostCreate'), $event);
                     $functions = true;
                 }
                 if ($functions === true && !$methodObject->hasName() && $token->isString())
@@ -71,12 +87,17 @@ class Method extends AbstractParser
                 if ($functions && $token->isVariable())
                 {
                     $variableObject = clone $variablePrototype;
+                    $event->setVariableObject($variableObject);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreCreate'), $event);
+
                     $variableObject->setName(str_replace('$', '', $token->getText()));
                     if ($type !== null && $type !== 'false')
                     {
                         $variableObject->setType($type);
                     }
                     $valueDefinition = true;
+
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVaraibleObjectPostCreate'), $event);
                 }
                 if ($functions && $valueDefinition && !$token->isVariable() && $variableObject instanceof Variable)
                 {
@@ -98,6 +119,7 @@ class Method extends AbstractParser
                     {
                         $variableObject->setNulled(true);
                     }
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreAdd'), $event);
                     $methodObject->addVariable($variableObject);
                     $variableObject = null;
                 }
@@ -127,14 +149,17 @@ class Method extends AbstractParser
                 if ($functions && $token->tokenEquals('{') &&  $methodObject->hasName())
                 {
                     $methodObject->setBody($this->getFunctionBody($methodObject, $sourceArray));
-                    $methods[] = $methodObject;
+
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentMethodObjectPreAdd'), $event);
+
+                    $methods->add($methodObject);
                     $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
                     $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
                 }
             }
         }
 
-        return $methods;
+        return $methods->toArray();
     }
 
     /**
@@ -147,11 +172,19 @@ class Method extends AbstractParser
      */
     protected function getFunctionBody(DocMethod $methodObject, array $source)
     {
-        $body = [];
+        $body = new ArrayCollection();
+        $event = (new PhpParserMethodsEvent())
+            ->setSubject($this)
+            ->setSource($source)
+            ->setContent($body)
+            ->setMethodObject($methodObject);
+
+        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getFunctionBodyPre'), $event);
+
         $bracket = 0;
         $method = false;
         $first = false;
-        foreach ($source as $row)
+        foreach ($event->getSource() as $row)
         {
             $check = strtolower($row);
             $check2 = str_replace(' ', '', $check);
@@ -170,7 +203,9 @@ class Method extends AbstractParser
                 $bracket -= substr_count($row, '}');
                 if ($bracket >= 1)
                 {
-                    $body[] = $row;
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getFunctionBodyPreAdd'), $event);
+                    $body->add($row);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getFunctionBodyPostAdd'), $event);
                 }
                 $bracket += substr_count($row, '{');
                 if (!$first && $bracket > 0)
@@ -184,6 +219,7 @@ class Method extends AbstractParser
             }
         }
 
-        return $body;
+        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getFunctionBodyPost'), $event);
+        return $body->toArray();
     }
 }

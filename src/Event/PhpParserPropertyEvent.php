@@ -6,7 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
-use MjrOne\CodeGeneratorBundle\Document\Property as PropertyObject;
+use MjrOne\CodeGeneratorBundle\Php\Document\Property as PropertyObject;
 use MjrOne\CodeGeneratorBundle\Php\Document\Constants as ConstantsObject;
 use MjrOne\CodeGeneratorBundle\Php\Parser\Constants;
 use MjrOne\CodeGeneratorBundle\Php\Parser\Property;
@@ -51,7 +51,32 @@ class PhpParserPropertyEvent extends Event
     /**
      * @var ArrayCollection
      */
-    protected $constants;
+    protected $properties;
+
+    /**
+     * @var Token
+     */
+    protected $lastToken;
+
+    /**
+     * @return \MjrOne\CodeGeneratorBundle\Php\Parser\Token
+     */
+    public function getLastToken(): \MjrOne\CodeGeneratorBundle\Php\Parser\Token
+    {
+        return $this->lastToken;
+    }
+
+    /**
+     * @param \MjrOne\CodeGeneratorBundle\Php\Parser\Token $lastToken
+     *
+     * @return PhpParserPropertyEvent
+     */
+    public function setLastToken(\MjrOne\CodeGeneratorBundle\Php\Parser\Token $lastToken): PhpParserPropertyEvent
+    {
+        $this->lastToken = $lastToken;
+
+        return $this;
+    }
 
     /**
      * @return Property
@@ -63,11 +88,13 @@ class PhpParserPropertyEvent extends Event
 
     /**
      * @param Property $subject
+     *
      * @return PhpParserPropertyEvent
      */
     public function setSubject(Property $subject): PhpParserPropertyEvent
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -81,11 +108,13 @@ class PhpParserPropertyEvent extends Event
 
     /**
      * @param array $tokens
+     *
      * @return PhpParserPropertyEvent
      */
     public function setTokens(array $tokens): PhpParserPropertyEvent
     {
         $this->tokens = $tokens;
+
         return $this;
     }
 
@@ -99,11 +128,13 @@ class PhpParserPropertyEvent extends Event
 
     /**
      * @param Token $token
+     *
      * @return PhpParserPropertyEvent
      */
     public function setToken(Token $token): PhpParserPropertyEvent
     {
         $this->token = $token;
+
         return $this;
     }
 
@@ -117,11 +148,14 @@ class PhpParserPropertyEvent extends Event
 
     /**
      * @param PropertyObject $propertyObject
+     *
      * @return PhpParserPropertyEvent
      */
-    public function setPropertyObject(PropertyObject $propertyObject): PhpParserPropertyEvent
+    public function setPropertyObject(PropertyObject $propertyObject
+    ): PhpParserPropertyEvent
     {
         $this->propertyObject = $propertyObject;
+
         return $this;
     }
 
@@ -135,29 +169,33 @@ class PhpParserPropertyEvent extends Event
 
     /**
      * @param ArrayCollection $arrayRows
+     *
      * @return PhpParserPropertyEvent
      */
     public function setArrayRows(ArrayCollection $arrayRows): PhpParserPropertyEvent
     {
         $this->arrayRows = $arrayRows;
+
         return $this;
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getConstants(): ArrayCollection
+    public function getProperties(): ArrayCollection
     {
-        return $this->constants;
+        return $this->properties;
     }
 
     /**
-     * @param ArrayCollection $constants
+     * @param ArrayCollection $properties
+     *
      * @return PhpParserPropertyEvent
      */
-    public function setConstants(ArrayCollection $constants): PhpParserPropertyEvent
+    public function setProperties(ArrayCollection $properties): PhpParserPropertyEvent
     {
-        $this->constants = $constants;
+        $this->properties = $properties;
+
         return $this;
     }
 }
