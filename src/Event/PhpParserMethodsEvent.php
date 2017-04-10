@@ -8,6 +8,7 @@ use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
 use MjrOne\CodeGeneratorBundle\Php\Document\Constants as ConstantsObject;
 use MjrOne\CodeGeneratorBundle\Php\Document\Method as MethodObject;
+use MjrOne\CodeGeneratorBundle\Php\Document\Variable;
 use MjrOne\CodeGeneratorBundle\Php\Parser\Constants;
 use MjrOne\CodeGeneratorBundle\Php\Parser\Method;
 use MjrOne\CodeGeneratorBundle\Php\Parser\Token;
@@ -54,6 +55,26 @@ class PhpParserMethodsEvent extends Event
     protected $methods;
 
     /**
+     * @var Token
+     */
+    protected $lastToken;
+
+    /**
+     * @var Variable
+     */
+    protected $variableObject;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $content;
+
+    /**
+     * @var array
+     */
+    protected $source;
+
+    /**
      * @return Method
      */
     public function getSubject(): Method
@@ -63,11 +84,13 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param Method $subject
+     *
      * @return PhpParserMethodsEvent
      */
     public function setSubject(Method $subject): PhpParserMethodsEvent
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -81,11 +104,13 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param array $tokens
+     *
      * @return PhpParserMethodsEvent
      */
     public function setTokens(array $tokens): PhpParserMethodsEvent
     {
         $this->tokens = $tokens;
+
         return $this;
     }
 
@@ -99,11 +124,13 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param Token $token
+     *
      * @return PhpParserMethodsEvent
      */
     public function setToken(Token $token): PhpParserMethodsEvent
     {
         $this->token = $token;
+
         return $this;
     }
 
@@ -117,11 +144,14 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param MethodObject $methodObject
+     *
      * @return PhpParserMethodsEvent
      */
-    public function setMethodObject(MethodObject $methodObject): PhpParserMethodsEvent
+    public function setMethodObject(MethodObject $methodObject
+    ): PhpParserMethodsEvent
     {
         $this->methodObject = $methodObject;
+
         return $this;
     }
 
@@ -135,11 +165,13 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param ArrayCollection $arrayRows
+     *
      * @return PhpParserMethodsEvent
      */
     public function setArrayRows(ArrayCollection $arrayRows): PhpParserMethodsEvent
     {
         $this->arrayRows = $arrayRows;
+
         return $this;
     }
 
@@ -153,11 +185,94 @@ class PhpParserMethodsEvent extends Event
 
     /**
      * @param ArrayCollection $methods
+     *
      * @return PhpParserMethodsEvent
      */
     public function setMethods(ArrayCollection $methods): PhpParserMethodsEvent
     {
         $this->methods = $methods;
+
+        return $this;
+    }
+
+    /**
+     * @return Token
+     */
+    public function getLastToken(): Token
+    {
+        return $this->lastToken;
+    }
+
+    /**
+     * @param Token $lastToken
+     *
+     * @return PhpParserMethodsEvent
+     */
+    public function setLastToken(Token $lastToken): PhpParserMethodsEvent
+    {
+        $this->lastToken = $lastToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Variable
+     */
+    public function getVariableObject(): Variable
+    {
+        return $this->variableObject;
+    }
+
+    /**
+     * @param Variable $variableObject
+     *
+     * @return PhpParserMethodsEvent
+     */
+    public function setVariableObject(Variable $variableObject
+    ): PhpParserMethodsEvent
+    {
+        $this->variableObject = $variableObject;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContent(): ArrayCollection
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param ArrayCollection $content
+     *
+     * @return PhpParserMethodsEvent
+     */
+    public function setContent(ArrayCollection $content): PhpParserMethodsEvent
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSource(): array
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param array $source
+     *
+     * @return PhpParserMethodsEvent
+     */
+    public function setSource(array $source): PhpParserMethodsEvent
+    {
+        $this->source = $source;
+
         return $this;
     }
 }

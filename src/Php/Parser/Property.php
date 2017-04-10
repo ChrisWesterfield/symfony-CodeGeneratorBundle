@@ -6,6 +6,7 @@ namespace MjrOne\CodeGeneratorBundle\Php\Parser;
 use Doctrine\Common\Collections\ArrayCollection;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Event\PhpParserPropertyEvent;
 use MjrOne\CodeGeneratorBundle\Php\Document\Property as DocProperty;
 
 /**
@@ -30,6 +31,9 @@ class Property extends AbstractParser
         $arrayRows = new ArrayCollection();
         $properties = new ArrayCollection();
         $propertyPrototype = new DocProperty();
+        $event = (new PhpParserPropertyEvent())->setSubject($this)->setArrayRows($arrayRows)->setTokens($tokens)->setProperties($properties);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'parseDocumentPre'),$event);
+        $tokens = $event->getTokens();
         $propertyComment = $propertyObject = $lastToken = null;
         $arrayHandling = $function = $equals = $constLink = false;
         $arrayRow = null;
@@ -55,7 +59,14 @@ class Property extends AbstractParser
                         $propertyObject->setDefaultValue($arrayRows);
                         $arrayRows = new ArrayCollection();
                     }
+                    $event->setToken($token);
+                    $event->setPropertyObject($propertyObject);
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentAddPre'), $event);
+
                     $properties->add($propertyObject);
+
+                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentAddPost'), $event);
+
                     $propertyComment = $propertyObject = $lastToken = null;
                     $arrayHandling = $function = $equals = false;
                 }
@@ -256,7 +267,7 @@ class Property extends AbstractParser
                 }
             }
         }
-
+        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentPost'), $event);
         return $properties->toArray();
     }
 
@@ -274,13 +285,21 @@ class Property extends AbstractParser
         DocProperty $propertyPrototype
     ): DocProperty
     {
-        /** @var  $propertyObject */
+        $event = (new PhpParserPropertyEvent())
+           ->setSubject($this)
+           ->setToken($token)
+           ->setLastToken($lastToken);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class,'getPropertyObjectPreCreate'),$event);
+
         $propertyObject = clone $propertyPrototype;
         if ($lastToken instanceof Token)
         {
             $propertyObject->setVisibility($this->getModifier($lastToken));
         }
         $propertyObject->setName($token->getName());
+
+        $event->setPropertyObject($propertyObject);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'getPropertyObjectPostCreate'), $event);
 
         return $propertyObject;
     }
