@@ -347,6 +347,25 @@ class Annotation
     }
 
     /**
+     * @param $class
+     * @return bool|mixed
+     */
+    public function getClassAnnotationObect($class)
+    {
+        if($this->rawClassAnnotations->count() > 0)
+        {
+            foreach($this->rawClassAnnotations as $classAnnotation)
+            {
+                if($classAnnotation instanceof $class)
+                {
+                    return $classAnnotation;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param string $field
      * @return bool|Property
      */

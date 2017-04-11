@@ -141,6 +141,7 @@ class File Extends DocumentAbstract
     public function addTraitUse(string $trait):File
     {
         $this->traitUses[] = $trait;
+        $this->setUpdateNeeded();
 
         return $this;
     }
@@ -158,10 +159,7 @@ class File Extends DocumentAbstract
      */
     public function setUpdateNeeded():DocumentInterface
     {
-        if($this->parent instanceof File)
-        {
-            $this->parent->setUpdateNeeded();
-        }
+        $this->updateNeeded = true;
 
         return $this;
     }
@@ -535,6 +533,7 @@ class File Extends DocumentAbstract
     public function addUsedNamespace(string $namespace):File
     {
         $this->usedNamespaces[] = $namespace;
+        $this->setUpdateNeeded();
 
         return $this;
     }

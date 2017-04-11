@@ -29,10 +29,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
 {
-    const BUNDLE_DETECTION_NAME          = 'Bundle';
+    const BUNDLE_DETECTION_NAME = 'bundle';
     const NAMESPACE_DIRECTORY_FOR_TRAITS = 'Traits/CodeGenerator';
-    const FILE_EXTENSION                 = '.php';
-    const SERVICE_FILE                   = 'Resources/config/services.yml';
+    const FILE_EXTENSION = '.php';
+    const SERVICE_FILE = 'Resources/config/services.yml';
+    const SRC_DIRECTORY = 'src';
     /**
      * @var string
      */
@@ -82,8 +83,8 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
      * GeneratorAbstract constructor.
      *
      * @param                                                            $file
-     * @param AnnotationInterface                                        $currentAnnotation
-     * @param CodeGenerator                                              $generator
+     * @param AnnotationInterface $currentAnnotation
+     * @param CodeGenerator $generator
      */
     public function __construct($file, AnnotationInterface $currentAnnotation, CodeGenerator $generator)
     {
@@ -98,14 +99,11 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
         $rootBundlePath = [];
         $fileArray = explode('/', $file);
         $bundleRoot = false;
-        foreach ($fileArray as $item)
-        {
-            if ($bundleRoot && strpos($item, 'src') === false)
-            {
+        foreach ($fileArray as $item) {
+            if ($bundleRoot && strpos($item, self::SRC_DIRECTORY) === false) {
                 break(1);
             }
-            if (strpos($item, 'Bundle') !== false)
-            {
+            if (strpos(strtolower($item), self::BUNDLE_DETECTION_NAME) !== false) {
                 $bundleRoot = true;
             }
             $rootBundlePath[] = $item;
@@ -154,7 +152,7 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
     }
 
     /**
-     * @param array  $templateVariables
+     * @param array $templateVariables
      * @param string $className
      *
      * @return array
@@ -163,12 +161,12 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
     {
         $doc = $this->getDocumentAnnotation();
         $data = [
-            'namespace'      => $doc->getBundleRootNamespace() . '\\' . Annotation::TRAIT_NAMESPACE
-                                . $doc->getClassNamespacePath(),
-            'class'          => $className . $doc->getClassShort(),
-            'usedBy'         => $doc->getFqdnName(),
-            'configuration'  => $this->service->getConfig()->toArray(),
-            'short'          => $doc->getClassShort(),
+            'namespace' => $doc->getBundleRootNamespace() . '\\' . Annotation::TRAIT_NAMESPACE
+                . $doc->getClassNamespacePath(),
+            'class' => $className . $doc->getClassShort(),
+            'usedBy' => $doc->getFqdnName(),
+            'configuration' => $this->service->getConfig()->toArray(),
+            'short' => $doc->getClassShort(),
             'classNameSpace' => $doc->getNamespace(),
         ];
         $event = new GeneratorAbstractGetBasicsPostEvent($this, $data, $doc);
@@ -191,8 +189,9 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
      */
     protected function getRootPath()
     {
-        return method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
+        $path = method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
             : $this->kernel->getRootDir() . '/../';
+        return $path;
     }
 
     /**
@@ -202,18 +201,16 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
      */
     protected function getRootBundlePath(string $file)
     {
-        $file = explode('/', $file);
         $path = $this->getRootPath();
+        $file = str_replace($path, '', $file);
+        $file = explode('/', $file);
         $exitBundle = false;
-        foreach ($file as $entry)
-        {
-            if ($exitBundle && $entry === 'src')
-            {
+        foreach ($file as $entry) {
+            if ($exitBundle && $entry === self::SRC_DIRECTORY) {
                 $path .= $entry;
                 break(1);
             }
-            if (!$exitBundle && strpos($entry, self::BUNDLE_DETECTION_NAME) !== false)
-            {
+            if (!$exitBundle && strpos(strtolower($entry), self::BUNDLE_DETECTION_NAME) !== false) {
                 $exitBundle = true;
             }
             $path .= $entry . '/';
@@ -256,8 +253,7 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
         $path = $event->getPath();
         $file = $event->getName();
         $content = $event->getContent();
-        if (!$this->getFileSystem()->exists($path) && $event->isCreateDirectory())
-        {
+        if (!$this->getFileSystem()->exists($path) && $event->isCreateDirectory()) {
             $this->getFileSystem()->mkdir($path);
         }
         $this->getFileSystem()->dumpFile($path . '/' . $file, $content);
@@ -265,45 +261,34 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
         return true;
     }
 
+    /**
+     * @return string
+     */
+    protected function getFilePath(): string
+    {
+        $rootPath = (method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory() : $this->kernel->getRootDir() . '/../');
+        $path = $this->getFile();
+        if (strpos($path, $rootPath) === false && $path[0] !== '/') {
+            $path = $rootPath . $this->getFile();
+        }
+        return str_replace('//', '/', $path);
+    }
+
     protected function checkFileForTrait($templateVars)
     {
-        $path = (method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
-            : $this->kernel->getRootDir() . '/../');
-        $path .= $this->getFile();
-        $content = file_get_contents($path);
-        $addNamespaceUse = false;
-        $addTraitUse = false;
+        $path = $this->getFilePath();
+        $fileContainer = $this->getKernel()->getContainer()->get('mjrone.codegenerator.php.parser.file')->readFile($path);
         $fullTrait = $templateVars['namespace'] . '\\' . $templateVars['class'];
-        if (strpos($content, 'use ' . $fullTrait) === false)
-        {
-            $addNamespaceUse = true;
+        $shortTrait = $templateVars['class'];
+        if (!$fileContainer->hasUsedNamespace($fullTrait)) {
+            $fileContainer->addUsedNamespace($fullTrait);
         }
-        if (strpos($content, 'use ' . $templateVars['class']) === false)
-        {
-            $addTraitUse = true;
+        if (!$fileContainer->hasTraitUse($shortTrait)) {
+            $fileContainer->addTraitUse($shortTrait);
         }
-        $classOpen = false;
-        $newFile = [];
-        $contentArray = explode("\n", $content);
-        foreach ($contentArray as $lineNumber => $lineContent)
-        {
-            $newFile[] = $lineContent;
-            if (strpos($lineContent, 'namespace ' . $templateVars['classNameSpace']) !== false && $addNamespaceUse)
-            {
-                $newFile[] = 'use ' . $fullTrait . ';';
-            }
-            if (strpos($lineContent, 'class ' . $templateVars['short']) !== false && $addTraitUse)
-            {
-                $classOpen = true;
-            }
-            if (strpos($lineContent, '{') !== false && $classOpen && $addTraitUse)
-            {
-                $newFile[] = '    use ' . $templateVars['class'] . ';';
-                $classOpen = false;
-            }
+        if ($fileContainer->isUpdateNeeded()) {
+            $this->getKernel()->getContainer()->get('mjrone.codegenerator.php.writer')->writeDocument($fileContainer, $path);
         }
-        $newFile = implode("\n", $newFile);
-        $this->getFileSystem()->dumpFile($path, $newFile);
     }
 
     /**
@@ -352,9 +337,9 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
     }
 
     /**
-     * @param string          $class
+     * @param string $class
      * @param ArrayCollection $list
-     * @param string|null     $alias
+     * @param string|null $alias
      */
     protected function addToList(string $class, ArrayCollection $list, string $alias = null)
     {
@@ -365,13 +350,11 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
         $alias = $event->getAlias();
         $loc = $list->get('loc');
         $key = $class . (string)$alias;
-        if (!in_array($key, $loc, true))
-        {
+        if (!in_array($key, $loc, true)) {
             $entry = [
                 'name' => $class,
             ];
-            if ($alias !== null)
-            {
+            if ($alias !== null) {
                 $entry['alias'] = $alias;
             }
             $list->add($entry);

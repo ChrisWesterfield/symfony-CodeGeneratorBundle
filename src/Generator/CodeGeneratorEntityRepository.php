@@ -43,16 +43,14 @@ class CodeGeneratorEntityRepository extends CodeGeneratorAbstract implements Cod
                 $this->getDocumentAnnotation()->getBundleRootNamespace() . '\\' . self::REPOSITORY_DIRECTORY
             );
         }
+        $originalPath = (method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
+                : $this->kernel->getRootDir() . '/../') . '/';
+        $originalPath = str_replace('//','/',$originalPath);
         if (empty($workingAnnotation->getTargetDirectory()))
         {
             $workingAnnotation->setTargetDirectory($this->getRootFilePath() . '/' . self::REPOSITORY_DIRECTORY);
         }
-        $path = (method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
-                : $this->kernel->getRootDir() . '/../') . '/';
-        $originalPath = $path;
-        $originalPath = str_replace('//', '/', $originalPath);
-        $path .= $workingAnnotation->getTargetDirectory() . '/';
-        $path = str_replace('//', '/', $path);
+        $path = $workingAnnotation->getTargetDirectory() . '/';
         $file = $workingAnnotation->getRepository() . self::FILE_EXTENSION;
         if ($this->getFileSystem()->exists($file))
         {
@@ -78,67 +76,65 @@ class CodeGeneratorEntityRepository extends CodeGeneratorAbstract implements Cod
         $output = $event->getContent();
 
         $this->writeToDisk($path, $file, $output);
-        $oldFile = file_get_contents($originalPath . $this->getFile());
-        $oldFileArray = explode("\n", $oldFile);
-        $newFile = [];
 
-        $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setContent($oldFile);
+        $fileContainer = $this->getKernel()->getContainer()->get('mjrone.codegenerator.php.parser.file')->readFile($this->getFilePath());
+        $comments = explode("\n",$fileContainer->getClassComment());
+        /** @var Entity $entityAnnotation */
+        $entityAnnotation = $this->getDocumentAnnotation()->getClassAnnotationObect(Entity::class);
+        $repository = '\\'.$workingAnnotation->getTargetNameSpace().'\\'.$workingAnnotation->getRepository();
+        $annotationFound = false;
+        $newComment = [];
+
+        $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setFileContainer($fileContainer);
+        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'preFileContainerModification'), $event);
+        /**
+         * @param $annotation
+         * @return string
+         */
+        $orm = function($annotation) use ($repository, $entityAnnotation)
+        {
+            /** @var Entity $entityAnnotation */
+            $annotationArray = explode('(', $annotation);
+            if(strpos($annotation, 'repositoryClass')!==false)
+            {
+                return $annotation;
+            }
+            $newEntityString = $annotationArray[0].'( repositoryClass="'.$repository.'" ';
+            if($entityAnnotation->readOnly)
+            {
+                $newEntityString .= 'readOnly=true';
+            }
+            return $newEntityString.')';
+        };
+        foreach($comments as $comment)
+        {
+            if(strpos($comment, '@ORM\Entity(') !== false)
+            {
+                $newComment[] = $orm($comment);
+                continue;
+            }
+            if(strpos($comment,'Doctrine\ORM\Mapping\Entity')!==false)
+            {
+                $newComment[] = $orm($comment);
+                continue;
+            }
+            if(strpos($comment,'\Doctrine\ORM\Mapping\Entity')!==false)
+            {
+                $newComment[] = $orm($comment);
+                continue;
+            }
+            $newComment[] = $comment;
+        }
+        $fileContainer->setClassComment(implode("\n",$newComment));
+
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'preFileModification'), $event);
-        $oldFile = $event->getContent();
 
-        /** @var Entity $searchedAnnotation */
-        $searchedAnnotation = null;
-        foreach ($this->getDocumentAnnotation()->getRawClassAnnotations() as $annotation)
-        {
-            if ($annotation instanceof Entity)
-            {
-                $searchedAnnotation = $annotation;
-                break(1);
-            }
-        }
-        /** Annotation is not part of where it was created! */
-        if ($searchedAnnotation === null)
-        {
-            throw new \RuntimeException(
-                'Entity Annotation ORM\Entity or ' . Entity::class . ' was not defined in Class '
-                . $this->getDocumentAnnotation()->getFqdnName()
-                . '! It could not be added. You neet to insert it on your own!'
-            );
-        }
-        if ($searchedAnnotation->repositoryClass === null)
-        {
-            /** @var Entity $searchedAnnotation */
-            $searchedAnnotation->repositoryClass = $this->getDocumentAnnotation()->getFqdnName();
-        }
-        $fqdn = '\\' . $workingAnnotation->getTargetNameSpace() . '\\' . $workingAnnotation->getRepository();
-        $fqdn = str_replace('\\\\', '\\', $fqdn);
-        foreach ($oldFileArray as $row)
-        {
-            if (strpos($row, '@ORM\Entity') !== false)
-            {
-                $annotationString =
-                    ' * @ORM\Entity(repositoryClass="' . $fqdn . '", readOnly=' . ($searchedAnnotation->readOnly
-                        ? 'true' : 'false') . ');';
-                $newFile[] = $annotationString;
-            }
-            else if (strpos($row, Entity::class) !== false)
-            {
-                $annotationString = ' * @' . Entity::class . '(repositoryClass="' . $fqdn . '", readOnly='
-                                    . ($searchedAnnotation->readOnly ? 'true' : 'false') . ');';
-                $newFile[] = $annotationString;
-            }
-            else
-            {
-                $newFile[] = $row;
-            }
-        }
-        $newFile = implode("\n", $newFile);
+        $this->getKernel()
+            ->getContainer()
+            ->get('mjrone.codegenerator.php.writer')
+            ->writeDocument($fileContainer,$this->getFilePath());
 
-        $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setContent($oldFile);
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'postFileModification'), $event);
-        $oldFile = $event->getContent();
-
-        file_put_contents($originalPath . $this->getFile(), $newFile);
 
         $event = (new EntityRepositoryGeneratorEvent())->setSubject($this);
         $this->getED()->dispatch($this->getED()->getEventName(self::class, 'finished'), $event);

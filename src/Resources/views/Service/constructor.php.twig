@@ -1,7 +1,7 @@
     /**
      * {{ short }}::__construct()
      * Trait and {{ short }} Constructor
-{% if injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}
+{% if injections is defined and injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}
      * @param {{ item.class }} ${{ item.name }}
      * @CG\Generated()
 
@@ -11,7 +11,7 @@
      * @param {{ property.fqdn }} ${{ property.name }}
 {% endif %}{% endfor %}{% endif %}
      */
-    public function __construct({% if injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}{{ item.class }} ${{ item.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% else %}{{ injection.class }} ${{ injection.name }}{% endif %}{% if loop.last != true %}, {% endif %}{% endfor %}{% endif %}{% if properties|length > 0 %}, {% for property in properties %}{% if property.optional is not defined %}{{ property.fqdn }} ${{ property.name }}{% if loop.last != true %}, {% endif %}{% endif %}{% endfor %}{% endif %})
+    public function __construct({% if injections is defined and injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}{{ item.class }} ${{ item.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% else %}{{ injection.class }} ${{ injection.name }}{% endif %}{% if loop.last != true %}, {% endif %}{% endfor %}{% if properties|length > 0 %}, {% endif %}{% endif %}{% if properties|length > 0 %} {% for property in properties %}{% if property.optional is not defined %}{{ property.fqdn }} ${{ property.name }}{% if loop.last != true %}, {% endif %}{% endif %}{% endfor %}{% endif %})
     {
 {% if injections is defined and injections|length > 0 %}{% for injection in injections %}
         $this->{{ injection.name }} = ${{ injection.name }};

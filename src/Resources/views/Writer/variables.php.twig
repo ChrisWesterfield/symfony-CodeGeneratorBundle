@@ -1,5 +1,5 @@
 {% if variables|length > 0 %}
 {% for var in variables %}
-{% if var.type is not empty %}{{ var.type|raw }} {% endif %}${{ var.name}}{% if var.defaultValue is not empty %} = {{ var.defaultValue|raw }}{% elseif var.nulled %} = null{% endif %}{% if loop.last != true %}, {% endif %}
+{% if var.type is not empty %}{{ var.type|raw }} {% endif %}${{ var.name|raw }}{% if var.defaultValue is not empty %} = {{ var.defaultValue|raw }}{% elseif var.nulled %} = null{% endif %}{% if loop.last != true %}, {% endif %}
 {% endfor %}
 {% endif %}

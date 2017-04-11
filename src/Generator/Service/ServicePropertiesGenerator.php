@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace MjrOne\CodeGeneratorBundle\Generator\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Service\Property;
 use MjrOne\CodeGeneratorBundle\Document\Property as PropertyDocument;
@@ -55,6 +56,26 @@ class ServicePropertiesGenerator extends SubCodeGeneratorAbstract implements Sub
                 if (!$annotation instanceof Property)
                 {
                     continue;
+                }
+                if(strpos($annotation->getService(),'@')!==false)
+                {
+                    if($annotation->getClassName()===null)
+                    {
+                        $class = $this->getKernel()->getContainer()->get(substr($annotation->getService(),1));
+                        $className = get_class($class);
+                        if(isset(class_implements($class)['Doctrine\Common\Persistence\ObjectRepository']))
+                        {
+                            $className = EntityRepository::class;
+                        }
+                        $reflClass = new \ReflectionClass($className);
+                        $annotation->setClassName($reflClass->getName());
+                        $annotation->setClassShort($reflClass->getShortName());
+                    }
+                    if($annotation->getClassName() !== null && $annotation->getClassShort()===null)
+                    {
+                        $reflClass = new \ReflectionClass($annotation->getName());
+                        $annotation->setClassShort($reflClass->getShortName());
+                    }
                 }
                 $event = (new ServicePropertiesGeneratorEvent())->setConfig($this->config)->setTemplateVariables(
                     $templateProperties

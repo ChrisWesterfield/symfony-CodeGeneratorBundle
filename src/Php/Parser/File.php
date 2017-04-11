@@ -341,7 +341,16 @@ class File extends AbstractParser
             {
                 if(!$fileContainer->hasTraitUse($namespace) && !empty($trait))
                 {
-                    if(!$fileContainer->hasUsedNamespace(ltrim($namespace,'\\')))
+                    if(
+                        substr_count($namespace,'\\') > 0
+                        &&
+                        !$fileContainer->hasUsedNamespace(
+                            ltrim(
+                                $namespace,
+                        '\\'
+                            )
+                        )
+                    )
                     {
                         $fileContainer->addUsedNamespace(ltrim($namespace,'\\'));
                     }
