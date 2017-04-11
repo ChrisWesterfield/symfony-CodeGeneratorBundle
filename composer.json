@@ -1,6 +1,6 @@
 {
   "name": "mjr/code-generator-bundle",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "type": "symfony-bundle",
   "description": "Code Generation based on twig",
   "keywords": [
@@ -35,7 +35,6 @@
     "phpunit/phpunit": "6.*",
     "phpunit/php-code-coverage": "5.*",
     "phpunit/phpunit-mock-objects":"4.*",
-    "phpunit/dbunit": "1.*",
     "phpunit/php-invoker": "1.*",
     "mikey179/vfsStream": "1.*"
   },
