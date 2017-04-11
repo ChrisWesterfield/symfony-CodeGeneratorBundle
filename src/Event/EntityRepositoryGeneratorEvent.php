@@ -5,6 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Event;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Generator\CodeGeneratorEntityRepository;
+use MjrOne\CodeGeneratorBundle\Php\Document\File;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -32,6 +33,29 @@ class EntityRepositoryGeneratorEvent extends Event
      * @var string
      */
     public $content;
+
+    /**
+     * @var File
+     */
+    public $fileContainer;
+
+    /**
+     * @return File
+     */
+    public function getFileContainer(): File
+    {
+        return $this->fileContainer;
+    }
+
+    /**
+     * @param File $fileContainer
+     * @return EntityRepositoryGeneratorEvent
+     */
+    public function setFileContainer(File $fileContainer): EntityRepositoryGeneratorEvent
+    {
+        $this->fileContainer = $fileContainer;
+        return $this;
+    }
 
     /**
      * @return CodeGeneratorEntityRepository

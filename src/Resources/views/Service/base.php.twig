@@ -2,7 +2,6 @@
 {% set strict=configuration.fileProperties.useStrictTypes %}
 
 {% block useSection %}
-{{ parent() }}
 {% if useList is defined and useList|length > 0 %}
 {% for name,element in useList %}
 {% if name!='loc' %}
@@ -29,7 +28,7 @@ trait {{ class }}
 
 {% include "MjrOneCodeGeneratorBundle:Service:optionalSetters.php.twig" %}
 
-{% if injectedServices|length > 0 %}{% for fileName,active in injectedServices %}{% if active %}{% set includeFile="MjrOneCodeGeneratorBundle:Service:" ~ fileName ~ ".php.twig" %}
+{% if injectedServices is defined and injectedServices|length > 0 %}{% for fileName,active in injectedServices %}{% if active %}{% set includeFile="MjrOneCodeGeneratorBundle:Service:" ~ fileName ~ ".php.twig" %}
     {% include includeFile %}
 {% endif %}{% endfor %}{% endif %}
 }

@@ -1,25 +1,32 @@
 <?php
+{% block declare %}
 {% if file.strict %}declare(strict_types=1);{% endif %}
+{% endblock %}
 
+{% block namespace %}
+{% if file.namespace is not empty %}namespace {{ file.namespace|raw }};{% endif %}
+{% endblock %}
 
-{% if file.namespace is not empty %}namespace {{ file.namespace }};{% endif %}
-
-
+{% block namespaceUse %}
 {% if file.usedNamespaces|length > 0 %}{% for usedNamespace in file.usedNamespaces %}
-use {{ usedNamespace }};
+use {{ usedNamespace|raw }};
 {% endfor %}
 {% endif %}
+{% endblock %}
 
-{{ file.classComment }}
-{% if file.abstractClass %}abstract {% endif %}class {{ file.className }} {% if file.extends is not empty %}extends {{ file.extends }}{% endif %} {% if file.interfaces|length > 0 %}implements {% for iface in file.interfaces %}{{ iface }}{% if loop.last != true %},{% endif %}{% endfor %}{% endif %}
+{% block classHeader %}
+{{ file.classComment|raw }}
+{% if file.abstractClass %}abstract {% endif %}class {{ file.className|raw }} {% if file.extends is not empty %}extends {{ file.extends|raw }}{% endif %} {% if file.interfaces|length > 0 %}implements {% for iface in file.interfaces %}{{ iface|raw }}{% if loop.last != true %},{% endif %}{% endfor %}{% endif %}
 
 {
+{% endblock %}
+{% block body %}
 {% if file.traitUses|length > 0 %}{% for trait in file.traitUses %}
-    use {{ trait }};
+    use {{ trait|raw }};
 {% endfor %}{% endif %}
 
 {% if file.constants|length > 0 %}{% for constant in file.constants %}
-    {% if constant.visibility is not empty %}{{ constant.visibility|raw }} {% endif %}const {{ constant.name }} = {% if constant.arrayValue == false %}{{ constant.value|raw }};
+    {% if constant.visibility is not empty %}{{ constant.visibility|raw }} {% endif %}const {{ constant.name|raw }} = {% if constant.arrayValue == false %}{{ constant.value|raw }};
 {% elseif constant.value|length > 0 %}
 
     [
@@ -31,8 +38,8 @@ use {{ usedNamespace }};
 {% endfor %}{% endif %}
 
 {% if file.properties|length > 0 %}{% for property in file.properties %}
-    {% if property.comment is not empty %}{{ property.comment }}
-    {% endif %}{% if property.visibility is not empty %}{{ property.visibility }} {% endif %}${{ property.name }}{% if property.arrayValue %}{% if property.defaultValue|length > 0 %} =
+    {% if property.comment is not empty %}{{ property.comment|raw }}
+    {% endif %}{% if property.visibility is not empty %}{{ property.visibility }} {% endif %}${{ property.name|raw }}{% if property.arrayValue %}{% if property.defaultValue|length > 0 %} =
     [
 {% for value in property.defaultValue %}    {% if value is not iterable %}{{ value|raw }}{% else %}{% for item in value %}{{ item|raw }}{% if loop.last != true %}=>{% endif %}{% endfor %}{% endif %}
 
@@ -41,5 +48,6 @@ use {{ usedNamespace }};
 
 {% endfor %}{% endif %}
 {% include 'MjrOneCodeGeneratorBundle:Writer:method.php.twig' with {'method': methods} %}
+{% endblock %}
 
 }

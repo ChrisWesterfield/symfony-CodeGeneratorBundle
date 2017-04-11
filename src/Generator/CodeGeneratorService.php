@@ -88,7 +88,11 @@ class CodeGeneratorService extends CodeGeneratorAbstract implements CodeGenerato
         {
             $this->checkFileForTrait($templateVariables);
             $this->processServiceConfig($config);
-            $this->updateRouteDocumentAnnotation($serviceName);
+            if($serviceName !== null)
+            {
+                /** @var string $serviceName */
+                $this->updateRouteDocumentAnnotation($serviceName);
+            }
         }
     }
 

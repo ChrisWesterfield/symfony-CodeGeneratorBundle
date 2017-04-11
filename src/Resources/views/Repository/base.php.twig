@@ -18,6 +18,9 @@ use Doctrine\ORM\EntityManager;
 {% if settings.queryBuilder == true %}
 use Doctrine\ORM\QueryBuilder;
 {% endif %}
+{% if settings.persist %}
+use Doctrine\ORM\UnitOfWork;
+{% endif %}
 {% endblock %}
 
 {% block comment %}

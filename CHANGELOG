@@ -28,5 +28,8 @@ finished File Reader
 added Change Tracking
 Initial Changes for Ticket 12
 minor Improvements and movement of several files
-1.4.0
+1.4.x
 finished adding unnit annotations
+bug fixes
+1.5.0
+moved several code modifications to the php parser and writer
