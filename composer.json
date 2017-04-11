@@ -1,6 +1,6 @@
 {
   "name": "mjr/code-generator-bundle",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "type": "symfony-bundle",
   "description": "Code Generation based on twig",
   "keywords": [
@@ -31,7 +31,6 @@
     "symfony/property-access": "3.2.*",
     "mjr/cg-interfaces": "1.*",
     "nikic/php-parser": "^3.0.2",
-    "mjr/util-member-accessor": "1.*",
     "phpunit/phpunit": "6.*",
     "phpunit/php-code-coverage": "5.*",
     "phpunit/phpunit-mock-objects":"4.*",
