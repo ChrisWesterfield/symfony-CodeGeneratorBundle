@@ -40,9 +40,10 @@ class Method extends AbstractParser
             ->setMethods($methods);
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'parseDocumentPre'),$event);
         $tokens = $event->getTokens();
-
         $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
-        $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
+        $arrayObject = $nsDefinition = $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
+        $bracketCount = 0;
+        $currentElement = $variableArray = [];
         foreach ($tokens as $tokenRaw)
         {
             $token = new Token($tokenRaw);
@@ -84,7 +85,11 @@ class Method extends AbstractParser
                 {
                     $type = $token->getText();
                 }
-                if ($functions && $token->isVariable())
+                if($functions && $token->isNamespaceSeperator())
+                {
+                    $nsDefinition = true;
+                }
+                if ($functions && $token->isVariable() && !($variableObject instanceof Variable))
                 {
                     $variableObject = clone $variablePrototype;
                     $event->setVariableObject($variableObject);
@@ -95,33 +100,71 @@ class Method extends AbstractParser
                     {
                         $variableObject->setType($type);
                     }
+                    if($lastToken instanceof Token && $lastToken->isString())
+                    {
+                        $variableObject->setType(($nsDefinition?'\\':'').$lastToken->getText());
+                    }
                     $valueDefinition = true;
-
+                    $nsDefinition = false;
                     $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVaraibleObjectPostCreate'), $event);
                 }
+
+                if($functions && $variableObject instanceof Variable && $token->isArray())
+                {
+                    if(!$arrayObject)
+                    {
+                        $arrayObject = true;
+                    }
+                }
+
                 if ($functions && $valueDefinition && !$token->isVariable() && $variableObject instanceof Variable)
                 {
-                    $text = $this->getDataType($token);
-                    $variableObject->setDefaultValue($text);
-                    if (
-                        (
-                            $text === self::VALUE_TRUE
-                            ||
-                            $text === self::VALUE_FALSE
+                    if($arrayObject && $bracketCount > 0)
+                    {
+                        if($token->isArray())
+                        {
+                            if(count($currentElement) >= 1)
+                            {
+                                $currentElement[] = $token->getText();
+                                $variableArray[] = $currentElement;
+                                $currentElement = [];
+                            }
+                            else
+                            {
+                                $variableArray[] = $token->getText();
+                            }
+                        }
+                        else
+                            if(!$token->isDoubleArrow() && !$token->isWhiteSpace())
+                        {
+                            $currentElement[] = $token->getText();
+                        }
+                    }
+                    else
+                        if(!$arrayObject && !$token->isWhiteSpace())
+                    {
+                        $text = $this->getDataType($token);
+                        $variableObject->setDefaultValue($text);
+                        if (
+                            (
+                                $text === self::VALUE_TRUE
+                                ||
+                                $text === self::VALUE_FALSE
+                            )
+                            &&
+                            $variableObject->getType() === self::TYPE_STRING
                         )
-                        &&
-                        $variableObject->getType() === self::TYPE_STRING
-                    )
-                    {
-                        $variableObject->setType('bool');
+                        {
+                            $variableObject->setType('bool');
+                        }
+                        if ($token->isNullable())
+                        {
+                            $variableObject->setNulled(true);
+                        }
+                        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreAdd'), $event);
+                        $methodObject->addVariable($variableObject);
+                        $variableObject = null;
                     }
-                    if ($token->isNullable())
-                    {
-                        $variableObject->setNulled(true);
-                    }
-                    $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreAdd'), $event);
-                    $methodObject->addVariable($variableObject);
-                    $variableObject = null;
                 }
 
                 if ($functions && $functionEnd && $methodReturn && $token->isString())
@@ -138,7 +181,15 @@ class Method extends AbstractParser
             }
             else
             {
-                if ($functions && $token->tokenEquals(')'))
+                if($functions && $variableObject instanceof Variable && $arrayObject && $bracketCount > 0 && $token->tokenEquals(','))
+                {
+                    if(!empty($currentElement))
+                    {
+                        $variableArray[] = $currentElement;
+                        $currentElement = [];
+                    }
+                }
+                if ($functions && $bracketCount < 1 && $token->tokenEquals(')'))
                 {
                     $functionEnd = true;
                 }
@@ -155,6 +206,82 @@ class Method extends AbstractParser
                     $methods->add($methodObject);
                     $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
                     $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
+                }
+                if($functions && $variableObject instanceof Variable && $arrayObject && $token->tokenEquals('('))
+                {
+                    if($bracketCount > 0)
+                    {
+                        $variableArray[] = $token->getToken();
+                    }
+                    $bracketCount++;
+                }
+                if($functions && $variableObject instanceof Variable && $arrayObject && $token->tokenEquals(')'))
+                {
+                    $bracketCount--;
+                    if(!empty($currentElement))
+                    {
+                        $variableArray[] = $currentElement;
+                        $currentElement = [];
+                    }
+                    if($bracketCount === 0)
+                    {
+                        $variableObject->setDefaultValue($variableArray);
+                        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreAddArray'), $event);
+                        $variableObject->setType('array');
+                        $methodObject->addVariable($variableObject);
+                        $variableArray = [];
+                        $bracketCount = 0;
+                        $arrayObject = false;
+                        $variableObject = null;
+                    }
+                    else
+                    {
+                        $variableArray[] = ')';
+                    }
+                }
+                if($functions && $variableObject instanceof Variable && $token->tokenEquals('['))
+                {
+                    if(!$arrayObject)
+                    {
+                        $arrayObject = true;
+                    }
+                    if($bracketCount > 0)
+                    {
+                        if(count($currentElement) >= 1)
+                        {
+                            $currentElement[] = '[';
+                            $variableArray[] = $currentElement;
+                            $currentElement = [];
+                        }
+                        else
+                        {
+                            $variableArray[] = '[';
+                        }
+                    }
+                    $bracketCount++;
+                }
+                if($functions && $variableObject instanceof Variable && $arrayObject && $token->tokenEquals(']'))
+                {
+                    $bracketCount--;
+                    if(!empty($currentElement))
+                    {
+                        $variableArray[] = $currentElement;
+                        $currentElement = [];
+                    }
+                    if($bracketCount === 0)
+                    {
+                        $variableObject->setDefaultValue($variableArray);
+                        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentVariableObjectPreAddArray'), $event);
+                        $methodObject->addVariable($variableObject);
+                        $variableArray = [];
+                        $bracketCount = 0;
+                        $arrayObject = false;
+                        $variableObject = null;
+                    }
+                    else
+                    {
+                        $variableArray[] = ']';
+                    }
                 }
             }
         }

@@ -175,7 +175,7 @@ class CodeGeneratorService extends CodeGeneratorAbstract implements CodeGenerato
         $templateVars = $event->getTemplateVars();
         $config = $event->getConfig();
         $serviceName = $annotation->getName();
-        if ($serviceName)
+        if (empty($serviceName))
         {
             $serviceName = $this->getServiceName();
         }
