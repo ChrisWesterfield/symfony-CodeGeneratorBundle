@@ -38,6 +38,29 @@ class Variable Extends DocumentAbstract
     protected $nulled=false;
 
     /**
+     * @var bool
+     */
+    protected $ampersAnd = false;
+
+    /**
+     * @return bool
+     */
+    public function isAmpersAnd(): bool
+    {
+        return $this->ampersAnd;
+    }
+
+    /**
+     * @param bool $ampersAnd
+     * @return Variable
+     */
+    public function setAmpersAnd(bool $ampersAnd): Variable
+    {
+        $this->ampersAnd = $ampersAnd;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isNulled(): bool

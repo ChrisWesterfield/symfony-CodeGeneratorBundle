@@ -36,3 +36,6 @@ moved several code modifications to the php parser and writer
 1.6.0
 added support for arrays in method headers
 several minor Bug fixes
+1.7.0
+added new Operator & for Method variables
+minor bug fixes

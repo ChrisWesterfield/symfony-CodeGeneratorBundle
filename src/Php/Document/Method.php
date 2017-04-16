@@ -5,6 +5,7 @@ namespace MjrOne\CodeGeneratorBundle\Php\Document;
 
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
 use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
+use MjrOne\CodeGeneratorBundle\Php\Parser\AbstractParser;
 
 /**
  * Class CodeGeneratorMethod
@@ -86,8 +87,12 @@ class Method Extends DocumentAbstract implements ParsedChildInterface
      *
      * @return Method
      */
-    public function setVisibility(string $visibility): Method
+    public function setVisibility(string $visibility=null): Method
     {
+        if($visibility===null)
+        {
+            $visibility = AbstractParser::PUBLIC;
+        }
         $this->visibility = $visibility;
         $this->updateFileContainer();
 

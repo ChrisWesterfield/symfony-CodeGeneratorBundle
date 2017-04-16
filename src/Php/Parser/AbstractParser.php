@@ -20,9 +20,9 @@ use MjrOne\CodeGeneratorBundle\Services\EventDispatcherService;
  */
 abstract class AbstractParser
 {
-    protected const    PRIVATE = 'private';
-    protected const    PROTECTED = 'protected';
-    protected const    PUBLIC = 'public';
+    public    const    PRIVATE = 'private';
+    public    const    PROTECTED = 'protected';
+    public    const    PUBLIC = 'public';
     public    const    SPACE_SEPERATORS = '    ';
     public    const    VALUE_TRUE = 'true';
     public    const    VALUE_FALSE = 'false';
@@ -148,13 +148,13 @@ abstract class AbstractParser
      *
      * @return string
      */
-    protected function getModifier(Token $lastToken): string
+    protected function getModifier(Token $lastToken=null): string
     {
 
-        if ($lastToken->isProtected()) {
+        if ($lastToken instanceof Token && $lastToken->isProtected()) {
             return self::VAR_PROTECTED;
         }
-        if ($lastToken->isPrivate()) {
+        if ($lastToken instanceof Token && $lastToken->isPrivate()) {
             return self::VAR_PRIVATE;
         }
 

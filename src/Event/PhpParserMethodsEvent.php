@@ -208,7 +208,7 @@ class PhpParserMethodsEvent extends Event
      *
      * @return PhpParserMethodsEvent
      */
-    public function setLastToken(Token $lastToken): PhpParserMethodsEvent
+    public function setLastToken(Token $lastToken=null): PhpParserMethodsEvent
     {
         $this->lastToken = $lastToken;
 
