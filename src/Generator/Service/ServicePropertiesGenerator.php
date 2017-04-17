@@ -86,6 +86,10 @@ class ServicePropertiesGenerator extends SubCodeGeneratorAbstract implements Sub
                 $annotation = $event->getAnnotation();
 
                 $propertySet = $this->processProperty($annotation, $property);
+                if(isset($propertySet) && $propertySet['fqdn']==='\\')
+                {
+                    $propertySet['fqdn'] = null;
+                }
                 $templateProperties->add($propertySet);
                 $this->config['services'][$serviceName]['arguments'][] = $annotation->getService();
                 $event = (new ServicePropertiesGeneratorEvent())->setConfig($this->config)->setTemplateVariables(

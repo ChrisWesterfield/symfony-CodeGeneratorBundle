@@ -66,6 +66,6 @@ class ServiceTagGenerator extends SubCodeGeneratorAbstract implements SubCodeGen
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'preProcess'),$event);
         $annotation = $event->getAnnotation();
         $this->config = $event->getConfig();
-        $this->getConfig()['services'][$serviceName]['tags'][] = $event->getPostData();
+        $this->config['services'][$serviceName]['tags'][] = $event->getPostData();
     }
 }
