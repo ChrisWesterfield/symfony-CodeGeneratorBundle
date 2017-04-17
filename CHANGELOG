@@ -39,3 +39,5 @@ several minor Bug fixes
 1.7.0
 added new Operator & for Method variables
 minor bug fixes
+1.7.1
+Bug fix in Tag Generator and Service Generator
