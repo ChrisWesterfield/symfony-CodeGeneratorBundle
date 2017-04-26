@@ -66,7 +66,7 @@ class Method extends AbstractParser
                     $this->getED()->dispatch($this->getED()->getEventName(self::class, 'parseDocumentObjectPreCreate'), $event);
 
                     $methodObject->setVisibility($this->getModifier($lastToken));
-                    $comment = explode("\n",$comment);
+                    $comment = explode("\n",(string)$comment);
                     $newComment = [];
                     foreach($comment as $com)
                     {
