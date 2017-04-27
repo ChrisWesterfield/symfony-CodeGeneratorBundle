@@ -1,6 +1,6 @@
 {
   "name": "mjr/code-generator-bundle",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "type": "symfony-bundle",
   "description": "Code Generation based on twig",
   "keywords": [
@@ -35,8 +35,7 @@
     "phpunit/php-code-coverage": "5.*",
     "phpunit/phpunit-mock-objects":"4.*",
     "phpunit/php-invoker": "1.*",
-    "mikey179/vfsStream": "1.*",
-    "codeception/codeception": "2.*"
+    "mikey179/vfsStream": "1.*"
   },
   "require-dev": {
       

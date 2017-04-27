@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class BundleGenerator extends GeneratorAbstract
+class BundleGenerator extends GeneratorAbstract implements CodeGeneratorInterface
 {
 
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Bundle:';
@@ -189,5 +189,13 @@ class BundleGenerator extends GeneratorAbstract
             $dir . '/' . self::FILE_CHANGELOG, "** CHANGELOG **\n\n1.0.0\nInitialCommit\n\n"
         );
         $this->getFileSystem()->dumpFile($dir . '/' . self::FILE_LICENSE, "\n\n\n");
+    }
+
+    /**
+     * @return void
+     */
+    public function process (): void
+    {
+        // TODO: Implement process() method.
     }
 }

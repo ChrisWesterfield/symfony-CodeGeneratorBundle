@@ -214,6 +214,10 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
                 $exitBundle = true;
             }
             $path .= $entry . '/';
+            if($exitBundle)
+            {
+                break(1);
+            }
         }
         $path = rtrim($path, '/');
         $namespace = $this->getDocumentAnnotation()->getNamespace();
@@ -232,10 +236,11 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
      */
     protected function getTraitFile(string $file, string $traitPrefix): array
     {
-        return [
+        $traitFile =  [
             $this->getRootBundlePath($file),
             $traitPrefix . $this->getDocumentAnnotation()->getClassShort() . self::FILE_EXTENSION,
         ];
+        return $traitFile;
     }
 
     /**
