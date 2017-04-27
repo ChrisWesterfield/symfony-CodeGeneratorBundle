@@ -32,6 +32,10 @@ class ServiceAliasGenerator extends SubCodeGeneratorAbstract implements SubCodeG
         $alias = [
             'alias'=>$annotation->getAlias(),
         ];
+        if($alias['alias'] === null )
+        {
+            $alias['alias'] = $this->getServiceName();
+        }
         if($annotation->depricated)
         {
             $alias['deprecated'] = '~';
