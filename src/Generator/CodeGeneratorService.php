@@ -274,8 +274,9 @@ class CodeGeneratorService extends CodeGeneratorAbstract implements CodeGenerato
             $annotationUse = $annotationString = null;
             $path = (method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
                     : $this->kernel->getRootDir() . '/../') . '/';
+            $path = realpath($path);
             $source = $path . $this->getFile();
-            $source = str_replace('//', '/', $source);
+            $source = str_replace([$path.$path,'//'],[$path,'/'],$source);
             $file = file_get_contents($source);
             $fileArray = explode("\n", $file);
             $newFileArray = [];

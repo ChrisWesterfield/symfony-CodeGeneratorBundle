@@ -77,7 +77,10 @@ class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGenerat
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'constructor'),$event);
     }
 
-    public function process()
+    /**
+     * @return void
+     */
+    public function process():void
     {
         $production = $development = [];
         if($this->isCleanup())
@@ -87,8 +90,10 @@ class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGenerat
         }
         else
         {
-            $production = Yaml::parse(file_get_contents($this->basePath.'/'.$this->getConfiguration()->getRouter()->getProduction()));
-            $development = Yaml::parse(file_get_contents($this->basePath.'/'.$this->getConfiguration()->getRouter()->getDevelopment()));
+            $pathProduction = str_replace('//','/',$this->basePath.'/'.$this->getConfiguration()->getRouter()->getProduction());
+            $pathDev = str_replace('//','/',$this->basePath.'/'.$this->getConfiguration()->getRouter()->getDevelopment());
+            $production = Yaml::parse(file_get_contents(realpath($pathProduction)));
+            $development = Yaml::parse(file_get_contents(realpath($pathDev)));
         }
 
         $event = (new RoutingEvent())->setSubject($this)->setProduction($production)->setDevelopment($development);
@@ -230,6 +235,15 @@ class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGenerat
                             'type'=>$item['type'],
                         ];
                     break;
+                    case CG\Routing::TYPE_REFERENCE:
+                        if(empty($item['resource']))
+                        {
+                            $item['resource'] = '@'.$item['baseClass'].'/'.CG\Routing::BUNDLE_PATH_YML;
+                        }
+                        $rowSet = [
+                            'resource' => $item['resource'],
+                        ];
+                    break;
                 }
                 if(!empty($item['host']))
                 {
@@ -243,7 +257,7 @@ class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGenerat
             }
         }
         return $returnSet;
-    }
+    }/** @noinspection MoreThanThreeArgumentsInspection */
 
     /**
      * @param array            $production
@@ -254,7 +268,7 @@ class RouteGenerator extends CodeGeneratorSupportAbstract implements CodeGenerat
      *
      * @return array
      */
-    protected function processAnnotation(array $production, array $development, CG\Routing $annotation, \ReflectionClass $reflectionClass)
+    protected function processAnnotation(array $production, array $development, CG\Routing $annotation, \ReflectionClass $reflectionClass): array
     {
         if(empty($annotation->getName()))
         {

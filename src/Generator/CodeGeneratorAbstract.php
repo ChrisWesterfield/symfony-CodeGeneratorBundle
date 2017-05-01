@@ -191,7 +191,7 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
     {
         $path = method_exists($this->kernel, 'getRealRootDirectory') ? $this->kernel->getRealRootDirectory()
             : $this->kernel->getRootDir() . '/../';
-        return $path;
+        return realpath($path);
     }
 
     /**
@@ -261,7 +261,7 @@ abstract class CodeGeneratorAbstract implements CodeGeneratorInterface
         if (!$this->getFileSystem()->exists($path) && $event->isCreateDirectory()) {
             $this->getFileSystem()->mkdir($path);
         }
-        $this->getFileSystem()->dumpFile($path . '/' . $file, $content);
+        file_put_contents($path . '/' . $file, $content);
 
         return true;
     }

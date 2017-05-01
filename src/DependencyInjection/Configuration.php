@@ -197,6 +197,12 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('prefix')
                                             ->defaultNull()
                                         ->end()
+                                        ->scalarNode('type')
+                                            ->defaultValue('annotation')
+                                        ->end()
+                                        ->scalarNode('host')
+                                            ->defaultNull()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -204,23 +210,27 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue(
                                    [
                                        [
-                                            'name'=>'_development_wdt',
+                                            'name'=>'_wdt',
                                             'resource'=>'@WebProfilerBundle/Resources/config/routing/wdt.xml',
-                                            'prefix'=>'/_wdt'
+                                            'prefix'=>'/_wdt',
+                                            'type'=>'xml',
                                        ],
                                        [
-                                           'name'=>'_development_profiler',
+                                           'name'=>'_profiler',
                                            'resource'=>'@WebProfilerBundle/Resources/config/routing/profiler.xml',
                                            'prefix'=>'/_profiler',
+                                           'type'=>'xml',
                                        ],
                                        [
-                                           'name'=>'_development_errors',
+                                           'name'=>'_errors',
                                            'resource'=>'@TwigBundle/Resources/config/routing/errors.xml',
                                            'prefix'=>'/_error',
+                                           'type'=>'xml',
                                        ],
                                        [
                                            'name'=>'_master',
                                            'resource'=>'routing.yml',
+                                           'type'=>'reference',
                                        ],
                                     ]
                                 )

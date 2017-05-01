@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @copyright Christopher Westerfield MJR.ONE
  * @license   GNU Lesser General Public License
  */
-class ControllerGenerator extends GeneratorAbstract
+class ControllerGenerator extends GeneratorAbstract implements CodeGeneratorInterface
 {
     const BUNDLE_TWIG_NAMESPACE = 'MjrOneCodeGeneratorBundle:Controller:';
     /** @noinspection MoreThanThreeArgumentsInspection */
@@ -289,5 +289,13 @@ EOT;
         list($data['bundle'], $data['controller'], $data['template']) = explode(':', $logicalName);
 
         return $part ? $data[$part] : $data;
+    }
+
+    /**
+     * @return void
+     */
+    public function process (): void
+    {
+        // TODO: Implement process() method.
     }
 }

@@ -24,11 +24,15 @@ class {{ class }} extends Extension
 {
 {% block class_body %}
     /**
-     * {@inheritdoc}
+     * Load Configuration and set Parameters
+     *
+     * @param array                                                   $configs
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
+        $configuration = new Configuration($this->getAlias());
         $config = $this->processConfiguration($configuration, $configs);
 
         {% if format == 'yml' or format == 'annotation' -%}
@@ -41,7 +45,14 @@ class {{ class }} extends Extension
         $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.php');
         {%- endif %}
+    }
 
+    /**
+     * @return string
+     */
+    public function getAlias()
+    {
+        return '{{ extension_alias }}';
     }
 {% endblock class_body %}
 }

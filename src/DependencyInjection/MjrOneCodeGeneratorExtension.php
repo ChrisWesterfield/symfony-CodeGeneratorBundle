@@ -18,6 +18,10 @@ class MjrOneCodeGeneratorExtension extends Extension
 {
     /**
      * Load Configuration and set Parameters
+     *
+     * @param array                                                   $configs
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {

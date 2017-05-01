@@ -22,6 +22,7 @@ final class Routing extends AbstractAnnotation implements ClassInterface, Driver
     const TYPE_ANNOTATION = 'annotation';
     const TYPE_YML = 'yml';
     const TYPE_XML = 'xml';
+    const TYPE_REFERENCE = 'reference';
     const BUNDLE_PATH_YML = 'Resources/config/routing.yml';
     const BUNDLE_PATH_XML = 'Resources/config/routing.xml';
     const ALLOWED_TYPES = [
