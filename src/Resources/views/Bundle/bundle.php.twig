@@ -4,7 +4,7 @@
 {% block useSection %}
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use MjrOne\CodeGeneratorBundle\Annotation as CG;
-    use {{ namespace }}\DependencyInjection\{{ bundle_basename }}Extension();
+use {{ namespace }}\DependencyInjection\{{ bundle_basename }}Extension;
 {% endblock %}
 
 {% block comment %}

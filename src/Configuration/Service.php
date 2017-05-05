@@ -29,6 +29,8 @@ class Service extends AbstractConfig
      */
     public $service;
 
+    public $enabled=false;
+
     /**
      * Service constructor.
      *
@@ -36,16 +38,20 @@ class Service extends AbstractConfig
      */
     public function __construct(array $service)
     {
-        $this->class = $service['class'];
-        $this->service = $service['service'];
-        if (empty($service['class_short']))
+        if (isset($service['enabled']) && $service['enabled']===true)
         {
-            $refl = new \ReflectionClass($this->class);
-            $this->classShort = $refl->getShortName();
-        }
-        else
-        {
-            $this->classShort = $service['class_short'];
+            $this->class = $service['class'];
+            $this->service = $service['service'];
+            if (empty($service['class_short']))
+            {
+                $refl = new \ReflectionClass($this->class);
+                $this->classShort = $refl->getShortName();
+            }
+            else
+            {
+                $this->classShort = $service['class_short'];
+            }
+            $this->enabled = true;
         }
     }
 
