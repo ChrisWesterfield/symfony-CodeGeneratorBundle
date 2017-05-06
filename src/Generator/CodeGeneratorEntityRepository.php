@@ -52,31 +52,29 @@ class CodeGeneratorEntityRepository extends CodeGeneratorAbstract implements Cod
         }
         $path = $workingAnnotation->getTargetDirectory() . '/';
         $file = $workingAnnotation->getRepository() . self::FILE_EXTENSION;
-        if ($this->getFileSystem()->exists($file))
+        if(!$this->fileSystem->exists($path.$file))
         {
-            return;
+            $templateVariables = [];
+            $templateVariables = $this->getBasics($templateVariables, $workingAnnotation->getRepository());
+            $templateVariables['class'] = $workingAnnotation->getRepository();
+            $templateVariables['namespace'] = $workingAnnotation->getTargetNameSpace();
+            $templateVariables['baseClass'] = $workingAnnotation->getExtendsShort();
+            $templateVariables['baseClassFQDN'] = $workingAnnotation->getExtendsClass();
+
+            $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setTemplateVariable($templateVariables);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class, 'preProcess'), $event);
+            $templateVariables = $event->getTemplateVariable();
+
+            $output = $this->getRenderer()->renderTemplate(
+                "MjrOneCodeGeneratorBundle:Entity:Repository.php.twig", $templateVariables
+            );
+
+            $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setContent($output);
+            $this->getED()->dispatch($this->getED()->getEventName(self::class, 'postRender'), $event);
+            $output = $event->getContent();
+
+            $this->writeToDisk($path, $file, $output);
         }
-        $templateVariables = [];
-        $templateVariables = $this->getBasics($templateVariables, $workingAnnotation->getRepository());
-        $templateVariables['class'] = $workingAnnotation->getRepository();
-        $templateVariables['namespace'] = $workingAnnotation->getTargetNameSpace();
-        $templateVariables['baseClass'] = $workingAnnotation->getExtendsShort();
-        $templateVariables['baseClassFQDN'] = $workingAnnotation->getExtendsClass();
-
-        $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setTemplateVariable($templateVariables);
-        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'preProcess'), $event);
-        $templateVariables = $event->getTemplateVariable();
-
-        $output = $this->getRenderer()->renderTemplate(
-            "MjrOneCodeGeneratorBundle:Entity:Repository.php.twig", $templateVariables
-        );
-
-        $event = (new EntityRepositoryGeneratorEvent())->setSubject($this)->setContent($output);
-        $this->getED()->dispatch($this->getED()->getEventName(self::class, 'postRender'), $event);
-        $output = $event->getContent();
-
-        $this->writeToDisk($path, $file, $output);
-
         $fileContainer = $this->getKernel()->getContainer()->get('mjrone.codegenerator.php.parser.file')->readFile($this->getFilePath());
         $comments = explode("\n",$fileContainer->getClassComment());
         /** @var Entity $entityAnnotation */

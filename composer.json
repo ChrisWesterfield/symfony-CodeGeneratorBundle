@@ -1,6 +1,6 @@
 {
   "name": "mjr/code-generator-bundle",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "type": "symfony-bundle",
   "description": "Code Generation based on twig",
   "keywords": [
