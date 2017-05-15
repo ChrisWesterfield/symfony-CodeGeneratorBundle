@@ -97,6 +97,11 @@ final class Property extends AbstractAnnotation implements PropertyInterface
     public $visibility;
 
     /**
+     * @var bool
+     */
+    public $ignoreType=false;
+
+    /**
      * @return string
      */
     public function getType()

@@ -16,7 +16,7 @@
      *
      * @see UrlGeneratorInterface
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH){% if strict %}:UrlGeneratorInterface{% endif %}
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH){% if strict %}:?string{% endif %}
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }

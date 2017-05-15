@@ -2,10 +2,10 @@
      * {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}
      * @CG\Generated()
      *
-     * @return {% if configuration.type|length > 0 %}{% if configuration.arrayType is not null %}{{ configuration.arrayType }}[]{% else %}{{ configuration.type }}{% endif %}{% else %}mixed{% endif %}
+     * @return {% if configuration.type|length > 0 %}{% if configuration.arrayType is not null %}{{ configuration.arrayType }}[]{% else %}{{ configuration.type }}{% endif %}{% if configuration.nullable == true %}|null{% endif %}{% else %}mixed{% endif %}
 
      */
-    {{ configuration.visibility }} function {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}(){% if strict==true and configuration.type != 'mixed' and configuration.type|length > 0 %}: {{ configuration.type }}{% endif %}
+    {{ configuration.visibility }} function {% if configuration.is == true and configuration.type == 'bool' %}is{% else %}get{% endif %}{{ functionName }}(){% if strict==true and configuration.type != 'mixed' and configuration.type|length > 0 and configuration.ignoreType == false %}: {% if configuration.nullable == true %}?{% endif %}{{ configuration.type }}{% endif %}
     {
         return $this->{{ fieldName }};
     }

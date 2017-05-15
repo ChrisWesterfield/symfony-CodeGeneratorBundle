@@ -29,6 +29,9 @@ class Service extends AbstractConfig
      */
     public $service;
 
+    /**
+     * @var bool
+     */
     public $enabled=false;
 
     /**
@@ -78,7 +81,7 @@ class Service extends AbstractConfig
     /**
      * @return string
      */
-    public function getClassShort(): string
+    public function getClassShort()
     {
         return $this->classShort;
     }
@@ -98,7 +101,7 @@ class Service extends AbstractConfig
     /**
      * @return string
      */
-    public function getService(): string
+    public function getService()
     {
         return $this->service;
     }

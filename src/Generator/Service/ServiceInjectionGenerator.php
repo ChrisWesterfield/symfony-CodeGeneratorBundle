@@ -146,7 +146,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
         $services['render'] = $annotation->isRender();
         if ($annotation->isRender())
         {
-            if (!$services['twig'] && !$services['template'])
+            if ((!isset($services['twig'])||$services['twig']===false) && (!isset($services['template'])||$services['template']===false))
             {
                 $services['twig'] = true;
             }
@@ -192,7 +192,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
         $services['json'] = $annotation->isJson();
         $services['form'] = $annotation->isForm();
         $services['url'] = $annotation->isUrl();
-        $services['userFactory'] = $annotation->isUser();
+        $services['user'] = $annotation->isUser();
         $services['cache'] = $annotation->isCache();
         $services['event'] = $annotation->isEvent();
         $services['em'] = $annotation->isEm();

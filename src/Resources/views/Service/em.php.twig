@@ -4,7 +4,7 @@
      * @CG\Mutator\Property(ignore=true)
      */
 
-    protected $entityManager;
+    protected $em;
 
     /**
      * @return EntityManager
@@ -12,5 +12,14 @@
      */
     public function getEntityManager(){% if strict %}:EntityManager{% endif %}
     {
-        return $this->entityManager;
+        return $this->em;
+    }
+
+    /**
+     * @return EntityManager
+     * @CG\Generated()
+     */
+    public function getEM(){% if strict %}:EntityManager{% endif %}
+    {
+        return $this->em;
     }

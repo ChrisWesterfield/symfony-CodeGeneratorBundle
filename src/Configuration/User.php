@@ -83,7 +83,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getFactoryClass(): string
+    public function getFactoryClass()
     {
         return $this->factoryClass;
     }
@@ -103,7 +103,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getShortFactoryClass(): string
+    public function getShortFactoryClass()
     {
         return $this->shortFactoryClass;
     }
@@ -123,7 +123,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getFactoryService(): string
+    public function getFactoryService()
     {
         return $this->factoryService;
     }
@@ -143,7 +143,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getRepositoryService(): string
+    public function getRepositoryService()
     {
         return $this->repositoryService;
     }
@@ -163,7 +163,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getEntity(): string
+    public function getEntity()
     {
         return $this->entity;
     }
@@ -183,7 +183,7 @@ class User extends AbstractConfig
     /**
      * @return string
      */
-    public function getEntityShort(): string
+    public function getEntityShort()
     {
         return $this->entityShort;
     }

@@ -16,7 +16,7 @@
      *
      * @return array                    Json Envelope
      */
-    protected function getJsonResponseEnvelope(array $payload,$success=true,$timestamp=null):{% if strict %}:array{% endif %}
+    protected function getJsonResponseEnvelope(array $payload,$success=true,$timestamp=null){% if strict %}:array{% endif %}
     {
         if($timestamp===null)
         {
@@ -39,7 +39,7 @@
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \InvalidArgumentException
      */
-    protected function returnJson($return){% if strict %}Response{% endif %}
+    protected function returnJson($return){% if strict %}:Response{% endif %}
     {
         $response = new Response(json_encode($return));
         $response->headers->set('Content-Type','application/json');

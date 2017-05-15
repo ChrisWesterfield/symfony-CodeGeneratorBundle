@@ -15,7 +15,7 @@ use MjrOne\CodeGeneratorBundle\Annotation\Tests as UT;
  * @license LGPL V3
  * @link http://www.mjr.one
  * @Annotation
- * @Target({"CLASS","ANNOTATION", "METHOD"})
+ * @Target({"CLASS","ANNOTATION", "METHOD", "PROPERTY"})
  */
 class Generated implements AnnotationInterface
 {
