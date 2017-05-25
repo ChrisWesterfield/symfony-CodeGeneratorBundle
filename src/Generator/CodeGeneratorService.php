@@ -67,6 +67,7 @@ class CodeGeneratorService extends CodeGeneratorAbstract implements CodeGenerato
                 ServicePropertiesGenerator::class, $this->getAnnotation(), $templateVariables, $config
             );
         }
+
         /**
          *  Cleanup
          */

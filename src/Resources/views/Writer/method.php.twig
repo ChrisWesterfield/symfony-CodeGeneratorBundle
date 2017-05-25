@@ -2,7 +2,8 @@
     {% if method.comment|length > 0 %}{% for comment in method.comment %}
 {{ comment|raw }}
 {% endfor %}{% endif %}
-    {% if method.final %}final {% endif %}{{ method.visibility }} function {{ method.name }}({% include 'MjrOneCodeGeneratorBundle:Writer:variables.php.twig' with {'variables': method.variables } %})
+    {% if method.final %}final {% endif %}{{ method.visibility }} function {{ method.name }}({% include 'MjrOneCodeGeneratorBundle:Writer:variables.php.twig' with {'variables': method.variables } %}){% if method.methodReturn is not empty  %}:{% if method.methodReturnOptional == true %}?{% endif %}{{ method.methodReturn }}{% endif %}
+
     {
 {% if method.body|length > 0 %}{% for body in method.body %}
 {{ body|raw }}

@@ -174,6 +174,7 @@ class File extends AbstractParser
                     $implements = false;
                     $fileContainer->setInterfaces($implementsArray);
                     $classBody = true;
+                    break;
                 }
                 if ($token->tokenEquals(';') && $classBody && $useBool) {
                     $useBool = false;

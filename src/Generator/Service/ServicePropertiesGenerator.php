@@ -73,7 +73,7 @@ class ServicePropertiesGenerator extends SubCodeGeneratorAbstract implements Sub
                     }
                     if($annotation->getClassName() !== null && $annotation->getClassShort()===null)
                     {
-                        $reflClass = new \ReflectionClass($annotation->getName());
+                        $reflClass = new \ReflectionClass($annotation->getClassName());
                         $annotation->setClassShort($reflClass->getShortName());
                     }
                 }

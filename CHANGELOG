@@ -39,6 +39,11 @@ several minor Bug fixes
 1.7.0
 added new Operator & for Method variables
 minor bug fixes
-1.7.1-7
+1.7.1-8
 Bug fix in Tag Generator and Service Generator
 minor Bug fixes
+1.8.0
+php parser: bug fix in file class generator
+php parser/writer: added support for return types for methods
+php parser: bug fix in recognition of method comment (in case an method does not have an comment none is added (not the previous one!)
+

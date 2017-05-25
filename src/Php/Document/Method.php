@@ -54,6 +54,31 @@ class Method Extends DocumentAbstract implements ParsedChildInterface
     protected $methodReturn;
 
     /**
+     * @var bool
+     */
+    protected $methodReturnOptional=false;
+
+    /**
+     * @return bool
+     */
+    public function isMethodReturnOptional(): bool
+    {
+        return $this->methodReturnOptional;
+    }
+
+    /**
+     * @param bool $methodReturnOptional
+     *
+     * @return Method
+     */
+    public function setMethodReturnOptional(bool $methodReturnOptional): Method
+    {
+        $this->methodReturnOptional = $methodReturnOptional;
+
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getMethodReturn()

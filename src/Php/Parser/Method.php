@@ -41,7 +41,7 @@ class Method extends AbstractParser
         $this->getED()->dispatch($this->getED()->getEventName(self::class,'parseDocumentPre'),$event);
         $tokens = $event->getTokens();
         $comment = $modifier = $lastToken = $variableObject = $type = $methodObject = null;
-        $arrayObject = $nsDefinition = $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
+        $methodOptional = $arrayObject = $nsDefinition = $functionEnd = $methodReturn = $final = $functions = $valueDefinition = false;
         $bracketCount = 0;
         $currentElement = $variableArray = [];
         $ampersAnd = false;
@@ -173,11 +173,19 @@ class Method extends AbstractParser
                     }
                 }
 
-                if ($functions && $functionEnd && $methodReturn && $token->isString())
+                if ($functions && $functionEnd && $methodReturn && ($token->isString() || $token->isArray()))
                 {
                     $methodObject->setMethodReturn($token->getText());
+                    $methodObject->setMethodReturnOptional($methodOptional);
                     $functionEnd = false;
                     $methodReturn = false;
+                    $methodOptional = false;
+                    $comment = null;
+                }
+
+                if($comment && $token->isVariable())
+                {
+                    $comment = null;
                 }
             }
             else
@@ -212,6 +220,10 @@ class Method extends AbstractParser
                 if ($functions && $functionEnd && $token->tokenEquals(':'))
                 {
                     $methodReturn = true;
+                }
+                if($functions && $functionEnd && $methodReturn && $token->tokenEquals('?'))
+                {
+                    $methodOptional = true;
                 }
                 if ($functions && $token->tokenEquals('{') &&  $methodObject->hasName())
                 {
