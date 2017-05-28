@@ -46,4 +46,5 @@ minor Bug fixes
 php parser: bug fix in file class generator
 php parser/writer: added support for return types for methods
 php parser: bug fix in recognition of method comment (in case an method does not have an comment none is added (not the previous one!)
-
+1.8.1
+fixed user repository bug

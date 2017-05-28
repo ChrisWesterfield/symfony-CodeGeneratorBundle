@@ -7,6 +7,9 @@
 {% if name!='loc' %}
 use {{ element.name }}{% if element.alias is defined and element.alias is not null %} as {{ element.alias }}{% endif %};
 {% endif %}{% endfor %}{% endif %}
+{% if injectedServices is defined and injectedServices.userFactory is defined and injectedServices.userFactory == true %}
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+{% endif %}
 {% endblock %}
 
 {% block comment %}

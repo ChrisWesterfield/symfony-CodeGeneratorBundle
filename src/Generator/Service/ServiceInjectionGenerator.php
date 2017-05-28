@@ -100,7 +100,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      * @return bool
      */
-    protected function isUserFactoryEnabled()
+    protected function isUserFactoryEnabled(): bool
     {
         if ($this->userFactoryEnabled === null)
         {
@@ -114,7 +114,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      * @return string
      */
-    protected function getUserFactory()
+    protected function getUserFactory(): string
     {
         if ($this->isUserFactoryEnabled())
         {
@@ -128,7 +128,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
      * @param array                                                    $services
      * @param \MjrOne\CodeGeneratorBundle\Annotation\Service\Injection $annotation
      */
-    protected function getFlash(array &$services, CG\Service\Injection $annotation)
+    protected function getFlash(array &$services, CG\Service\Injection $annotation): void
     {
         if ($annotation->isFlash())
         {
@@ -141,7 +141,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
      * @param array                                                    $services
      * @param \MjrOne\CodeGeneratorBundle\Annotation\Service\Injection $annotation
      */
-    public function getRender(array &$services, CG\Service\Injection $annotation)
+    public function getRender(array &$services, CG\Service\Injection $annotation): void
     {
         $services['render'] = $annotation->isRender();
         if ($annotation->isRender())
@@ -178,7 +178,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      * @return array
      */
-    protected function generateService()
+    protected function generateService(): array
     {
         $this->serviceMap['userFactory'] = $this->getUserFactory();
         $services = [];
@@ -193,6 +193,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
         $services['form'] = $annotation->isForm();
         $services['url'] = $annotation->isUrl();
         $services['user'] = $annotation->isUser();
+        $services['userFactory'] = $annotation->isUser();
         $services['cache'] = $annotation->isCache();
         $services['event'] = $annotation->isEvent();
         $services['em'] = $annotation->isEm();
@@ -211,7 +212,6 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
         $services['csrfToken'] = $annotation->isCsrfToken();
         $services['kernel'] = $annotation->isKernel();
         $services['parameters'] = $annotation->isParameters();
-        $services['userFactory'] = $this->isUserFactoryEnabled() && $annotation->isUserFactory();
         if ($services['render'] || $services['renderView'] || $services['stream'] || $services['router']
             || $services['forward']
             || $services['cookie']
@@ -234,7 +234,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      * @param $services
      */
-    protected function processConfigs($services)
+    protected function processConfigs($services): void
     {
         foreach ($services as $service => $value)
         {
@@ -249,7 +249,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      * @param $services
      */
-    protected function processInjections($services)
+    protected function processInjections($services): void
     {
         $injections = [];
         if (!empty($services))
@@ -268,7 +268,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      *
      */
-    protected function prepareMaps()
+    protected function prepareMaps(): void
     {
         $this->serviceMap = [
             'session'    => '@session',
@@ -307,7 +307,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
             ],
             'user'       => [
                 'name'  => 'user',
-                'class' => $this->getService()->getConfig()->getUser()->getEntityShort(),
+                'class' => 'TokenStorageInterface',
             ],
             'cache'      => [
                 'name'  => 'cache',
@@ -339,7 +339,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
     /**
      *
      */
-    protected function addUseList()
+    protected function addUseList(): void
     {
         /** @var ArrayCollection $list */
         $list = $this->templateVariables->get('useList');
@@ -382,12 +382,7 @@ class ServiceInjectionGenerator extends SubCodeGeneratorAbstract implements SubC
         {
             $this->addToList(StreamedResponse::class, $list);
         }
-        if ((array_key_exists('user', $services) && $services['user'] === true)
-            || (array_key_exists(
-                    'userFactory', $services
-                )
-                && $services['userFactory'] === true)
-        )
+        if (array_key_exists('user', $services) && $services['user'] === true)
         {
             $this->addToList($this->getService()->getConfig()->getUser()->getFactoryClass(), $list);
             $this->addToList($this->getService()->getConfig()->getUser()->getEntity(), $list);

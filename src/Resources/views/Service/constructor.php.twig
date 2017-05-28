@@ -13,9 +13,9 @@
      */
     public function __construct({% if injections is defined and injections|length > 0 %}{% for injection in injections %}{% if injection.name is not defined %}{% for item in injection %}{{ item.class }} ${{ item.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% else %}{{ injection.class }} ${{ injection.name }}{% endif %}{% if loop.last != true %}, {% endif %}{% endfor %}{% if properties is defined and properties|length > 0 %}, {% endif %}{% endif %}{% if properties is defined and properties|length > 0 %} {% for property in properties %}{% if property.optional is not defined %}{{ property.fqdn }} ${{ property.name }}{% if loop.last != true %}, {% endif %}{% endif %}{% endfor %}{% endif %})
     {
-{% if injections is defined and injections|length > 0 %}{% for injection in injections %}
+{% if injections is defined and injections|length > 0 %}{% for injection in injections %}{% if injection.name != 'user' %}
         $this->{{ injection.name }} = ${{ injection.name }};
-{% endfor %}{% endif %}
+{% endif %}{% endfor %}{% endif %}
 {% if properties is defined and properties|length > 0 %}{% for property in properties %}{% if property.optional is not defined %}{% if property.constructorMethod is defined and property.constructorMethod|length > 0 %}{% for construct in property.constructorMethod %}
         $this->{{ construct.method }}({% if construct.variables|length > 0 %}{% for variable in construct.variables %}${{ variable.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% endif %});
 {% endfor %}{% else %}
@@ -24,4 +24,8 @@
 {% if constructorMethods is defined and constructorMethods|length > 0 %}{% for construct in constructorMethods %}
         $this->{{ construct.method }}({% if construct.variables|length > 0 %}{% for variable in construct.variables %}${{ variable.name }}{% if loop.last != true %}, {% endif %}{% endfor %}{% endif %});
 {% endfor %}{% endif %}
+{% if injectedServices is defined and injectedServices.userFactory is defined and injectedServices.userFactory == true %}
+        $this->initializeUser($user);
+{% endif %}
+
     }
