@@ -26,9 +26,9 @@
   "require": {
     "php": ">=7.1.0",
     "symfony/symfony": "<3.4.0",
-    "symfony/property-info": "3.2.*",
+    "symfony/property-info": "<3.4.0",
     "phpdocumentor/reflection-docblock": "^3.0",
-    "symfony/property-access": "3.2.*",
+    "symfony/property-access": "<3.4.0",
     "mjr/cg-interfaces": "1.*",
     "nikic/php-parser": "^3.0.2",
     "phpunit/phpunit": "6.*",
